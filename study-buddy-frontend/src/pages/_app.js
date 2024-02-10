@@ -10,6 +10,7 @@ import { buildStore } from '@/utils/redux';
 
 import '@/styles/globals.css'
 
+
 // Initialize Redux
 let initialState = {};
 let reduxStore = buildStore(initialState);
