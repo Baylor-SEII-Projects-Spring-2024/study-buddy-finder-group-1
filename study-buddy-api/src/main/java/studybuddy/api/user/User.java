@@ -31,6 +31,11 @@ public class User {
     @Column(name = "USER_TYPE")
     String userType;
 
+    public User(String email, String password, String userType) {
+        this.emailAddress = email;
+        this.password = password;
+        this.userType = userType;
+    }
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
