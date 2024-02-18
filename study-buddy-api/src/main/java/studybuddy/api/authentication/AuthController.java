@@ -1,14 +1,11 @@
 package studybuddy.api.authentication;
 
-import jakarta.persistence.*;
-import jdk.jshell.spi.ExecutionControl;
-import lombok.Data;
-import lombok.Getter;
 import studybuddy.api.user.User;
-import studybuddy.api.user.UserRepository;
 import studybuddy.api.user.UserService;
-
-import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Interface for any authentication features
@@ -20,7 +17,22 @@ import java.util.Objects;
  * @author William Delano
  * @version 1.1
  */
-public class Authentication {
+@RestController
+public class AuthController {
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        if (userService.attemptLogin(username, password)) {
+            return "Login successful";
+        } else {
+            return "Login failed";
+        }
+    }
 
     /**
      * creates the account of the user.
@@ -42,17 +54,5 @@ public class Authentication {
 
             service.saveUser(newUser);
         }
-    }
-
-    /**
-     * operation to validate login information from input
-     *
-     * @param email The given username for potential user account.
-     * @param password The given password for potential user account.
-     */
-    public boolean login(String email, String password) {
-        UserService service = new UserService();
-
-        return service.attemptLogin(email, password);
     }
 }

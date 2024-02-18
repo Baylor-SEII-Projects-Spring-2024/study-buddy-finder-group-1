@@ -36,6 +36,10 @@ public class User {
         this.password = password;
         this.userType = userType;
     }
+
+    public User() {
+    }
+
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
