@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("testdb")  // make these tests use the H2 in-memory DB instead of your actual DB
 @Transactional             // make these tests revert their DB changes after the test is complete
-public class UserTests {
+public class AuthenticationTests {
     @Autowired
     private UserService userService;
 
