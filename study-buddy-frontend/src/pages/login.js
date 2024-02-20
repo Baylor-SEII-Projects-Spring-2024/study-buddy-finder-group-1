@@ -3,12 +3,15 @@ import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
 import Head from "next/head";
 import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
 import Link from "next/link";
+import axios from "axios";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
 export default function Login() {
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
 
     // State for the anchor element of the dropdown menu
     const [anchorEl, setAnchorEl] = useState(null);
@@ -27,7 +30,6 @@ export default function Login() {
         firstName: '',
         lastName: '',
         email: '',
-        username: '',
         password: '',
         confirmPassword: '',
     });
@@ -35,11 +37,26 @@ export default function Login() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
+
+
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+
+        try {
+            const response = await axios.post('http://localhost:8080/login', null, {
+                params: {
+                    email: formData.email,
+                    password: formData.password
+                }
+            });
+            console.log(response.data);
+        }
+        catch (error) {
+            console.log(error.response);
+        }
     };
 
     return (
@@ -106,11 +123,11 @@ export default function Login() {
                         margin="normal"
                         required
                         fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
-                        value={formData.username}
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        value={formData.email}
                         onChange={handleChange}
                         sx={{ mb: 2 }}
                     />

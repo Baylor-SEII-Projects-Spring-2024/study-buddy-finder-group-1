@@ -13,13 +13,10 @@ public class UserService {
 
     public Optional<User> findUser(Long userId) { return userRepository.findById(userId); }
 
-    public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail(email); }
+    public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
     public boolean attemptLogin(String email, String password) {
-        if ((userRepository.findByEmailAndPassword(email, password)).isPresent()) {
-            return true;
-        }
-        return false;
+        return (userRepository.findByEmail_AddressAndPassword(email, password)).isPresent();
     }
 
     public User saveUser(User user) {
