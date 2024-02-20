@@ -3,6 +3,7 @@ import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
 import Head from "next/head";
 import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
 import Link from "next/link";
+import axios from "axios";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -27,7 +28,6 @@ export default function Register() {
         firstName: '',
         lastName: '',
         email: '',
-        username: '',
         password: '',
         confirmPassword: '',
     });
@@ -37,9 +37,21 @@ export default function Register() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
+
+        try {
+            const response = await axios.post("http://localhost:8080/register", {
+                firstName: formData.firstName,
+                lastName : formData.lastName,
+                email_address : formData.email,
+                password : formData.password
+            })
+            const data = response.data;
+            console.log(data);
+        } catch (error) {
+            console.log("Error: ", error)
+        }
     };
 
     return (
@@ -140,19 +152,6 @@ export default function Register() {
                             name="email"
                             autoComplete="email"
                             value={formData.email}
-                            onChange={handleChange}
-                            sx={{ mb: 2 }}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
-                            value={formData.username}
                             onChange={handleChange}
                             sx={{ mb: 2 }}
                         />
