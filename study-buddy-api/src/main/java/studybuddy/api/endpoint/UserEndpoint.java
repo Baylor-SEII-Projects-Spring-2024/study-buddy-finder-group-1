@@ -31,11 +31,6 @@ public class UserEndpoint {
         return user;
     }
 
-    @PostMapping("/register")
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
-
     @PutMapping("/changePassword/{id}")
     public void changePassword(@PathVariable Long id, @RequestParam String newPassword) {
         userService.changePassword(id, newPassword);
