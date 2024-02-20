@@ -93,12 +93,12 @@ GCP offers a free trial that will work for our purposes in this project. Keep in
 6. Navigate to the "VM instances" tab and click the "Set up firewall rules" option
    1. Select the `default-allow-http` rule, and select "Edit" at the top of the page
    2. In the "TCP Ports" section, add 8080 and 3000. This will allow you to access those ports from your local machine. In the future, if you need to add additional or different HTTP ports, you would do so in the same way. Also, if you want to add HTTPS ports, do so in the same way under the `default-allow-https` rule
-7. Setup a GitHub runner. The GitHub runner waits for certain actions to happen in your repository and runs a user-defined set of commands when one occurs. We will be using this runner to rebuild and redeploy our project whenever a commit on the `main` branch occurs. First, we need to link the runner to your repository:
+7. Setup a GitHub runner. The GitHub runner waits for certain actions to happen in your repository and runs a authentication-defined set of commands when one occurs. We will be using this runner to rebuild and redeploy our project whenever a commit on the `main` branch occurs. First, we need to link the runner to your repository:
    1. Open an SSH terminal to your VM in GCP
    2. Install a GitHub self-hosted runner on the VM using the instructions found in your GitHub Repository at Settings > Actions > Runners > New self-hosted runner. Follow the "Download" and "Configure" instructions for Linux **EXCEPT FOR THE `./run.sh` COMMAND.**
    3. Install Docker on your VM, using the following instructions (under "Install using the apt repository"): https://docs.docker.com/engine/install/debian/#install-using-the-repository
    4. Run the following command, giving your GitHub runner permission to use Docker commands: `sudo usermod -aG docker <my-username>` (`<my-username>` is the username that you used to log in via SSH to the VM)
-   5. To check if `<my-username>` now has access to Docker run: `sudo -u <my-username> -H docker info`. This command will fail if that user does not have permission.
+   5. To check if `<my-username>` now has access to Docker run: `sudo -u <my-username> -H docker info`. This command will fail if that authentication does not have permission.
    6. Finally, configure your GitHub runner to run as a service in the background and automatically restart if it crashes. Run `sudo ./svc.sh install` and `sudo ./svc.sh start`. After you deploy your project, you can check the status by running: `sudo ./svc.sh status`. More Info: https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/configuring-the-self-hosted-runner-application-as-a-service
 8. Write a GitHub Actions workflow (CI pipeline) file.
    - This file will tell the GitHub runner what to do whenever a commit is made to the branch the file is in; you can learn more here: https://docs.github.com/en/actions/quickstart

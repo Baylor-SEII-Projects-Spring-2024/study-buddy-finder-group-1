@@ -21,7 +21,7 @@ public class User {
 
     @Getter
     @Column(name = "EMAIL_ADDRESS")
-    String emailAddress;
+    String email_address;
 
     @Getter
     @Column(name = "PASSWORD")
@@ -31,8 +31,17 @@ public class User {
     @Column(name = "USER_TYPE")
     String userType;
 
+    public User(String email, String password, String userType) {
+        this.email_address = email;
+        this.password = password;
+        this.userType = userType;
+    }
+
+    public User() {
+    }
+
     public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+        this.email_address = emailAddress;
     }
 
     public void setPassword(String password) {
