@@ -52,8 +52,8 @@ export default function Register() {
             const data = response.data;
             console.log(data);
             if (response.status === 200) {
-                // Use Next.js router to redirect
-                router.push('/login'); // Change '/login' to the path of your login page
+
+                router.push('/login');
             } else {
                 console.log("Registration was successful but the status code is not 200.");
             }
