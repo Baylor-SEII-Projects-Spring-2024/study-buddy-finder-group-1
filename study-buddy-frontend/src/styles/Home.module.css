@@ -1,3 +1,4 @@
-.wideButton {
-    width: 300px;
+.whiteButton {
+    color: white !important; /* Ensures that the text color is white */
+    border-color: white !important; /* For outlined buttons, ensures the border color is white */
 }

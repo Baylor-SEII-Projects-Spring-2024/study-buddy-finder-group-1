@@ -60,7 +60,7 @@ See the Material UI documentation [here](https://mui.com/material-ui/getting-sta
 
 ### Redux
 
-Redux allows you to manage state that you can access from anywhere in your app (i.e., "global state"). This is useful for things like information about the logged-in user, cookie preferences, configuration settings (light vs. dark color scheme), etc.
+Redux allows you to manage state that you can access from anywhere in your app (i.e., "global state"). This is useful for things like information about the logged-in authentication, cookie preferences, configuration settings (light vs. dark color scheme), etc.
 
 This project uses Redux Toolkit, a separate library which makes configuring the Redux stores in a more organized way. Here are some resources you might find useful:
 
