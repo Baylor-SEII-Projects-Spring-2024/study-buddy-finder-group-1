@@ -1,0 +1,12 @@
+/* Navbar.module.css */
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.nav h3 {
+    margin-right: 20px;
+}
