@@ -20,6 +20,14 @@ public class User {
     Long id;
 
     @Getter
+    @Column(name = "FIRST_NAME")
+    String firstName;
+
+    @Getter
+    @Column(name = "LAST_NAME")
+    String lastName;
+
+    @Getter
     @Column(name = "EMAIL_ADDRESS")
     String email_address;
 

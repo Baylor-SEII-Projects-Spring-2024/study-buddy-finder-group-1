@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
-import Head from "next/head";
-import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
-import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
+
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
 export default function Register() {
+    const router = useRouter();
 
     // State for the anchor element of the dropdown menu
     const [anchorEl, setAnchorEl] = useState(null);
@@ -49,6 +51,13 @@ export default function Register() {
             })
             const data = response.data;
             console.log(data);
+            if (response.status === 200) {
+
+                router.push('/login');
+            } else {
+                console.log("Registration was successful but the status code is not 200.");
+            }
+
         } catch (error) {
             console.log("Error: ", error)
         }
