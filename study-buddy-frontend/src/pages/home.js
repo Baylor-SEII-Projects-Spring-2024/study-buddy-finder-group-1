@@ -1,6 +1,3 @@
-
-import Navbar from "@/components/Navbar";
-
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -36,6 +33,13 @@ const HomePage = () => {
         setAnchorEl(null);
     };
 
+    const handleIconClick = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
     return (
         <>
             <Head>
@@ -58,14 +62,15 @@ const HomePage = () => {
                 </video>
             </Box>
 
-            <AppBar position="flex" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
-                <Toolbar>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="h2" sx={{ fontSize: '4rem', fontFamily: 'Playfair Display, serif', color: 'white', marginRight: 2 }}>
+            <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
+            <Toolbar>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                        <img onClick={handleIconClick} src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ cursor: 'pointer', maxWidth: '80px', maxHeight: '80px', marginRight: '8px' }} />
+                        <Typography variant="h2" sx={{ fontSize: '2.5rem', fontFamily: '"YourCustomFont", serif', color: 'white', transition: '0.3s ease' }}>
                             Study Buddies
                         </Typography>
-                        <img src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ maxWidth: '100px', maxHeight: '100px' }} />
                     </Box>
+
 
                     <Box sx={{ flexGrow: 1 }}></Box>
 

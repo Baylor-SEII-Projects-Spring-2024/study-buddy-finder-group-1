@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
-import Head from "next/head";
-import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
-import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
+
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
 export default function Register() {
+    const router = useRouter();
 
     // State for the anchor element of the dropdown menu
     const [anchorEl, setAnchorEl] = useState(null);
@@ -39,22 +41,27 @@ export default function Register() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Form data before submission:', formData);
 
         try {
-            console.log('Attempting to submit form data to backend...');
             const response = await axios.post("http://localhost:8080/register", {
                 firstName: formData.firstName,
-                lastName: formData.lastName,
-                email_address: formData.email,
-                password: formData.password,
-            });
-            console.log('Form submitted successfully, response:', response.data);
+                lastName : formData.lastName,
+                email_address : formData.email,
+                password : formData.password
+            })
+            const data = response.data;
+            console.log(data);
+            if (response.status === 200) {
+
+                router.push('/login');
+            } else {
+                console.log("Registration was successful but the status code is not 200.");
+            }
+
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.log("Error: ", error)
         }
     };
-
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

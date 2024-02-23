@@ -4,12 +4,15 @@ import Head from "next/head";
 import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
 export default function Login() {
+    const router = useRouter();
+
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
@@ -52,12 +55,23 @@ export default function Login() {
                     password: formData.password
                 }
             });
+
             console.log(response.data);
-        }
-        catch (error) {
-            console.log(error.response);
+            if (response.status === 200 && response.data.userId) {
+
+                const { userId } = response.data;
+
+                router.push(`/user/${userId}`);
+            } else {
+                console.log("Login was successful but the status code is not 200.");
+
+            }
+        } catch (error) {
+            console.error("Login failed:", error.response || error);
+
         }
     };
+
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

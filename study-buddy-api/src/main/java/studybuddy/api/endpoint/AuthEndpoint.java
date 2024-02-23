@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Log4j2
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -31,10 +35,22 @@ public class AuthEndpoint {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
         if (userService.attemptLogin(email, password)) {
             //good login
-            return ResponseEntity.ok("Login successful");
+            Optional<User> userOptional = userService.findUserByEmail(email);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                Map<String, Object> response = new HashMap<>();
+                response.put("message", "Login successful");
+                response.put("userId", user.getId());
+
+                return ResponseEntity.ok(response);
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User not found after successful login.");
+            }
         }
         else {
             //invalid login
