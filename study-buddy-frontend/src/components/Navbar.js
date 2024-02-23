@@ -34,21 +34,21 @@ export default function Navbar() {
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 
-                <Button className={styles.whiteButton} variant="outlined" sx={{ my: 1, mx: 1.5, fontFamily: 'Roboto, sans-serif' }}>
+                <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
                     Study Locations
                 </Button>
-                <Button className={styles.whiteButton} variant="outlined" sx={{ my: 1, mx: 1.5, fontFamily: 'Roboto, sans-serif' }}>
+                <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
                     Our Mission
                 </Button>
 
                 <Link href="/login" passHref>
-                    <Button className={styles.whiteButton} variant="outlined" sx={{ my: 1, mx: 1.5, fontFamily: 'Roboto, sans-serif' }}>
+                    <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
                         Sign In
                     </Button>
                 </Link>
 
                 <Link href="/register" passHref>
-                    <Button className={styles.whiteButton} variant="outlined" sx={{ my: 1, mx: 1.5, fontFamily: 'Roboto, sans-serif' }}>
+                    <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 2.0, fontFamily: 'YourCustomFont' }}>
                         Create Account
                     </Button>
                 </Link>
