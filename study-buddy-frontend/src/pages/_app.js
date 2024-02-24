@@ -9,7 +9,7 @@ import { StudyBuddyThemeProvider } from '@/utils/theme';
 import { buildStore } from '@/utils/redux';
 
 import '@/styles/globals.css'
-
+import '../styles/globals.css';
 
 // Initialize Redux
 let initialState = {};
