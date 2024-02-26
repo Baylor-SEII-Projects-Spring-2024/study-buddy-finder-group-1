@@ -4,7 +4,8 @@ import styles from './Navbar.module.css';
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 import Link from "next/link";
 
-export default function Navbar() {
+export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
+
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClose = () => {
         setAnchorEl(null);
@@ -34,24 +35,27 @@ export default function Navbar() {
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 
-                <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
-                    Study Locations
-                </Button>
-                <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
-                    Our Mission
-                </Button>
-
-                <Link href="/login" passHref>
-                    <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
-                        Sign In
-                    </Button>
-                </Link>
-
-                <Link href="/register" passHref>
-                    <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 2.0, fontFamily: 'YourCustomFont' }}>
-                        Create Account
-                    </Button>
-                </Link>
+                {/* Conditional rendering for the links */}
+                {showLinks && (
+                    <>
+                        <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                            Study Locations
+                        </Button>
+                        <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                            Our Mission
+                        </Button>
+                        <Link href="/login" passHref>
+                            <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                                Sign In
+                            </Button>
+                        </Link>
+                        <Link href="/register" passHref>
+                            <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 2.0, fontFamily: 'YourCustomFont' }}>
+                                Create Account
+                            </Button>
+                        </Link>
+                    </>
+                )}
 
                 <IconButton
                     edge="end"

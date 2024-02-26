@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
-
+import Navbar from "@/components/Navbar";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -72,20 +72,27 @@ export default function Register() {
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
             </Head>
 
+
+
+            <Navbar showLinks={false} />
+
+
+
+            {/*
             <AppBar position="static" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
                 <Toolbar>
-                    {/* Flex container for title and logo */}
+                    {/* Flex container for title and logo }
                     <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                        {/* "Study Buddies" title */}
+                        {/* "Study Buddies" title }
                         <Typography variant="h2" sx={{ fontSize: '4rem', fontFamily: 'Playfair Display, serif', color: 'white', marginRight: 2 }}>
                             Study Buddies
                         </Typography>
 
-                        {/* Logo directly to the right of the title */}
+                        {/* Logo directly to the right of the title }
                         <img src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ maxWidth: '100px', maxHeight: '100px' }} />
                     </Box>
 
-                    {/* Profile Icon Button */}
+                    {/* Profile Icon Button }
                     <IconButton
                         edge="end"
                         color="inherit"
@@ -95,7 +102,7 @@ export default function Register() {
                         <Avatar src='/Images/Profile%20Pic.webp' alt="Profile" />
                     </IconButton>
 
-                    {/* Dropdown menu anchored to the IconButton */}
+                    {/* Dropdown menu anchored to the IconButton }
                     <Menu
                         id="profile-menu"
                         anchorEl={anchorEl}
@@ -110,6 +117,9 @@ export default function Register() {
 
                 </Toolbar>
             </AppBar>
+            */}
+
+
 
             {/* Spacer element to push down the main content */}
             {/* Grid item will act as a flexible spacer */}
