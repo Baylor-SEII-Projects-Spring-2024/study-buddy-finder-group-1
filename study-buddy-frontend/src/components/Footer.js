@@ -8,7 +8,7 @@ export default function Footer({mainFont, whiteText}) {
             <Container maxWidth="lg" component="footer">
                 <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Learn More
                         </Typography>
                         <Box>
@@ -27,7 +27,7 @@ export default function Footer({mainFont, whiteText}) {
                     </Grid>
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Join Us
                         </Typography>
                         <Box>
@@ -39,7 +39,7 @@ export default function Footer({mainFont, whiteText}) {
                     </Grid>
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Locations
                         </Typography>
                         <Box>
@@ -64,7 +64,7 @@ export default function Footer({mainFont, whiteText}) {
                     <Grid item xs style={{ flexGrow: 0.1 }} />
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Social Media
                         </Typography>
                         <Box>

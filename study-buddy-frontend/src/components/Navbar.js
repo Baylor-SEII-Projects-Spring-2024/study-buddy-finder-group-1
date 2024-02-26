@@ -92,6 +92,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleClose}>Friend List</MenuItem>
                     <MenuItem onClick={handleClose}>Settings</MenuItem>
                     <MenuItem onClick={handleClose}>Help & Support</MenuItem>
+                    <MenuItem onClick={handleClose}>Home</MenuItem>
                     <MenuItem onClick={handleClose}>Logout</MenuItem>
 
                 </Menu>
