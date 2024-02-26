@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "GCP-Changes" ]
+  pull_request:
+    branches: [ "GCP-Changes" ]
+
+jobs:
+
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file docker/study-buddy-frontend.Dockerfile --tag my-image-name:${{ github.run_number }}
+    - uses: actions/checkout@v3
+    - name: Build other
+      run: docker build . --file docker/study-buddy-api.Dockerfile --tag my-image-name:${{ github.run_number }}
