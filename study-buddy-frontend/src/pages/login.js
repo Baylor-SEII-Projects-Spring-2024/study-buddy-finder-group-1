@@ -5,6 +5,7 @@ import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Navbar from "@/components/Navbar";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -72,7 +73,6 @@ export default function Login() {
         }
     };
 
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Head>
@@ -81,43 +81,7 @@ export default function Login() {
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
             </Head>
 
-            <AppBar position="static" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
-                <Toolbar>
-                    {/* Flex container for title and logo */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                        {/* "Study Buddies" title */}
-                        <Typography variant="h2" sx={{ fontSize: '4rem', fontFamily: 'Playfair Display, serif', color: 'white', marginRight: 2 }}>
-                            Study Buddies
-                        </Typography>
-
-                        {/* Logo directly to the right of the title */}
-                        <img src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-                    </Box>
-
-                    {/* Profile Icon Button */}
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="profile"
-                        onClick={handleMenu} // Added this line to handle click events
-                    >
-                        <Avatar src='/Images/Profile%20Pic.webp' alt="Profile" />
-                    </IconButton>
-
-                    {/* Dropdown menu anchored to the IconButton */}
-                    <Menu
-                        id="profile-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-                </Toolbar>
-            </AppBar>
+            <Navbar showLinks={false} /> {/* Inserting navbar */}
 
             {/* Spacer element to push down the main content */}
             {/* This Grid item will act as a flexible spacer */}
