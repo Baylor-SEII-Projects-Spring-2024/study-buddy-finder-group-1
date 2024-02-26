@@ -45,7 +45,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                             Study Locations
                         </Button>
                         <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
-                            Our Mission
+                            <Link href="/OurMissionPage" passHref>
+                                Our Mission
+                            </Link>
                         </Button>
                         <Link href="/login" passHref>
                             <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>

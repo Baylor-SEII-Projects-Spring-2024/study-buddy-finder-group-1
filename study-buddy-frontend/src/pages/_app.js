@@ -7,6 +7,7 @@ import { CssBaseline } from '@mui/material';
 
 import { StudyBuddyThemeProvider } from '@/utils/theme';
 import { buildStore } from '@/utils/redux';
+import Layout from '@/components/Layout';
 
 import '@/styles/globals.css'
 import '../styles/globals.css';
@@ -27,8 +28,9 @@ export default function App({ Component, pageProps }) {
           <StudyBuddyThemeProvider>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-
-            <Component {...pageProps} />
+              <Layout>
+                  <Component {...pageProps} />
+              </Layout>
           </StudyBuddyThemeProvider>
         </AppCacheProvider>
       </ReduxProvider>

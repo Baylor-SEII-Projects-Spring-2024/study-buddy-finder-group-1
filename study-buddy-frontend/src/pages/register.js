@@ -84,7 +84,7 @@ export default function Register() {
 
             {/* Main content area with registration form */}
             <div style={{ flexGrow: 1 }}>
-                <Container component="main" maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
+                <Container component="main" maxWidth="sm" sx={{ mt: 20, mb: 10 }}>
                     <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
                         Create Account
                     </Typography>
@@ -185,9 +185,6 @@ export default function Register() {
                     </form>
                 </Container>
             </div>
-
-            <Footer />
-
         </div>
     );
 }
