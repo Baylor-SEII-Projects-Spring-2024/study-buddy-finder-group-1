@@ -15,12 +15,12 @@ const OurMissionPage = () => {
             <Navbar showLinks={false} /> {/* Inserting navbar */}
 
             {/* Flex container to center content */}
-            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '10vh' }}>
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md" style={textStyle}>
                     <Typography variant="h3" component="h1" gutterBottom style={{ fontWeight: 'bold' }}>
                         Our Mission
                     </Typography>
-                    <Typography variant="body1" style={{ fontSize: '1.6rem' }}>
+                    <Typography variant="body1" style={{ fontSize: '1.4rem' }}>
                         At StudyBuddies, Inc., our mission is to revolutionize the way students and tutors connect,
                         collaborate, and succeed academically. We are dedicated to creating a dynamic, user-friendly
                         platform that facilitates the planning and scheduling of on- and off-campus study sessions,
@@ -35,6 +35,9 @@ const OurMissionPage = () => {
                     </Typography>
                 </Container>
             </Box>
+
+            {/* Add spacing between main content and footer */}
+            <Box height={100} /> {/* Adjust height as needed for spacing */}
 
         </div>
     );

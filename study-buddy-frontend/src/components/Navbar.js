@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Navbar.module.css';
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuItem} from "@mui/material";
 import Link from "next/link";
@@ -8,6 +8,18 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
+    // This is for the profile icon menu to make it NOT shift everything
+    useEffect(() => {
+        // Always apply the style to keep scrollbar visible
+        document.documentElement.style.overflowY = 'scroll';
+
+        // Cleanup function to remove the style when the component unmounts
+        return () => {
+            document.documentElement.style.overflowY = '';
+        };
+    }, []); // Empty dependency array means this effect runs only on mount and unmount
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -42,7 +54,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                 {showLinks && (
                     <>
                         <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
-                            Study Locations
+                            <Link href="/StudyLocationsPage" passHref>
+                                Study Locations
+                            </Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
                             <Link href="/OurMissionPage" passHref>
