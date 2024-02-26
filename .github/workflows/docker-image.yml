@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
+      run: docker build . --file docker/study-buddy-frontend.Dockerfile --tag my-image-name:${{ github.run_number }}
+    - uses: actions/checkout@v3
+    - name: Build other
       run: docker build . --file docker/study-buddy-api.Dockerfile --tag my-image-name:${{ github.run_number }}
