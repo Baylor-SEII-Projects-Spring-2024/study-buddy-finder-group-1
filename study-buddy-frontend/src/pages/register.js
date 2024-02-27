@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
-
+import Navbar from "@/components/Navbar";
+import HomePageText from "@/components/HomePageText";
+import Footer from "@/components/Footer";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -72,44 +74,7 @@ export default function Register() {
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
             </Head>
 
-            <AppBar position="static" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
-                <Toolbar>
-                    {/* Flex container for title and logo */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                        {/* "Study Buddies" title */}
-                        <Typography variant="h2" sx={{ fontSize: '4rem', fontFamily: 'Playfair Display, serif', color: 'white', marginRight: 2 }}>
-                            Study Buddies
-                        </Typography>
-
-                        {/* Logo directly to the right of the title */}
-                        <img src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-                    </Box>
-
-                    {/* Profile Icon Button */}
-                    <IconButton
-                        edge="end"
-                        color="inherit"
-                        aria-label="profile"
-                        onClick={handleMenu} // Added this line to handle click events
-                    >
-                        <Avatar src='/Images/Profile%20Pic.webp' alt="Profile" />
-                    </IconButton>
-
-                    {/* Dropdown menu anchored to the IconButton */}
-                    <Menu
-                        id="profile-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-
-                </Toolbar>
-            </AppBar>
+            <Navbar showLinks={false} /> {/* Inserting navbar */}
 
             {/* Spacer element to push down the main content */}
             {/* Grid item will act as a flexible spacer */}
@@ -119,7 +84,7 @@ export default function Register() {
 
             {/* Main content area with registration form */}
             <div style={{ flexGrow: 1 }}>
-                <Container component="main" maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
+                <Container component="main" maxWidth="sm" sx={{ mt: 20, mb: 10 }}>
                     <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
                         Create Account
                     </Typography>
@@ -220,98 +185,6 @@ export default function Register() {
                     </form>
                 </Container>
             </div>
-
-            {/* Lower link bar */}
-            <Paper elevation={0} component="footer" sx={{ backgroundColor: 'rgba(0, 36, 53)', padding: 2 }}>
-                <Container maxWidth="lg" component="footer">
-                    <Grid container spacing={2} justifyContent="center">
-                        <Grid item xs={4} sm={2}>
-                            <Typography variant="h6" color="textPrimary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                Learn More
-                            </Typography>
-                            <Box>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    About Us
-                                </Link>
-                                <br/>
-                                <Link href="#" variant="subtitle1" color="textSecondary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                    <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                        FAQ
-                                    </Link>
-
-                                </Link>
-                                <br/>
-                                <Link href="#" variant="subtitle1" color="textSecondary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                    <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                        Contact Us
-                                    </Link>
-                                </Link>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={4} sm={2}>
-                            <Typography variant="h6" color="textPrimary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                Join Us
-                            </Typography>
-                            <Box>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Become a Tutor
-                                </Link>
-                                <br/>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={4} sm={2}>
-                            <Typography variant="h6" color="textPrimary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                Locations
-                            </Typography>
-                            <Box>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Moody Library
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Baylor Science Building
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Student Union Building
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Armstrong Library
-                                </Link>
-                            </Box>
-                        </Grid>
-
-                        {/* Invisible Grid item to push Social Media to the right */}
-                        <Grid item xs style={{ flexGrow: 0.1 }} />
-
-                        <Grid item xs={4} sm={2}>
-                            <Typography variant="h6" color="textPrimary" gutterBottom sx = {{ fontFamily: MAIN_FONT, color: WHITE_TEXT }}>
-                                Social Media
-                            </Typography>
-                            <Box>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Facebook
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    X (Twitter)
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Tik Tok
-                                </Link>
-                                <br/>
-                                <Link href="/about-us" className="yourClassName" style={{ textDecoration: 'none', color: 'white' }}>
-                                    Snapchat
-                                </Link>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Paper>
         </div>
     );
 }
