@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
             <Container component="main" sx={{ flex: 1 }}>
                 {children}
             </Container>
-            <Footer />
+            <Footer sx={{ position: 'absolute', width: '100%', bottom: 0 }}/>
         </Box>
     );
 };

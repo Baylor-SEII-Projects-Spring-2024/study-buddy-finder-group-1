@@ -21,17 +21,15 @@ const OurMissionPage = () => {
                         Our Mission
                     </Typography>
                     <Typography variant="body1" style={{ fontSize: '1.4rem' }}>
-                        At StudyBuddies, Inc., our mission is to revolutionize the way students and tutors connect,
-                        collaborate, and succeed academically. We are dedicated to creating a dynamic, user-friendly
-                        platform that facilitates the planning and scheduling of on- and off-campus study sessions,
-                        seamlessly bringing together individuals with shared academic goals and interests. By
-                        leveraging innovative technology, we aim to provide a personalized experience that allows
-                        users to easily find study buddies, recommend ideal study locations, and foster a community
-                        of learners who support one another. We believe that by making it easier for students and
-                        tutors to collaborate, we can enhance the educational experience at Baylor and beyond,
-                        helping every user to achieve their full academic potential. Our commitment extends beyond
-                        mere functionality; we strive to empower our users with the tools and resources they need
-                        to excel, making StudyBuddies, Inc. an integral part of their academic journey.
+                        StudyBuddies, Inc. aims to change how students and tutors meet and work together to do
+                        well in school. We're working on a simple, efficient platform for arranging study times
+                        both on and off campus, connecting people with similar study goals. Our goal is to use
+                        new technology to make it easy for users to find study partners, suggest the best places
+                        to study, and build a supportive community. We want to improve the way students and
+                        tutors work together, making learning better at Baylor and elsewhere, and helping
+                        everyone reach their highest academic potential. We're focused on providing the tools
+                        and support needed for success, making StudyBuddies, Inc. a key part of students' and
+                        tutors' educational paths.
                     </Typography>
                 </Container>
             </Box>

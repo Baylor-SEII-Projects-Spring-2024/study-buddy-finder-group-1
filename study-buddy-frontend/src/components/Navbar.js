@@ -20,8 +20,13 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         };
     }, []); // Empty dependency array means this effect runs only on mount and unmount
 
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
     const handleIconClick = () => {
@@ -30,10 +35,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
             behavior: 'smooth'
         });
     }
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
 
     return (
         <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
@@ -46,7 +47,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                         Study Buddies
                     </Typography>
                 </Box>
-
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 

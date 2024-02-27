@@ -3,8 +3,10 @@ import {Box, Container, Grid, Link as MuiLink, Paper, Typography} from "@mui/mat
 import styles from "@/styles/Home.module.css";
 
 export default function Footer({mainFont, whiteText}) {
+
     return (
-        <Paper elevation={0} component="footer" sx={{ backgroundColor: 'rgba(0, 36, 53)', padding: 2 }}>
+        <Paper elevation={0} component="footer" sx={{ backgroundColor: 'rgba(0, 36, 53)', padding: 2, width: '100vw',
+            boxSizing: 'border-box' }}>
             <Container maxWidth="lg" component="footer">
                 <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={4} sm={2}>
