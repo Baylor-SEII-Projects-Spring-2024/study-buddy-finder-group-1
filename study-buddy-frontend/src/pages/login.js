@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
 import Head from "next/head";
 import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {useAuth} from "@/components/AuthContext";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -14,6 +15,8 @@ const WHITE_TEXT = 'white';
 
 export default function Login() {
     const router = useRouter();
+    const { login } = useAuth();
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -54,25 +57,33 @@ export default function Login() {
             const response = await axios.post('http://localhost:8080/login', null, {
                 params: {
                     email: formData.email,
-                    password: formData.password
-                }
+                    password: formData.password,
+                },
             });
 
             console.log(response.data);
+
             if (response.status === 200 && response.data.userId) {
-
                 const { userId } = response.data;
+                localStorage.setItem('isLoggedin', 'true');
 
-                router.push(`/user/${userId}`);
+                // Update the loginSuccess state instead of directly navigating
+                setLoginSuccess(true);
             } else {
                 console.log("Login was successful but the status code is not 200.");
-
             }
         } catch (error) {
             console.error("Login failed:", error.response || error);
-
         }
+        login();
     };
+
+    useEffect(() => {
+        if (loginSuccess) {
+            // Now we navigate when loginSuccess state is true
+            router.push(`/home`);
+        }
+    }, [loginSuccess, router]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
