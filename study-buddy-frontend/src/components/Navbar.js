@@ -53,23 +53,71 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                 {/* Conditional rendering for the links */}
                 {showLinks && (
                     <>
-                        <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                        <Button className={styles.whiteButton} sx={{
+                            fontSize: '1.2rem',
+                            my: 1,
+                            mx: 1.5,
+                            fontFamily: 'YourCustomFont',
+                            transition: 'color 0.3s, text-shadow 0.3s',
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                                color: '#00BFFF',
+                                textShadow: '0 0 10px #00BFFF',
+                                backgroundColor: 'transparent',
+                            },
+                        }}>
                             <Link href="/StudyLocationsPage" passHref>
                                 Study Locations
                             </Link>
                         </Button>
-                        <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                        <Button className={styles.whiteButton} sx={{
+                            fontSize: '1.2rem',
+                            my: 1,
+                            mx: 1.5,
+                            fontFamily: 'YourCustomFont',
+                            transition: 'color 0.3s, text-shadow 0.3s',
+                            backgroundColor: 'transparent',
+                            '&:hover': {
+                                color: '#00BFFF',
+                                textShadow: '0 0 10px #00BFFF',
+                                backgroundColor: 'transparent',
+                            },
+                        }}>
                             <Link href="/OurMissionPage" passHref>
                                 Our Mission
                             </Link>
                         </Button>
                         <Link href="/login" passHref>
-                            <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 1.5, fontFamily: 'YourCustomFont' }}>
+                            <Button className={styles.whiteButton} sx={{
+                                fontSize: '1.2rem',
+                                my: 1,
+                                mx: 1.5,
+                                fontFamily: 'YourCustomFont',
+                                transition: 'color 0.3s, text-shadow 0.3s',
+                                backgroundColor: 'transparent',
+                                '&:hover': {
+                                    color: '#00BFFF',
+                                    textShadow: '0 0 10px #00BFFF',
+                                    backgroundColor: 'transparent',
+                                },
+                            }}>
                                 Sign In
                             </Button>
                         </Link>
                         <Link href="/register" passHref>
-                            <Button className={styles.whiteButton} sx={{ fontSize: '1.2rem', my: 1, mx: 2.0, fontFamily: 'YourCustomFont' }}>
+                            <Button className={styles.whiteButton} sx={{
+                                fontSize: '1.2rem',
+                                my: 1,
+                                mx: 1.5,
+                                fontFamily: 'YourCustomFont',
+                                transition: 'color 0.3s, text-shadow 0.3s',
+                                backgroundColor: 'transparent',
+                                '&:hover': {
+                                    color: '#00BFFF',
+                                    textShadow: '0 0 10px #00BFFF',
+                                    backgroundColor: 'transparent',
+                                },
+                            }}>
                                 Create Account
                             </Button>
                         </Link>
