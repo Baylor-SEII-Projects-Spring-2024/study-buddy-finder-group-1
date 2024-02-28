@@ -40,12 +40,7 @@ export default function Register() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Head>
-                <title>Register - Study Buddies</title>
-                {/* Links to import fonts */}
-                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
-            </Head>
+
 
 
             <Navbar showLinks={false} /> {/* Inserting navbar */}

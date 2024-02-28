@@ -9,10 +9,18 @@ import {useRouter} from "next/router";
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
     const { isLoggedIn, logout } = useAuth();
     const [isLoggedOut, setIsLoggedOut] = useState(false);
+    const [userId, setUserId] = useState(null);
     const router = useRouter();
     console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+
 
     // This is for the profile icon menu to make it NOT shift everything
     useEffect(() => {
@@ -51,6 +59,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         setIsLoggedOut(true);
         logout();
     };
+
+    const handleProfileClick = () => {
+        router.push(`/user/${userId}`);
+    }
 
     return (
         <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
@@ -167,7 +179,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>My Profile</MenuItem>
+                    <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
                     <MenuItem onClick={handleClose}>Edit Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My Sessions</MenuItem>
                     <MenuItem onClick={handleClose}>Messaging</MenuItem>
@@ -177,10 +189,12 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleClose}>Settings</MenuItem>
                     <MenuItem onClick={handleClose}>Help & Support</MenuItem>
                     <MenuItem onClick={handleClose}>Home</MenuItem>
-                    <MenuItem onClick={() => {
-                        handleLogout()
-                        handleClose()
-                    }}>Logout</MenuItem>
+                    {isLoggedIn && (
+                        <MenuItem onClick={() => {
+                            handleLogout()
+                            handleClose()
+                        }}>Logout</MenuItem>
+                    )}
 
                 </Menu>
             </Toolbar>
