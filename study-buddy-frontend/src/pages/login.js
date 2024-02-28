@@ -66,7 +66,7 @@ export default function Login() {
             if (response.status === 200 && response.data.userId) {
                 const { userId } = response.data;
                 localStorage.setItem('isLoggedin', 'true');
-
+                localStorage.setItem('userId', userId);
                 // Update the loginSuccess state instead of directly navigating
                 setLoginSuccess(true);
             } else {

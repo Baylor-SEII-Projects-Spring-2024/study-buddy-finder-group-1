@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from "@/components/Navbar";
+import Head from "next/head";
 
 function UserProfile() {
     const [user, setUser] = useState(null);
@@ -32,20 +34,33 @@ function UserProfile() {
     };
 
     return (
-        <div>
-            {loading ? (
-                <p>Loading...</p>
-            ) : user ? (
-                <div>
-                    <h1>User Profile</h1>
-                    <p>User ID: {user.id}</p>
-                    <p>Email Address: {user.email_address}</p>
-                    <p>First name: {user.firstName}</p>
-                    <p>Last name: {user.lastName}</p>
-                </div>
-            ) : (
-                <p>User not found.</p>
-            )}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: '84px' }}>
+
+
+        <Head>
+                <title>ProfilePage - Study Buddies</title>
+                {/* Links to import fonts */}
+                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+                <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+            </Head>
+
+            <Navbar />
+            <>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : user ? (
+                    <div>
+                        <h1>User Profile</h1>
+                        <p>User ID: {user.id}</p>
+                        <p>Email Address: {user.email_address}</p>
+                        <p>First name: {user.firstName}</p>
+                        <p>Last name: {user.lastName}</p>
+                        <p>User type: {user.userType}</p>
+                    </div>
+                ) : (
+                    <p>User not found.</p>
+                )}
+            </>
         </div>
     );
 }
