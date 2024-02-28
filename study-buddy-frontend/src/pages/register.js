@@ -4,9 +4,15 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
+
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
+import HomePageText from "@/components/HomePageText";
+
+
+
+
 
 
 // Constants
@@ -41,7 +47,8 @@ export default function Register() {
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
             </Head>
 
-            <Navbar />
+
+            <Navbar showLinks={false} /> {/* Inserting navbar */}
 
             {/* Spacer element to push down the main content */}
             {/* Grid item will act as a flexible spacer */}
@@ -50,10 +57,12 @@ export default function Register() {
             </Grid>
 
             {/* Main content area with registration form */}
+
             <RegisterForm />
 
             {/* Lower link bar */}
             <Footer whiteText={WHITE_TEXT} mainFont={MAIN_FONT}/>
+
         </div>
     );
 }

@@ -3,12 +3,14 @@ import {Box, Container, Grid, Link as MuiLink, Paper, Typography} from "@mui/mat
 import styles from "@/styles/Home.module.css";
 
 export default function Footer({mainFont, whiteText}) {
+
     return (
-        <Paper elevation={0} component="footer" sx={{ backgroundColor: 'rgba(0, 36, 53)', padding: 2 }}>
+        <Paper elevation={0} component="footer" sx={{ backgroundColor: 'rgba(0, 36, 53)', padding: 2, width: '100vw',
+            boxSizing: 'border-box' }}>
             <Container maxWidth="lg" component="footer">
                 <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Learn More
                         </Typography>
                         <Box>
@@ -27,7 +29,7 @@ export default function Footer({mainFont, whiteText}) {
                     </Grid>
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Join Us
                         </Typography>
                         <Box>
@@ -39,7 +41,7 @@ export default function Footer({mainFont, whiteText}) {
                     </Grid>
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Locations
                         </Typography>
                         <Box>
@@ -64,7 +66,7 @@ export default function Footer({mainFont, whiteText}) {
                     <Grid item xs style={{ flexGrow: 0.1 }} />
 
                     <Grid item xs={4} sm={2}>
-                        <Typography variant="h6" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
+                        <Typography variant="h6" gutterBottom sx={{ fontFamily: mainFont, color: 'white' }}>
                             Social Media
                         </Typography>
                         <Box>

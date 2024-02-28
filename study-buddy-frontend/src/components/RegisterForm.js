@@ -1,4 +1,4 @@
-import {Button, Container, TextField, Typography} from "@mui/material";
+import {Button, Container, TextField, Typography, MenuItem} from "@mui/material";
 import React, {useState} from "react";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ export default function RegisterForm() {
         email: '',
         password: '',
         confirmPassword: '',
+        userType: '',
     });
 
     const handleChange = (event) => {
@@ -25,7 +26,8 @@ export default function RegisterForm() {
                 firstName: formData.firstName,
                 lastName : formData.lastName,
                 email_address : formData.email,
-                password : formData.password
+                password : formData.password,
+                userType : formData.userType
             })
             const data = response.data;
             console.log(data);
@@ -116,6 +118,23 @@ export default function RegisterForm() {
                         onChange={handleChange}
                         sx={{ mb: 2 }}
                     />
+                    <TextField
+                        select
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="userType"
+                        label="You are a..."
+                        type="option"
+                        id="choose-option"
+                        autoComplete="choose-option"
+                        value={formData.userType}
+                        onChange={handleChange}
+                        sx={{ mb: 2 }}
+                    >
+                        <MenuItem value="Student">Student</MenuItem>
+                        <MenuItem value="Tutor">Tutor</MenuItem>
+                    </TextField>
                     <Button
                         type="submit"
                         fullWidth

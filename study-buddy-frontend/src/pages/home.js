@@ -42,7 +42,7 @@ const HomePage = () => {
 
             <Box display="flex" flexDirection="column" minHeight="75vh" justifyContent="flex-start" sx={{ mt: '30vh' }}>
                 <HomePageText mainFont={MAIN_FONT} whiteText={WHITE_TEXT} />
-                <Footer mainFont={MAIN_FONT} whiteText={WHITE_TEXT} />
+
             </Box>
         </>
     );
