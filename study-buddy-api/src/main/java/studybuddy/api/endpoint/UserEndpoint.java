@@ -10,7 +10,7 @@ import java.util.List;
 
 @Log4j2
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserEndpoint {
     @Autowired
     private UserService userService;
