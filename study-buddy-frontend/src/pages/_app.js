@@ -9,6 +9,8 @@ import { StudyBuddyThemeProvider } from '@/utils/theme';
 import { buildStore } from '@/utils/redux';
 import Layout from '@/components/Layout';
 
+import { AuthProvider } from '../components/AuthContext';
+
 import '@/styles/globals.css'
 import '../styles/globals.css';
 
@@ -42,7 +44,9 @@ export default function App({ Component, pageProps }) {
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
               <Layout>
-                  <Component {...pageProps} />
+                  <AuthProvider>
+                    <Component {...pageProps} />
+                  </AuthProvider>
               </Layout>
           </StudyBuddyThemeProvider>
         </AppCacheProvider>

@@ -1,6 +1,7 @@
 import {Button, Container, TextField, Typography, MenuItem} from "@mui/material";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {router} from "next/client";
 
 
 export default function RegisterForm() {
@@ -12,6 +13,13 @@ export default function RegisterForm() {
         confirmPassword: '',
         userType: '',
     });
+    const [isRegistered, setIsRegistered] = useState(false);
+
+    useEffect(() => {
+        if (isRegistered) {
+            router.push('/login');
+        }
+    }, [isRegistered, router]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;

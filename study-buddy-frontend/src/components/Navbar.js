@@ -3,9 +3,14 @@ import React, {useEffect, useState} from 'react';
 import styles from './Navbar.module.css';
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuItem} from "@mui/material";
 import Link from "next/link";
+import {useAuth} from "@/components/AuthContext";
+import {useRouter} from "next/router";
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
-
+    const { isLoggedIn, logout } = useAuth();
+    const [isLoggedOut, setIsLoggedOut] = useState(false);
+    const router = useRouter();
+    console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -20,6 +25,11 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         };
     }, []); // Empty dependency array means this effect runs only on mount and unmount
 
+    useEffect(() => {
+        if (isLoggedOut) {
+            router.push('/home');
+        }
+    }, [isLoggedOut, router]);
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -35,6 +45,12 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
             behavior: 'smooth'
         });
     }
+
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        setIsLoggedOut(true);
+        logout();
+    };
 
     return (
         <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
@@ -87,40 +103,44 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                                 Our Mission
                             </Link>
                         </Button>
-                        <Link href="/login" passHref>
-                            <Button className={styles.whiteButton} sx={{
-                                fontSize: '1.2rem',
-                                my: 1,
-                                mx: 1.5,
-                                fontFamily: 'YourCustomFont',
-                                transition: 'color 0.3s, text-shadow 0.3s',
-                                backgroundColor: 'transparent',
-                                '&:hover': {
-                                    color: '#00BFFF',
-                                    textShadow: '0 0 10px #00BFFF',
-                                    backgroundColor: 'transparent',
-                                },
-                            }}>
-                                Sign In
-                            </Button>
-                        </Link>
-                        <Link href="/register" passHref>
-                            <Button className={styles.whiteButton} sx={{
-                                fontSize: '1.2rem',
-                                my: 1,
-                                mx: 1.5,
-                                fontFamily: 'YourCustomFont',
-                                transition: 'color 0.3s, text-shadow 0.3s',
-                                backgroundColor: 'transparent',
-                                '&:hover': {
-                                    color: '#00BFFF',
-                                    textShadow: '0 0 10px #00BFFF',
-                                    backgroundColor: 'transparent',
-                                },
-                            }}>
-                                Create Account
-                            </Button>
-                        </Link>
+                        {!isLoggedIn && (
+                            <>
+                                <Link href="/login" passHref>
+                                    <Button className={styles.whiteButton} sx={{
+                                        fontSize: '1.2rem',
+                                        my: 1,
+                                        mx: 1.5,
+                                        fontFamily: 'YourCustomFont',
+                                        transition: 'color 0.3s, text-shadow 0.3s',
+                                        backgroundColor: 'transparent',
+                                        '&:hover': {
+                                            color: '#00BFFF',
+                                            textShadow: '0 0 10px #00BFFF',
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}>
+                                        Sign In
+                                    </Button>
+                                </Link>
+                                <Link href="/register" passHref>
+                                    <Button className={styles.whiteButton} sx={{
+                                        fontSize: '1.2rem',
+                                        my: 1,
+                                        mx: 1.5,
+                                        fontFamily: 'YourCustomFont',
+                                        transition: 'color 0.3s, text-shadow 0.3s',
+                                        backgroundColor: 'transparent',
+                                        '&:hover': {
+                                            color: '#00BFFF',
+                                            textShadow: '0 0 10px #00BFFF',
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}>
+                                        Create Account
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </>
                 )}
 
@@ -157,7 +177,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleClose}>Settings</MenuItem>
                     <MenuItem onClick={handleClose}>Help & Support</MenuItem>
                     <MenuItem onClick={handleClose}>Home</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={() => {
+                        handleLogout()
+                        handleClose()
+                    }}>Logout</MenuItem>
 
                 </Menu>
             </Toolbar>
