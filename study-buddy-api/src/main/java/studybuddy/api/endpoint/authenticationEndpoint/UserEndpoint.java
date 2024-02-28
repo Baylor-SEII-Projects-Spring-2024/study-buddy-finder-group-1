@@ -16,6 +16,7 @@ public class UserEndpoint {
 
     @GetMapping("/users")
     public List<User> findAllUsers() {
+        System.err.println("HRRYR");
         return userService.findAllUsers();
     }
 
@@ -28,11 +29,6 @@ public class UserEndpoint {
         }
 
         return user;
-    }
-
-    @PostMapping("/register")
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
     }
 
     @PutMapping("/changePassword/{id}")

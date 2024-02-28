@@ -5,6 +5,7 @@ function UserProfile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -38,8 +39,9 @@ function UserProfile() {
                 <div>
                     <h1>User Profile</h1>
                     <p>User ID: {user.id}</p>
-                    <p>Email Address: {user.emailAddress}</p>
-                    <p>User Type: {user.userType}</p>
+                    <p>Email Address: {user.email_address}</p>
+                    <p>First name: {user.firstName}</p>
+                    <p>Last name: {user.lastName}</p>
                 </div>
             ) : (
                 <p>User not found.</p>
