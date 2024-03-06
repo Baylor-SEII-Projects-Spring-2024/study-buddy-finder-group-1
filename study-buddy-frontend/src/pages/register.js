@@ -1,19 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import Link from "next/link";
 import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
-
-import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
-import HomePageText from "@/components/HomePageText";
-
-
-
-
-
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
@@ -35,13 +24,8 @@ export default function Register() {
         setAnchorEl(null);
     };
 
-
-
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-
-
 
             <Navbar showLinks={false} /> {/* Inserting navbar */}
 
@@ -54,9 +38,6 @@ export default function Register() {
             {/* Main content area with registration form */}
 
             <RegisterForm />
-
-            {/* Lower link bar */}
-            <Footer whiteText={WHITE_TEXT} mainFont={MAIN_FONT}/>
 
         </div>
     );

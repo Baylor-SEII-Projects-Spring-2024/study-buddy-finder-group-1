@@ -65,7 +65,7 @@ const StudyLocationsPage = () => {
             {/* Flex container to center content */}
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md" style={textStyle}>
-                    <Typography variant="h3" component="h1" gutterBottom style={{ fontWeight: 'bold' }}>
+                    <Typography variant="h3" component="h1" gutterBottom style={{ fontWeight: 'bold', textAlign: 'center', paddingBottom: '20px'}}>
                         Study Locations
                     </Typography>
 
