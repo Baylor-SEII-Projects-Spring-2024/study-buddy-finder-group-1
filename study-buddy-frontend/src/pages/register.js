@@ -36,9 +36,7 @@ export default function Register() {
             </Grid>
 
             {/* Main content area with registration form */}
-
             <RegisterForm />
-
         </div>
     );
 }

@@ -61,7 +61,48 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     };
 
     const handleProfileClick = () => {
-        router.push(`/user/${userId}`);
+        {/* router.push(`/user/${userId}`); */}
+        router.push(`/ProfilePage`);
+    }
+
+    const handleCreateMeetupClick = () => {
+        router.push(`/MeetupCreationPage`);
+    }
+
+    const handleEditProfileClick = () => {
+        router.push(`/EditProfile`);
+    }
+
+    const handleEditAddClassesClick = () => {
+        router.push(`/AddEditClasses`);
+    }
+
+    const handleMessagesClick = () => {
+        router.push(`/MessagingPage`);
+    }
+
+    const handleNotificationsClick = () => {
+        router.push(`/Notifications`);
+    }
+
+    const handleFriendListClick = () => {
+        router.push(`/FriendList`);
+    }
+
+    const handleTutorReviewClick = () => {
+        router.push(`/ReviewTutor`);
+    }
+
+    const handleSettingsClick = () => {
+        router.push(`/Settings`);
+    }
+
+    const handleHelpSupportClick = () => {
+        router.push(`/HelpSupport`);
+    }
+
+    const handleHomeClick = () => {
+        router.push(`/home`);
     }
 
     return (
@@ -179,16 +220,18 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     open={open}
                     onClose={handleClose}
                 >
+                    {/* Function calls are embedded below */}
                     <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>Edit Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My Sessions</MenuItem>
-                    <MenuItem onClick={handleClose}>Messaging</MenuItem>
-                    <MenuItem onClick={handleClose}>Notifications</MenuItem>
-                    <MenuItem onClick={handleClose}>Study Locations</MenuItem>
-                    <MenuItem onClick={handleClose}>Friend List</MenuItem>
-                    <MenuItem onClick={handleClose}>Settings</MenuItem>
-                    <MenuItem onClick={handleClose}>Help & Support</MenuItem>
-                    <MenuItem onClick={handleClose}>Home</MenuItem>
+                    <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
+                    <MenuItem onClick={handleCreateMeetupClick}>Create/Edit Meetup(s)</MenuItem>
+                    <MenuItem onClick={handleEditAddClassesClick}>Add/Edit Classes or Area(s) of Study</MenuItem>
+                    <MenuItem onClick={handleMessagesClick}>Messaging</MenuItem>
+                    <MenuItem onClick={handleNotificationsClick}>Notifications</MenuItem>
+                    <MenuItem onClick={handleFriendListClick}>Friend List</MenuItem>
+                    <MenuItem onClick={handleTutorReviewClick}>Review Tutors</MenuItem>
+                    <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
+                    <MenuItem onClick={handleHelpSupportClick}>Help & Support</MenuItem>
+                    <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                     {isLoggedIn && (
                         <MenuItem onClick={() => {
                             handleLogout()

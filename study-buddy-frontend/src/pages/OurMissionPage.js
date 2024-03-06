@@ -17,7 +17,7 @@ const OurMissionPage = () => {
             {/* Flex container to center content */}
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md" style={textStyle}>
-                    <Typography variant="h3" component="h1" gutterBottom style={{ fontWeight: 'bold', textAlign: 'center', paddingBottom: '20px' }}>
+                    <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center', paddingBottom: '20px' }}>
                         Our Mission
                     </Typography>
                     <Typography variant="body1" style={{ fontSize: '1.4rem' }}>
