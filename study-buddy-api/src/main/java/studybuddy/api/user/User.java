@@ -3,12 +3,16 @@ package studybuddy.api.user;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User {
+
     public static final String TABLE_NAME = "USERS";
+
+    private Date lastLogin;
 
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
@@ -58,5 +62,13 @@ public class User {
 
     public void setUserType(String userType) {
         this.userType = userType;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }

@@ -14,15 +14,15 @@ export default function Footer({mainFont, whiteText}) {
                             Learn More
                         </Typography>
                         <Box>
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/AboutUs" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 About Us
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/FAQ" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 FAQ
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/ContactUs" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Contact Us
                             </MuiLink>
                         </Box>
@@ -33,7 +33,7 @@ export default function Footer({mainFont, whiteText}) {
                             Join Us
                         </Typography>
                         <Box>
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/BecomeTutor" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Become a Tutor
                             </MuiLink>
                             <br />
@@ -45,19 +45,19 @@ export default function Footer({mainFont, whiteText}) {
                             Locations
                         </Typography>
                         <Box>
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/StudyLocationsPage" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Moody Library
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/StudyLocationsPage" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Baylor Science Building
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/StudyLocationsPage" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Student Union Building
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="/StudyLocationsPage" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Armstrong Library
                             </MuiLink>
                         </Box>

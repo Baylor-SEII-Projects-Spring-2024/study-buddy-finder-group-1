@@ -12,7 +12,7 @@ export default function HomePageText({mainFont, whiteText}) {
             <Typography variant="h5" align="center" color="textSecondary" component="p" sx={{ fontFamily: mainFont, color: whiteText }}>
                 Embark on a personalized learning experience where your goals are our priority.
             </Typography>
-            <Link href="/register" passHref>
+            <Link href="/SearchPage" passHref>
                 <Button
                     className={styles.whiteButton}
                     variant="outlined"
@@ -31,7 +31,7 @@ export default function HomePageText({mainFont, whiteText}) {
                         }
                     }}
                 >
-                    Launch your Learning Experience
+                    Start Searching for Study Buddies!
                 </Button>
             </Link>
         </Container>
