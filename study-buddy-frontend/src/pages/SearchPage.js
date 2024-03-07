@@ -14,7 +14,7 @@ const SearchPage = () => {
     // State to hold search results
     const [results, setResults] = useState([]);
 
-    // Dummy function to simulate search - Replace with your search logic -------------------------------
+    // ------------------------------- Mock function to simulate search - Replace with search logic -------------------------------
     const performSearch = () => {
         // Simulated results
         const simulatedResults = [
@@ -26,11 +26,11 @@ const SearchPage = () => {
         setResults(simulatedResults);
     };
 
-    // Dummy function to handle sending a friend request -------------------------------
+    // ------------------------------- Mock function to handle sending a friend request -------------------------------
     const handleSendFriendRequest = (name) => {
         alert(`Friend request sent to ${name}!`);
 
-        // Here, implement the logic to actually send a friend request
+        // ------------------------------- Here, implement the logic to actually send a friend request -------------------------------
 
 
     };
@@ -64,7 +64,6 @@ const SearchPage = () => {
                             <CardContent>
                                 <Typography variant="h5" component="h2">{result.name}</Typography>
                                 <Typography color="textSecondary">{result.subject}</Typography>
-                                <Typography color="textSecondary">{result.location}</Typography>
                                 <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleSendFriendRequest(result.name)}>
                                     Send Friend Request
                                 </Button>

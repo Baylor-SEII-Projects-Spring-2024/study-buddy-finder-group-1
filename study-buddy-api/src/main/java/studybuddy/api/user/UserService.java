@@ -2,12 +2,14 @@ package studybuddy.api.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -16,7 +18,14 @@ public class UserService {
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
     public boolean attemptLogin(String email, String password) {
-        return (userRepository.findByEmail_AddressAndPassword(email, password)).isPresent();
+        Optional<User> userOptional = userRepository.findByEmail_AddressAndPassword(email, password);
+        if (userOptional.isPresent()) {
+            // Update last login timestamp
+            User user = userOptional.get();
+            user.setLastLogin(new Date()); // Assuming you're using java.util.Date
+            userRepository.save(user);
+        }
+        return userOptional.isPresent();
     }
 
     public User saveUser(User user) {

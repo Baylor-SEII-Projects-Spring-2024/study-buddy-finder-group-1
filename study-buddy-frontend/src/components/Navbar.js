@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 import styles from './Navbar.module.css';
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuItem} from "@mui/material";
@@ -7,6 +6,7 @@ import {useAuth} from "@/components/AuthContext";
 import {useRouter} from "next/router";
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
+
     const { isLoggedIn, logout } = useAuth();
     const [isLoggedOut, setIsLoggedOut] = useState(false);
     const [userId, setUserId] = useState(null);
@@ -14,13 +14,13 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
         if (storedUserId) {
             setUserId(storedUserId);
         }
     }, []);
-
 
     // This is for the profile icon menu to make it NOT shift everything
     useEffect(() => {

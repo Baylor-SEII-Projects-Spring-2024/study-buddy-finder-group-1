@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, TextField, Button } from '@mui/material';
+import { Box, Container, Typography, TextField, Button, MenuItem, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import Navbar from "@/components/Navbar";
 
-const MeetupCreationPage = () => {
-    const [classInput, setClassInput] = useState('');
-    const [areaOfStudyInput, setAreaOfStudyInput] = useState('');
+const locations = [
+    "Moody Library",
+    "Baylor Science Building",
+    "Student Union Building",
+    "Armstrong Library"
+];
 
-    const handleClassInputChange = (event) => {
-        setClassInput(event.target.value);
+const MeetupCreationPage = () => {
+    const [classAndAreaInput, setClassAndAreaInput] = useState('');
+    const [locationInput, setLocationInput] = useState('');
+    const [meetingType, setMeetingType] = useState('group');
+
+    const handleClassAndAreaInputChange = (event) => {
+        setClassAndAreaInput(event.target.value);
     };
 
-    const handleAreaOfStudyInputChange = (event) => {
-        setAreaOfStudyInput(event.target.value);
+    const handleLocationInputChange = (event) => {
+        setLocationInput(event.target.value);
+    };
+
+    const handleMeetingTypeChange = (event) => {
+        setMeetingType(event.target.value);
     };
 
     const handleSubmit = (event) => {
@@ -30,21 +42,43 @@ const MeetupCreationPage = () => {
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField
-                            label="Class"
+                            label="Class or Area(s) of Study"
                             variant="outlined"
-                            value={classInput}
-                            onChange={handleClassInputChange}
+                            value={classAndAreaInput}
+                            onChange={handleClassAndAreaInputChange}
                             fullWidth
+                            multiline
+                            rows={4}
                             margin="normal"
                         />
                         <TextField
-                            label="Area of Study"
+                            select
+                            label="Location"
+                            value={locationInput}
+                            onChange={handleLocationInputChange}
                             variant="outlined"
-                            value={areaOfStudyInput}
-                            onChange={handleAreaOfStudyInputChange}
                             fullWidth
                             margin="normal"
-                        />
+                        >
+                            {locations.map((location) => (
+                                <MenuItem key={location} value={location}>
+                                    {location}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <FormControl component="fieldset" margin="normal">
+                            <FormLabel component="legend">Meeting Type</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-label="meetingType"
+                                name="meetingType"
+                                value={meetingType}
+                                onChange={handleMeetingTypeChange}
+                            >
+                                <FormControlLabel value="group" control={<Radio />} label="Group Meeting" />
+                                <FormControlLabel value="one-on-one" control={<Radio />} label="One-on-One Meeting" />
+                            </RadioGroup>
+                        </FormControl>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Create Meetup
                         </Button>

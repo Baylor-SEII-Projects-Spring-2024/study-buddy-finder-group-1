@@ -1,113 +1,118 @@
-import React, {useEffect, useState} from "react";
-import {Avatar, IconButton, Menu, MenuItem, TextField} from '@mui/material';
-import Head from "next/head";
-import {AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
-import Link from "next/link";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { TextField, Button, Typography, Grid } from "@mui/material";
 import { useRouter } from "next/router";
+import axios from "axios";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import {useAuth} from "@/components/AuthContext";
+import { useAuth } from "@/components/AuthContext";
+import { Snackbar, Alert } from '@mui/material';
 
-// Constants
-const MAIN_FONT = 'Roboto, sans-serif';
-const WHITE_TEXT = 'white';
+const Login = () => {
 
-export default function Login() {
     const router = useRouter();
     const { login } = useAuth();
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [user, setUser] = useState(null); // State to store user data
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false); // Define snackbar open state
 
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-
-    // State for the anchor element of the dropdown menu
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    // Open the dropdown menu
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    // Close the dropdown menu
-    const handleClose = () => {
-        setAnchorEl(null);
+    // Function to handle Snackbar close event
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
     };
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
+        email: "",
+        password: "",
     });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-
-
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
 
         try {
-            const response = await axios.post('http://localhost:8080/login', null, {
-                params: {
-                    email: formData.email,
-                    password: formData.password,
-                },
-            });
-
-            console.log(response.data);
+            const response = await axios.post(
+                "http://localhost:8080/login",
+                null,
+                {
+                    params: {
+                        email: formData.email,
+                        password: formData.password,
+                    },
+                }
+            );
 
             if (response.status === 200 && response.data.userId) {
-                const { userId } = response.data;
-                localStorage.setItem('isLoggedin', 'true');
-                localStorage.setItem('userId', userId);
-                // Update the loginSuccess state instead of directly navigating
+                const { userId, firstName, lastName } = response.data;
+                localStorage.setItem("isLoggedin", "true");
+                localStorage.setItem("userId", userId);
+                setUser({ firstName, lastName }); // Set user data
                 setLoginSuccess(true);
+                setSnackbarMessage('Login successful! Redirecting...');
+                setSnackbarOpen(true);
+
             } else {
-                console.log("Login was successful but the status code is not 200.");
+                // If status code is not 200, it's handled here.
+                setSnackbarMessage("Login was successful but the status code is not 200.");
+                setSnackbarOpen(true);
             }
         } catch (error) {
             console.error("Login failed:", error.response || error);
+            setSnackbarMessage('Login failed. Please check your credentials.');
+            setSnackbarOpen(true);
         }
-        login();
+        login(); // This should be inside the success block
     };
 
     useEffect(() => {
         if (loginSuccess) {
-            // Now we navigate when loginSuccess state is true
+            // Fetch additional user data if needed
+            const fetchUserData = async () => {
+                try {
+                    const response = await axios.get(
+                        `http://localhost:8080/user/${localStorage.getItem(
+                            "userId"
+                        )}`
+                    );
+                    setUser(response.data); // Set user data
+                } catch (error) {
+                    console.error("Failed to fetch user data:", error);
+                }
+            };
+
+            fetchUserData();
+
+            // Move redirect inside the block where loginSuccess is set to true
             router.push(`/home`);
         }
     }, [loginSuccess, router]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Head>
-                <title>Register - Study Buddies</title>
-                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
-            </Head>
-
-            <Navbar showLinks={false} /> {/* Inserting navbar */}
-
-            {/* Spacer element to push down the main content */}
-            {/* This Grid item will act as a flexible spacer */}
-            <Grid container style={{ flex: 1 }}>
-                <Grid item xs={12} style={{ height: '0.1vh' }}></Grid> {/* This creates the dynamic space */}
-            </Grid>
-
-            {/* Main content area with log in form */}
-            <Container component="main" maxWidth="sm" sx={{ mt: 8, mb: 4, flex: 1 }}>
-                <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
+        <div>
+            <Navbar showLinks={false} />
+            <Grid
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                style={{ minHeight: "100vh" }}
+            >
+                <Typography variant="h5" gutterBottom>
                     Log In
                 </Typography>
-                <form onSubmit={handleSubmit} noValidate>
-
+                {user && (
+                    <Typography variant="body1" gutterBottom>
+                        Welcome, {user.firstName} {user.lastName}!
+                    </Typography>
+                )}
+                <form onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -119,7 +124,6 @@ export default function Login() {
                         autoComplete="email"
                         value={formData.email}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
                     />
                     <TextField
                         variant="outlined"
@@ -133,30 +137,26 @@ export default function Login() {
                         autoComplete="current-password"
                         value={formData.password}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
                     />
-
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
-                        sx={{ mt: 3, mb: 2 }}
                     >
                         Submit
                     </Button>
-
-                    {/* Forgot Password Link */}
-                    <Grid container justifyContent="center" style={{ margin: '8px 0' }}>
-                        <Grid item>
-                            <Link href="/forgot-password" variant="body2" style={{ textDecoration: 'none', color: 'blue' }}>
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                    </Grid>
-
                 </form>
-            </Container>
+            </Grid>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={loginSuccess ? "success" : "error"} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
-}
+};
+
+export default Login;
