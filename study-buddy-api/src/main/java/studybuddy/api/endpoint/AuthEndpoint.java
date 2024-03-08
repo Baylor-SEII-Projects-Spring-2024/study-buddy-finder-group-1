@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Log4j2
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthEndpoint {
     @Autowired
     private UserService userService;
