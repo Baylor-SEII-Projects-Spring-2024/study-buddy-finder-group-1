@@ -1,68 +1,34 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import Link from "next/link";
-import { AppBar, Avatar, Box, Button, Container, Grid, IconButton, Menu, MenuItem, Paper, TextField, Toolbar, Typography } from '@mui/material';
-
-import Footer from "@/components/Footer";
+import { Grid } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
-import HomePageText from "@/components/HomePageText";
-
-
-
-
-
-
-// Constants
-const MAIN_FONT = 'Roboto, sans-serif';
-const WHITE_TEXT = 'white';
 
 export default function Register() {
+
     const router = useRouter();
+    const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
 
-    // State for the anchor element of the dropdown menu
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    // Open the dropdown menu
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
+    // Function to handle successful registration
+    const handleRegistrationSuccess = () => {
+        setRegistrationSuccess(true); // Set registration success state to true
     };
-
-    // Close the dropdown menu
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-
-
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Head>
-                <title>Register - Study Buddies</title>
-                {/* Links to import fonts */}
-                <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
-            </Head>
-
-
-            <Navbar showLinks={false} /> {/* Inserting navbar */}
-
-            {/* Spacer element to push down the main content */}
-            {/* Grid item will act as a flexible spacer */}
+            <Navbar showLinks={false} />
             <Grid container style={{ flex: 1 }}>
-                <Grid item xs={12} style={{ height: '0.1vh' }}></Grid> {/* This creates the dynamic space */}
+                <Grid item xs={12} style={{ height: '0.1vh' }}></Grid>
             </Grid>
-
-            {/* Main content area with registration form */}
-
-            <RegisterForm />
-
-            {/* Lower link bar */}
-            <Footer whiteText={WHITE_TEXT} mainFont={MAIN_FONT}/>
-
+            {/* Conditional rendering for success message */}
+            {registrationSuccess ? (
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    <h3>Registration Successful!</h3>
+                    <p>You can now login with your credentials.</p>
+                </div>
+            ) : (
+                <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} /> // Pass callback function to RegisterForm
+            )}
         </div>
     );
 }
