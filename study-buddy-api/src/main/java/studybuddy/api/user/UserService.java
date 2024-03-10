@@ -45,4 +45,10 @@ public class UserService {
         });
     }
     public void deleteUser(Long userId) { userRepository.deleteById(userId); }
+
+    // -------------------- Added to fetch data from database since i cant view the tables --------------------
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
+    // -------------------- Added to fetch data from database since i cant view the tables --------------------
 }

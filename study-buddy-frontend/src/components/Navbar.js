@@ -55,8 +55,14 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     }
 
     const handleLogout = () => {
+
         localStorage.removeItem('isLoggedIn');
+
+        //How to reset the localstorage (cookies)
+        localStorage.removeItem('user');
+
         setIsLoggedOut(true);
+
         logout();
     };
 

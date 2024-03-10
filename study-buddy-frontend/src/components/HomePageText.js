@@ -14,8 +14,8 @@ export default function HomePageText({mainFont, whiteText}) {
             </Typography>
             <Link href="/SearchPage" passHref>
                 <Button
-                    className={styles.whiteButton}
-                    variant="outlined"
+                    variant="contained"
+                    color="primary"
                     size="large"
                     sx={{
                         my: 5,
@@ -27,7 +27,6 @@ export default function HomePageText({mainFont, whiteText}) {
                         '&:hover': {
                             transform: 'translateY(-4px)',
                             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
-                            backgroundColor: 'rgba(0, 0, 0, 0.6)'
                         }
                     }}
                 >
