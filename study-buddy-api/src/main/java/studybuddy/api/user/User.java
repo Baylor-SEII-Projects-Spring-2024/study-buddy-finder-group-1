@@ -71,4 +71,6 @@ public class User {
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    public String getEmail() { return email_address;}
 }
