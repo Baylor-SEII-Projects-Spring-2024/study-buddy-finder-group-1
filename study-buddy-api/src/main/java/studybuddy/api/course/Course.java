@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = Course.TABLE_NAME)
 public class Course {
-    public static final String TABLE_NAME = "Courses";
+    public static final String TABLE_NAME = "COURSES";
 
     @Id
     @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
