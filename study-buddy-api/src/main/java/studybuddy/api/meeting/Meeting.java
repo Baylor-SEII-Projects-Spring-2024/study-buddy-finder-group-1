@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
-import java.util.Date;
+import java.util.*;
 
 @Data
 @Entity
-@Table(name = studybuddy.api.location.Location.TABLE_NAME)
+@Table(name = Meeting.TABLE_NAME)
 public class Meeting {
+
+  //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
+
     public static final String TABLE_NAME = "MEETINGS";
 
     @Id
@@ -18,20 +21,22 @@ public class Meeting {
             name = TABLE_NAME + "_GENERATOR",
             sequenceName = TABLE_NAME + "_SEQUENCE"
     )
-    @Column(name = "MEETING_ID")
+
+    @Column(name = "SESSION_ID")
     Long id;
 
     @Getter
-    @Column(name = "TUTOR")
-    Long tutorID;
+    @Column(name = "TITLE")
+    String title;
 
     @Getter
-    @Column(name = "STUDENT")
-    Long studentID;
+    @Column(name = "DESCRIPTION")
+    String description;
 
     @Getter
-    @Column(name = "LOCATION")
-    String location;
+    @Column(name = "LOCATION_ID")
+    Long locID;
+
 
     @Getter
     @Column(name = "START_TIME")
@@ -40,4 +45,46 @@ public class Meeting {
     @Getter
     @Column(name = "END_TIME")
     Date endTime;
+
+
+    @Getter
+    @Column(name = "USER_EMAIL")
+    String userEmail;
+
+    public Meeting() {
+    }
+
+    public Meeting(String title, String description, Long locID, Date startTime, Date endTime, String userEmail) {
+        this.title = title;
+        this.description = description;
+        this.locID = locID;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.userEmail = userEmail;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setLocID(Long locID) {
+        this.locID = locID;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 }
+
