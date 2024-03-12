@@ -1,5 +1,6 @@
 package studybuddy.api.endpoint;
 
+import lombok.extern.log4j.Log4j2;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api")
 public class EditProfileEndpoint {
 
     @Autowired
@@ -18,6 +19,7 @@ public class EditProfileEndpoint {
 
     @PostMapping("/editProfile")
     public ResponseEntity<String> editUserProfile(@RequestBody User updatedUser) {
+        System.err.println(updatedUser.toString());
         try {
             // Perform validation on the updated user data
             if (updatedUser.getFirstName() == null || updatedUser.getFirstName().isEmpty() ||
@@ -25,6 +27,7 @@ public class EditProfileEndpoint {
                     updatedUser.getEmail() == null || updatedUser.getEmail().isEmpty() ||
                     updatedUser.getPassword() == null || updatedUser.getPassword().isEmpty() ||
                     updatedUser.getUserType() == null || updatedUser.getUserType().isEmpty()) {
+
                 return ResponseEntity.badRequest().body("All fields are required");
             }
 

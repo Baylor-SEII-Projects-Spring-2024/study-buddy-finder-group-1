@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, Container, Typography, TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
+    const [email_address, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [userType, setUserType] = useState('student'); // Default to student
@@ -34,24 +35,43 @@ const EditProfile = () => {
         setUserType(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Code to handle profile update
         const profileData = {
             firstName: firstName,
             lastName: lastName,
-            email: email,
+            email_address: email_address,
             password: password,
             userType: userType
         };
-        console.log(profileData);
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/editProfile",
+                {
+                    firstName: profileData.firstName,
+                    lastName: profileData.lastName,
+                    email_address: profileData.email_address,
+                    password: profileData.password,
+                    userType: profileData.userType
+                }
+            );
+
+            if (response.status === 200 && response.data.userId) {
+                // Your logic here
+            }
+        } catch (error) {
+            console.error("Error during update:", error);
+        }
     };
 
     return (
         <div>
-            <Navbar showLinks={false} />
+            <Navbar showLinks={false}/>
 
-            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center"
+                 style={{minHeight: '80vh', paddingTop: '15vh'}}>
                 <Container maxWidth="md">
                     <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
                         Edit Profile
@@ -76,7 +96,7 @@ const EditProfile = () => {
                         <TextField
                             label="Email"
                             variant="outlined"
-                            value={email}
+                            value={email_address}
                             onChange={handleEmailChange}
                             fullWidth
                             margin="normal"
@@ -108,8 +128,8 @@ const EditProfile = () => {
                                 onChange={handleUserTypeChange}
                                 row
                             >
-                                <FormControlLabel value="student" control={<Radio />} label="Student" />
-                                <FormControlLabel value="tutor" control={<Radio />} label="Tutor" />
+                                <FormControlLabel value="student" control={<Radio/>} label="Student"/>
+                                <FormControlLabel value="tutor" control={<Radio/>} label="Tutor"/>
                             </RadioGroup>
                         </FormControl>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
@@ -118,7 +138,7 @@ const EditProfile = () => {
                     </form>
                 </Container>
             </Box>
-            <Box height={100} />
+            <Box height={100}/>
         </div>
     );
 };
