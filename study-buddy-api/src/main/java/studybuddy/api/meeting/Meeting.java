@@ -10,7 +10,7 @@ import java.util.*;
 @Table(name = Meeting.TABLE_NAME)
 public class Meeting {
 
-    //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userID
+    //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
     public static final String TABLE_NAME = "MEETINGS";
 
     @Id
@@ -43,19 +43,19 @@ public class Meeting {
     Date endTime;
 
     @Getter
-    @Column(name = "USER_ID")
-    Long userID;
+    @Column(name = "USER_EMAIL")
+    String userEmail;
 
     public Meeting() {
     }
 
-    public Meeting(String title, String description, Long locID, Date startTime, Date endTime, Long userID) {
+    public Meeting(String title, String description, Long locID, Date startTime, Date endTime, String userEmail) {
         this.title = title;
         this.description = description;
         this.locID = locID;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.userID = userID;
+        this.userEmail = userEmail;
     }
 
     public void setTitle(String title) {
@@ -78,7 +78,7 @@ public class Meeting {
         this.endTime = endTime;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }
