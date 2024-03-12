@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Container, Typography, TextField, Button } from '@mui/material';
 import Navbar from "@/components/Navbar";
 
-const AddEditClasses = () => {
+const AddClasses = () => {
     const [className, setClassName] = useState('');
     const [areaOfStudy, setAreaOfStudy] = useState('');
 
@@ -26,7 +26,7 @@ const AddEditClasses = () => {
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
-                        Add/Edit Classes or Area(s) of Study
+                        Add Class(es) or Area(s) of Study
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <TextField
@@ -56,4 +56,4 @@ const AddEditClasses = () => {
     );
 };
 
-export default AddEditClasses;
+export default AddClasses;

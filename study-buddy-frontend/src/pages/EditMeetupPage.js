@@ -18,7 +18,8 @@ const mockClasses = [
     // Can add more mock classes as needed
 ];
 
-const MeetupCreationPage = () => {
+const EditMeetupPage = () => {
+    const [selectedMeetupId, setSelectedMeetupId] = useState('');
     const [classAndAreaInput, setClassAndAreaInput] = useState('');
     const [locationInput, setLocationInput] = useState('');
     const [meetingType, setMeetingType] = useState('');
@@ -32,6 +33,12 @@ const MeetupCreationPage = () => {
         "1:00 PM - 3:00 PM",
         "4:00 PM - 6:00 PM"
     ];
+
+    const handleMeetupSelectChange = (event) => {
+        setSelectedMeetupId(event.target.value);
+        // Fetch and set meetup details based on the selected meetup ID
+        // Here you might want to fetch meetup details from your backend API
+    };
 
     const handleClassAndAreaInputChange = (event) => {
         setClassAndAreaInput(event.target.value);
@@ -64,8 +71,9 @@ const MeetupCreationPage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Code to handle meetup creation
+        // Code to handle meetup update
         const meetupData = {
+            id: selectedMeetupId, // Include the selected meetup ID for identification
             classAndArea: classAndAreaInput,
             location: locationInput,
             room: selectedRoom,
@@ -77,13 +85,10 @@ const MeetupCreationPage = () => {
     };
 
     useEffect(() => {
-        if (locationInput) {
-            const rooms = fetchRoomsByLocation(locationInput);
-            setAvailableRooms(rooms);
-        } else {
-            setAvailableRooms([]);
-        }
-    }, [locationInput]);
+        // Fetch meetup details based on the selectedMeetupId
+        // Here you might want to fetch meetup details from your backend API
+        // Update classAndAreaInput, locationInput, selectedRoom, selectedDate, selectedTimeSlot, and meetingType accordingly
+    }, [selectedMeetupId]);
 
     const fetchRoomsByLocation = (location) => {
         // Mock function to fetch rooms based on location
@@ -112,10 +117,28 @@ const MeetupCreationPage = () => {
             <Navbar showLinks={false} />
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
-                    <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
-                        Create a Meetup
+                    <Typography variant="h3" component="h1" gutterBottom style={{ textAlign: 'center' }}>
+                        Edit Meetup
                     </Typography>
                     <form onSubmit={handleSubmit}>
+                        <TextField
+                            select
+                            label="Select Meetup"
+                            variant="outlined"
+                            value={selectedMeetupId}
+                            onChange={handleMeetupSelectChange}
+                            fullWidth
+                            margin="normal"
+                        >
+                            {/* You may dynamically populate this dropdown with user's meetups */}
+                            <MenuItem value="1">Meetup 1</MenuItem>
+                            <MenuItem value="2">Meetup 2</MenuItem>
+                        </TextField>
+
+                        <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>
+                            Changes to be Made:
+                        </Typography>
+
                         <TextField
                             select
                             label="Class(es) or Area(s) of Study"
@@ -214,7 +237,7 @@ const MeetupCreationPage = () => {
                             </RadioGroup>
                         </FormControl>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Create Meetup
+                            Edit Meetup
                         </Button>
                     </form>
                 </Container>
@@ -224,4 +247,4 @@ const MeetupCreationPage = () => {
     );
 };
 
-export default MeetupCreationPage;
+export default EditMeetupPage;

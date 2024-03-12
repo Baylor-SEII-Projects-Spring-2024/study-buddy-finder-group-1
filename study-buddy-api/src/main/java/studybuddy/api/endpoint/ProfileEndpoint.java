@@ -1,13 +1,9 @@
 package studybuddy.api.endpoint;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.Optional;
@@ -19,17 +15,27 @@ public class ProfileEndpoint {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile(HttpServletRequest request) {
-        HttpSession session = request.getSession(false); // Get existing session without creating a new one
-        if (session != null && session.getAttribute("loggedInUser") != null) {
-            Long userId = (Long) session.getAttribute("loggedInUser");
-            Optional<User> userOptional = userService.findUser(userId);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                return ResponseEntity.ok(user);
+    @GetMapping("/ProfilePage/{userEmail}")
+    public ResponseEntity<User> getUserProfile(@PathVariable String userEmail) {
+        try {
+            if (userEmail != null && !userEmail.isEmpty()) {
+                System.out.println("User email: " + userEmail);
+                Optional<User> userOptional = userService.findUserByEmail(userEmail);
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    return ResponseEntity.ok(user);
+                } else {
+                    // Handle case when user is not found
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                // Handle case when userEmail is null or empty
+                return ResponseEntity.badRequest().build();
             }
+        } catch (Exception e) {
+            // Log any exceptions
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
