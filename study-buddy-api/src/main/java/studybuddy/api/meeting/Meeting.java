@@ -11,8 +11,8 @@ import java.util.*;
 @Table(name = Meeting.TABLE_NAME)
 public class Meeting {
 
-  //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
 
+  //meetup has id(long),email(String), locationName(string), classes(string), meetingType(String), room(int), Date(date), and timeslot(string)
     public static final String TABLE_NAME = "MEETINGS";
 
     @Id
@@ -26,61 +26,68 @@ public class Meeting {
     Long id;
 
     @Getter
-    @Column(name = "TITLE")
-    String title;
+    @Column(name = "LOCATION")
+    String location;
 
     @Getter
-    @Column(name = "DESCRIPTION")
-    String description;
+    @Column(name = "CLASS")
+    String classes;
 
     @Getter
-    @Column(name = "LOCATION_ID")
-    Long locID;
-
-
-    @Getter
-    @Column(name = "START_TIME")
-    Date startTime;
+    @Column(name = "ROOM")
+    String roomNumber;
 
     @Getter
-    @Column(name = "END_TIME")
-    Date endTime;
-
+    @Column(name = "DATE")
+    Date date;
 
     @Getter
     @Column(name = "USER_EMAIL")
     String userEmail;
 
+    @Getter
+    @Column(name = "TIME_SLOT")
+    String timeSlot;
+
+    @Getter
+    @Column(name = "TYPE")
+    String meetingType;
+
     public Meeting() {
     }
 
-    public Meeting(String title, String description, Long locID, Date startTime, Date endTime, String userEmail) {
-        this.title = title;
-        this.description = description;
-        this.locID = locID;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public Meeting(String location, String classes, String roomNumber, Date date, String userEmail, String timeSlot, String meetingType) {
+        this.location = location;
+        this.classes = classes;
+        this.roomNumber = roomNumber;
+        this.date = date;
         this.userEmail = userEmail;
+        this.timeSlot = timeSlot;
+        this.meetingType = meetingType;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setMeetingType(String meetingType) {
+        this.meetingType = meetingType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public void setLocID(Long locID) {
-        this.locID = locID;
+    public void setClasses(String classes) {
+        this.classes = classes;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public void setUserEmail(String userEmail) {
