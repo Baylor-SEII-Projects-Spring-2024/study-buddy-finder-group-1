@@ -12,21 +12,19 @@ const ProfilePage = () => {
         password: ''
     });
 
+    // ------------- New way of identifying logged in user by id -------------
     useEffect(() => {
         const fetchLoginInfo = async () => {
-
             try {
-
-                //--------------- This is how you grab the current user ---------------
                 const user = JSON.parse(localStorage.getItem('user'));
-                const userEmail = user.user;
+                const userId = user.id;
 
-                if (userEmail) {
+                if (userId) {
                     const basePath = 'http://localhost:8080';
-                    const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
+                    const response = await axios.get(`${basePath}/ProfilePage/${userId}`);
                     setLoginInfo(response.data);
                 } else {
-                    console.error('No email found in localStorage');
+                    console.error('No user ID found in localStorage');
                 }
             } catch (error) {
                 console.error('Error fetching login info:', error);

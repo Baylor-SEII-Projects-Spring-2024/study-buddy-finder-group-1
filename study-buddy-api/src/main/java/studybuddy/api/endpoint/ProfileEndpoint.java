@@ -15,25 +15,18 @@ public class ProfileEndpoint {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/ProfilePage/{userEmail}")
-    public ResponseEntity<User> getUserProfile(@PathVariable String userEmail) {
+    // ------------- New way of identifying logged in user by id -------------
+    @GetMapping("/ProfilePage/{userId}")
+    public ResponseEntity<User> getUserProfile(@PathVariable Long userId) {
         try {
-            if (userEmail != null && !userEmail.isEmpty()) {
-                System.out.println("User email: " + userEmail);
-                Optional<User> userOptional = userService.findUserByEmail(userEmail);
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    return ResponseEntity.ok(user);
-                } else {
-                    // Handle case when user is not found
-                    return ResponseEntity.notFound().build();
-                }
+            Optional<User> userOptional = userService.findUser(userId);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                return ResponseEntity.ok(user);
             } else {
-                // Handle case when userEmail is null or empty
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            // Log any exceptions
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
