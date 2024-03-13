@@ -16,6 +16,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     //location has : id, name , address, capacity,  available_start, available_end
 
+    /* would be used for search option if ever created */
     @Query("SELECT l FROM Location l WHERE l.name  = : name")
     public List<Location> findByName(@Param("name") String end);
     @Query("SELECT l FROM Location l WHERE l.hoursAvailableEnd  = : end")
