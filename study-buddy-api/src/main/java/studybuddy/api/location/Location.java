@@ -1,8 +1,11 @@
 package studybuddy.api.location;
 
+import jakarta.annotation.Resource;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.*;
 
@@ -41,6 +44,7 @@ public class Location {
     @Column(name = "AVAILABLE_END")
     Date hoursAvailableEnd;
 
+
     public Location() {
     }
 
@@ -71,4 +75,40 @@ public class Location {
     public void setHoursAvailableEnd(Date hoursAvailableEnd) {
         this.hoursAvailableEnd = hoursAvailableEnd;
     }
+
+    @Override
+    public boolean equals(Object p){
+        if(p == this){
+            return true;
+        }
+
+        if (p == null || p.getClass() != this.getClass()){
+            return false;
+        }
+
+        Location other = (Location) p;
+
+        return (other.id == this.id) && (other.name == this.name) && ( other.address == this.address)
+                && (other.capacity == this.capacity) && (other.hoursAvailableStart == this.hoursAvailableStart)
+                && (other.hoursAvailableEnd == this.hoursAvailableEnd);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 7;
+        int result =1;
+
+        long num = id.longValue();
+
+        result = prime * result + ((int) num);
+
+        result = (prime * result) + ((name == null) ? 0: name.hashCode());
+        result = (prime * result) + ((address == null) ? 0: address.hashCode());
+        result = prime * result + capacity;
+        result = (prime * result) + ((hoursAvailableStart == null) ? 0: hoursAvailableStart.hashCode());
+        result = (prime * result) + ((hoursAvailableEnd == null) ? 0: hoursAvailableEnd.hashCode());
+
+        return result;
+    }
+
 }
