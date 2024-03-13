@@ -189,7 +189,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                                         Sign In
                                     </Button>
                                 </Link>
-                                <Link href="/study-buddy-frontend/src/components/register" passHref>
+                                <Link href="/register" passHref>
                                     <Button className={styles.whiteButton} sx={{
                                         fontSize: '1.2rem',
                                         my: 1,
