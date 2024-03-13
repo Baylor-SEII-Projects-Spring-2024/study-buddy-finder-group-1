@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Typography, Grid, Snackbar, Alert } from "@mui/material";
 import { useRouter } from "next/router";
@@ -36,9 +35,10 @@ const Login = () => {
 
             if (response.status === 200 && response.data.userId) {
 
-                const user = response.data;
-                localStorage.setItem('user', JSON.stringify({user: formData.email}));
-                console.log('search here', JSON.stringify(user));
+                const userId = response.data.userId; // capture the userId from the response
+                localStorage.setItem('user', JSON.stringify({ id: userId })); // store the userId instead of the email
+                console.log('search here', JSON.stringify({ id: userId }));
+
                 setLoginSuccess(true);
                 setSnackbarMessage('Login successful! Redirecting...');
                 setOpenSnackbar(true);

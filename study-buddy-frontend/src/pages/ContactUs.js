@@ -11,8 +11,8 @@ const ContactUs = () => {
     return (
         <div>
             <Navbar showLinks={false} />
-            <Container maxWidth="md" style={{ marginTop: '300px' }}>
-                <Box mt={5}>
+            <Container maxWidth="md" style={{ marginTop: '150px' }}>
+                <Box mt={5} pb={10}>
                     <Typography variant="h3" gutterBottom align="center" style={{ fontSize: '2.5rem' }}>
                         Contact Us
                     </Typography>

@@ -1,13 +1,14 @@
 package studybuddy.api.endpoint.users;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.course.Course;
+import studybuddy.api.course.CourseService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
-
 import java.util.*;
 
 @Log4j2
@@ -17,6 +18,9 @@ public class UserEndpoint {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CourseService courseService;
 
     @GetMapping("/users")
     public List<User> findAllUsers() {
@@ -73,6 +77,19 @@ public class UserEndpoint {
     public ResponseEntity<?> addCourseToUser(@PathVariable Long userId, @PathVariable Long courseId) {
         User updatedUser = userService.addCourseToUser(userId, courseId);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    // --------- Saving courses to the user account [Temporarily-MS2] ---------
+    @PostMapping("/users/{userId}/addCourse")
+    public ResponseEntity<?> addCourseToUserMS2(@PathVariable Long userId, @RequestBody Map<String, String> courseDetails) {
+        String courseName = courseDetails.get("courseName");
+        User user = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Course newCourse = new Course();
+        newCourse.setName(courseName);
+        courseService.saveCourse(newCourse);
+        user.getCourses().add(newCourse);
+        userService.saveUser(user);
+        return ResponseEntity.ok().body("Course added successfully");
     }
 
     @GetMapping("/users/{userId}/courses/")
