@@ -1,4 +1,4 @@
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.profile;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
