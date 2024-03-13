@@ -3,7 +3,9 @@ package studybuddy.api.user;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
-import java.util.Date;
+import studybuddy.api.course.Course;
+
+import java.util.*;
 
 @Data
 @Entity
@@ -43,6 +45,14 @@ public class User {
     @Column(name = "USER_TYPE")
     String userType;
 
+    @ManyToMany
+    @JoinTable(
+            name = "USER_COURSES",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
+
     public User(String email, String password, String userType) {
         this.email_address = email;
         this.password = password;
@@ -73,4 +83,5 @@ public class User {
     }
 
     public String getEmail() { return email_address;}
+
 }

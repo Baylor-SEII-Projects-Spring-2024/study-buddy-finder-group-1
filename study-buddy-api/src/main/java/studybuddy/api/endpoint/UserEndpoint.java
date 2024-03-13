@@ -4,11 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studybuddy.api.course.Course;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Log4j2
 @RestController
@@ -68,5 +68,16 @@ public class UserEndpoint {
 
         // Return the login info in the response
         return ResponseEntity.ok(loginInfo);
+    }
+
+    @PutMapping("/users/{userId}/courses/{courseId}")
+    public ResponseEntity<?> addCourseToUser(@PathVariable Long userId, @PathVariable Long courseId) {
+        User updatedUser = userService.addCourseToUser(userId, courseId);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("/users/{userId}/courses/")
+    public Set<Course> findAllUserCourses(@PathVariable Long userId) {
+        return userService.getAllUserCourses(userId);
     }
 }
