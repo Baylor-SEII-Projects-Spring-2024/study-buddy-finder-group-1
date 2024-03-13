@@ -55,6 +55,13 @@ public class Meeting {
     @Column(name = "USER_EMAIL")
     String userEmail;
 
+    @Getter
+    @Column(name = "TYPE")
+    String meetingType;
+
+    @Getter
+    @Column(name = "CLASS")
+    String classes;
     public Meeting() {}
 
     public Meeting(String location, String timeSlot, String userEmail, String date, String room) {
@@ -63,6 +70,16 @@ public class Meeting {
         this.userEmail = userEmail;
         this.date = date;
         this.room = room;
+    }
+
+    public Meeting(String location, String room, String date, String timeSlot, String userEmail, String meetingType, String classes) {
+        this.location = location;
+        this.room = room;
+        this.date = date;
+        this.timeSlot = timeSlot;
+        this.userEmail = userEmail;
+        this.meetingType = meetingType;
+        this.classes = classes;
     }
 
     public void setRoom(String room) {
@@ -77,7 +94,10 @@ public class Meeting {
         this.location = location;
     }
 
-    /*
+    public void setMeetingType(String meetingType) {
+        this.meetingType = meetingType;
+    }
+/*
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
@@ -86,6 +106,10 @@ public class Meeting {
         this.endTime = endTime;
     }
     */
+
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
 
     //changing to timeslot for now because it's easier to get demo ready to match what the frontend has
     public void setTimeSlot(String timeSlot) {
