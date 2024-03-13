@@ -1,4 +1,4 @@
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.users;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,6 @@ public class UserEndpoint {
 
     @GetMapping("/users")
     public List<User> findAllUsers() {
-        System.err.println("HRRYR");
         return userService.findAllUsers();
     }
 

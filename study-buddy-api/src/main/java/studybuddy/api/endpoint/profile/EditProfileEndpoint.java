@@ -1,4 +1,4 @@
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.profile;
 
 import lombok.extern.log4j.Log4j2;
 import studybuddy.api.user.User;
@@ -17,9 +17,8 @@ public class EditProfileEndpoint {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/editProfile")
+    @PutMapping("/editProfile")
     public ResponseEntity<String> editUserProfile(@RequestBody User updatedUser) {
-        System.err.println(updatedUser.toString());
         try {
             // Perform validation on the updated user data
             if (updatedUser.getFirstName() == null || updatedUser.getFirstName().isEmpty() ||
