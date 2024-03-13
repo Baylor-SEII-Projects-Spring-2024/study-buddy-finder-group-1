@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, MenuItem, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const locations = [
     "Moody Library",
@@ -19,13 +20,14 @@ const mockClasses = [
 ];
 
 const MeetupCreationPage = () => {
-    const [classAndAreaInput, setClassAndAreaInput] = useState('');
-    const [locationInput, setLocationInput] = useState('');
+    const [classAndArea, setClassAndArea] = useState('');
+    const [location, setLocation] = useState('');
     const [meetingType, setMeetingType] = useState('');
     const [availableRooms, setAvailableRooms] = useState([]);
-    const [selectedRoom, setSelectedRoom] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
-    const [selectedTimeSlot, setSelectedTimeSlot] = useState('');
+    const [room, setRoom] = useState('');
+    const [date, setDate] = useState('');
+    const [timeSlot, setTimeSlot] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
     const timeSlots = [
         "10:00 AM - 12:00 PM",
@@ -33,15 +35,15 @@ const MeetupCreationPage = () => {
         "4:00 PM - 6:00 PM"
     ];
 
-    const handleClassAndAreaInputChange = (event) => {
-        setClassAndAreaInput(event.target.value);
+    const handleClassAndAreaChange = (event) => {
+        setClassAndArea(event.target.value);
     };
 
-    const handleLocationInputChange = (event) => {
+    const handleLocationChange = (event) => {
         const location = event.target.value;
-        setLocationInput(location);
+        setLocation(location);
         // Reset selected room only if location changes
-        setSelectedRoom('');
+        setRoom('');
         const rooms = fetchRoomsByLocation(location);
         setAvailableRooms(rooms);
     };
@@ -51,39 +53,77 @@ const MeetupCreationPage = () => {
     };
 
     const handleDateChange = (event) => {
-        setSelectedDate(event.target.value);
+        setDate(event.target.value);
     };
 
     const handleTimeSlotChange = (event) => {
-        setSelectedTimeSlot(event.target.value);
+        setTimeSlot(event.target.value);
     };
 
     const handleRoomChange = (event) => {
-        setSelectedRoom(event.target.value);
+        setRoom(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         // Code to handle meetup creation
         const meetupData = {
-            classAndArea: classAndAreaInput,
-            location: locationInput,
-            room: selectedRoom,
-            meetingType: meetingType,
-            date: selectedDate,
-            timeSlot: selectedTimeSlot
+            classAndArea: classAndArea,
+            location: location,
+            room: room,
+            //meetingType: meetingType,
+            date: date,
+            timeSlot: timeSlot,
+            userEmail: userEmail
         };
-        console.log(meetupData);
+
+        try {
+
+            //--------------- This is how you grab the current user ---------------
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userEmail = user.user;
+
+            if (userEmail) {
+                const basePath = 'http://localhost:8080';
+                const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
+                setUserEmail(response.data.email_address);
+            } else {
+                console.error('No email found in localStorage');
+            }
+        } catch (error) {
+            console.error('Error fetching login info:', error);
+        }
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/createMeetup",
+                {
+                    //classAndArea: meetupData.classAndArea,
+                    location: meetupData.location,
+                    room: meetupData.room,
+                    //meetingType: meetupData.meetingType,
+                    date: meetupData.date,
+                    timeSlot: meetupData.timeSlot,
+                    userEmail: meetupData.userEmail
+                }
+            );
+
+            if (response.status === 200 && response.data.userId) {
+                // Your logic here
+            }
+        } catch (error) {
+            console.error("Error during update:", error);
+        }
     };
 
     useEffect(() => {
-        if (locationInput) {
-            const rooms = fetchRoomsByLocation(locationInput);
+        if (location) {
+            const rooms = fetchRoomsByLocation(location);
             setAvailableRooms(rooms);
         } else {
             setAvailableRooms([]);
         }
-    }, [locationInput]);
+    }, [location]);
 
     const fetchRoomsByLocation = (location) => {
         // Mock function to fetch rooms based on location
@@ -120,8 +160,8 @@ const MeetupCreationPage = () => {
                             select
                             label="Class(es) or Area(s) of Study"
                             variant="outlined"
-                            value={classAndAreaInput}
-                            onChange={handleClassAndAreaInputChange}
+                            value={classAndArea}
+                            onChange={handleClassAndAreaChange}
                             fullWidth
                             margin="normal"
                         >
@@ -134,8 +174,8 @@ const MeetupCreationPage = () => {
                         <TextField
                             select
                             label="Location"
-                            value={locationInput}
-                            onChange={handleLocationInputChange}
+                            value={location}
+                            onChange={handleLocationChange}
                             variant="outlined"
                             fullWidth
                             margin="normal"
@@ -149,7 +189,7 @@ const MeetupCreationPage = () => {
                         <TextField
                             select
                             label="Available Rooms"
-                            value={selectedRoom}
+                            value={room}
                             onChange={handleRoomChange}
                             variant="outlined"
                             fullWidth
@@ -165,7 +205,7 @@ const MeetupCreationPage = () => {
                             select
                             label="Date"
                             variant="outlined"
-                            value={selectedDate}
+                            value={date}
                             onChange={handleDateChange}
                             fullWidth
                             margin="normal"
@@ -182,7 +222,7 @@ const MeetupCreationPage = () => {
                         <TextField
                             select
                             label="Time Slot"
-                            value={selectedTimeSlot}
+                            value={timeSlot}
                             onChange={handleTimeSlotChange}
                             variant="outlined"
                             fullWidth

@@ -75,7 +75,7 @@ public class AuthEndpoint {
 
  */
 
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.authentication;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

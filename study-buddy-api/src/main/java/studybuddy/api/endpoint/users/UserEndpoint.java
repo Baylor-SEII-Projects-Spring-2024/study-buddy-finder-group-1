@@ -1,4 +1,4 @@
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.users;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ public class UserEndpoint {
 
     @GetMapping("/users")
     public List<User> findAllUsers() {
-        System.err.println("HRRYR");
         return userService.findAllUsers();
     }
 

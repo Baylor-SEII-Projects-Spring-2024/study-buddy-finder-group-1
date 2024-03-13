@@ -1,4 +1,4 @@
-package studybuddy.api.endpoint;
+package studybuddy.api.endpoint.meetups;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

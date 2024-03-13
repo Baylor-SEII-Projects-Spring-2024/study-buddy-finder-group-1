@@ -26,18 +26,10 @@ public class Meeting {
     Long id;
 
     @Getter
-    @Column(name = "TITLE")
-    String title;
+    @Column(name = "LOCATION")
+    String location;
 
-    @Getter
-    @Column(name = "DESCRIPTION")
-    String description;
-
-    @Getter
-    @Column(name = "LOCATION_ID")
-    Long locID;
-
-
+/*
     @Getter
     @Column(name = "START_TIME")
     Date startTime;
@@ -45,42 +37,59 @@ public class Meeting {
     @Getter
     @Column(name = "END_TIME")
     Date endTime;
+*/
 
+    @Getter
+    @Column(name = "ROOM")
+    String room;
+
+    @Getter
+    @Column(name = "DATE")
+    String date;
+
+    @Getter
+    @Column(name = "TIME_SLOT")
+    String timeSlot;
 
     @Getter
     @Column(name = "USER_EMAIL")
     String userEmail;
 
-    public Meeting() {
-    }
+    public Meeting() {}
 
-    public Meeting(String title, String description, Long locID, Date startTime, Date endTime, String userEmail) {
-        this.title = title;
-        this.description = description;
-        this.locID = locID;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public Meeting(String location, String timeSlot, String userEmail, String date, String room) {
+        this.location = location;
+        this.timeSlot = timeSlot;
         this.userEmail = userEmail;
+        this.date = date;
+        this.room = room;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setRoom(String room) {
+        this.room = room;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public void setLocID(Long locID) {
-        this.locID = locID;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
+    /*
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+    */
+
+    //changing to timeslot for now because it's easier to get demo ready to match what the frontend has
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public void setUserEmail(String userEmail) {
