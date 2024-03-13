@@ -21,7 +21,7 @@ public class AuthenticationTests {
     void testUserCreate() {
         User newUser = new User();
         newUser.userType = "STUDENT";
-        newUser.emailAddress = "example@example.com";
+        newUser.email_address = "example@example.com";
         newUser.password = "password";
 
         User savedUser = userService.saveUser(newUser);
@@ -32,7 +32,7 @@ public class AuthenticationTests {
         User foundUser = foundUserOpt.get();
 
         assertEquals(newUser.userType, foundUser.userType);
-        assertEquals(newUser.emailAddress, foundUser.emailAddress);
+        assertEquals(newUser.email_address, foundUser.email_address);
         assertEquals(newUser.password, foundUser.password);
     }
 
