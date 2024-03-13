@@ -4,25 +4,39 @@ import Navbar from "@/components/Navbar";
 import axios from 'axios'; // Import Axios for making API requests
 
 const ProfilePage = () => {
-    const [loginInfo, setLoginInfo] = useState(null); // State to store login information
 
+    const [loginInfo, setLoginInfo] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: ''
+    });
+
+    // ------------- New way of identifying logged in user by id -------------
     useEffect(() => {
-        // Function to fetch user login information
         const fetchLoginInfo = async () => {
             try {
-                const response = await axios.get('/profile'); // Endpoint to retrieve user login info
-                setLoginInfo(response.data); // Set the login info state
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                if (userId) {
+                    const basePath = 'http://localhost:8080';
+                    const response = await axios.get(`${basePath}/ProfilePage/${userId}`);
+                    setLoginInfo(response.data);
+                } else {
+                    console.error('No user ID found in localStorage');
+                }
             } catch (error) {
                 console.error('Error fetching login info:', error);
             }
         };
 
-        fetchLoginInfo(); // Call the function to fetch login info when component mounts
+        fetchLoginInfo();
     }, []);
 
-    // Our custom style for the text
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
+        fontSize: '1.5rem', // Increased font size
     };
 
     return (
@@ -30,54 +44,51 @@ const ProfilePage = () => {
             <Navbar showLinks={false} />
             <Box display="flex" flexDirection="column" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md" style={textStyle}>
-                    <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center' }}>
+                    <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center', fontSize: '3rem' }}>
                         My Profile
                     </Typography>
-                    {loginInfo && ( // Check if loginInfo is available before rendering
+                    {loginInfo && (
                         <>
                             <Avatar src="/Images/Profile%20Pic.webp" alt="Profile Picture" sx={{ width: 150, height: 150, mb: 2 }} />
-                            <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center' }}>
-                                {loginInfo.firstName} {loginInfo.lastName}
+
+                            <Typography variant="subtitle1" gutterBottom style={{ ...textStyle, textAlign: 'center', fontWeight: 'bold', display: 'inline' }}>
+                                Last Login: {' '}
                             </Typography>
-                            <Typography variant="h5" gutterBottom style={{ ...textStyle, textAlign: 'center' }}>
-                                {loginInfo.userType}
-                            </Typography>
-                            {/* Display User's Last Login */}
-                            <Typography variant="body1" gutterBottom style={{ ...textStyle, textAlign: 'center' }}>
-                                Last Login: {loginInfo.lastLogin}
+                            <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px', display: 'inline' }}>
+                                {loginInfo.lastLogin && new Date(loginInfo.lastLogin).toLocaleString()} {/* Parse date and time */}
                             </Typography>
 
-                            {/* Divider */}
                             <Divider style={{ margin: '20px 0' }} />
 
-                            {/* Other User Information */}
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
 
-                                    {/* Add other user info fields here */}
-                                    <Typography variant="subtitle1" gutterBottom style={textStyle}>
-                                        First Name:
+                                    <Typography variant="subtitle1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', display: 'inline' }}>
+                                        First Name: {' '}
                                     </Typography>
-                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px' }}>
+                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px', display: 'inline' }}>
                                         {loginInfo.firstName}
                                     </Typography>
-                                    <Typography variant="subtitle1" gutterBottom style={textStyle}>
-                                        Last Name:
+                                    <br/>
+                                    <Typography variant="subtitle1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', display: 'inline' }}>
+                                        Last Name: {' '}
                                     </Typography>
-                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px' }}>
+                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px', display: 'inline' }}>
                                         {loginInfo.lastName}
                                     </Typography>
-                                    <Typography variant="subtitle1" gutterBottom style={textStyle}>
-                                        User Type:
+                                    <br/>
+                                    <Typography variant="subtitle1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', display: 'inline' }}>
+                                        User Type: {' '}
                                     </Typography>
-                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px' }}>
+                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px', display: 'inline' }}>
                                         {loginInfo.userType}
                                     </Typography>
-                                    <Typography variant="subtitle1" gutterBottom style={textStyle}>
-                                        Email:
+                                    <br/>
+                                    <Typography variant="subtitle1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', display: 'inline' }}>
+                                        Email: {' '}
                                     </Typography>
-                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px' }}>
-                                        {loginInfo.emailAddress}
+                                    <Typography variant="body1" gutterBottom style={{ ...textStyle, marginLeft: '10px', display: 'inline' }}>
+                                        {loginInfo.email_address}
                                     </Typography>
                                 </Grid>
                             </Grid>

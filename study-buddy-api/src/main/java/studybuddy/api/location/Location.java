@@ -33,7 +33,7 @@ public class Location {
     String address;
 
     @Getter
-    @Column(name = "CAPCITY")
+    @Column(name = "CAPACITY")
     int capacity;
 
     @Getter
@@ -45,7 +45,16 @@ public class Location {
     Date hoursAvailableEnd;
 
 
+    public Location() {
+    }
 
+    public Location(String name, String address, int capacity, Date hoursAvailableStart, Date hoursAvailableEnd) {
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+        this.hoursAvailableStart = hoursAvailableStart;
+        this.hoursAvailableEnd = hoursAvailableEnd;
+    }
 
     public void setName(String name) {
         this.name = name;

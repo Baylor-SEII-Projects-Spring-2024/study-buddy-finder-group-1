@@ -52,7 +52,7 @@ const Settings = () => {
     return (
         <div>
             <Navbar showLinks={false} />
-            <Container maxWidth="md" style={{ marginTop: '250px' }}>
+            <Container maxWidth="md" style={{ marginTop: '150px' }}>
                 <Box mt={5}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Settings
@@ -150,7 +150,7 @@ const Settings = () => {
                             </Select>
                         </FormControl>
                     </Box>
-                    <Box mt={3} display="flex" justifyContent="center">
+                    <Box mt={3} display="flex" justifyContent="center" mb={6}>
                         <Button variant="contained" color="primary">
                             Save Changes
                         </Button>

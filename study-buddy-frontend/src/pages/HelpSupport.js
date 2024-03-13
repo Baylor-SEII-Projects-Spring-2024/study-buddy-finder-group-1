@@ -11,7 +11,7 @@ const HelpAndSupport = () => {
     return (
         <div>
             <Navbar showLinks={false} />
-            <Container maxWidth="md" style={{ marginTop: '500px' }}> {/* Adjusted margin top */}
+            <Container maxWidth="md" style={{ marginTop: '250px' }}> {/* Adjusted margin top */}
                 <Box mt={5}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Help and Support

@@ -55,8 +55,14 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     }
 
     const handleLogout = () => {
+
         localStorage.removeItem('isLoggedIn');
+
+        //How to reset the localstorage (cookies)
+        localStorage.removeItem('user');
+
         setIsLoggedOut(true);
+
         logout();
     };
 
@@ -69,12 +75,20 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         router.push(`/MeetupCreationPage`);
     }
 
+    const handleEditMeetupClick = () => {
+        router.push(`/EditMeetupPage`);
+    }
+
     const handleEditProfileClick = () => {
         router.push(`/EditProfile`);
     }
 
-    const handleEditAddClassesClick = () => {
-        router.push(`/AddEditClasses`);
+    const handleAddClassesClick = () => {
+        router.push(`/AddClasses`);
+    }
+
+    const handleEditClassesClick = () => {
+        router.push(`/EditClasses`);
     }
 
     const handleMessagesClick = () => {
@@ -223,8 +237,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     {/* Function calls are embedded below */}
                     <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
                     <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
-                    <MenuItem onClick={handleCreateMeetupClick}>Create/Edit Meetup(s)</MenuItem>
-                    <MenuItem onClick={handleEditAddClassesClick}>Add/Edit Classes or Area(s) of Study</MenuItem>
+                    <MenuItem onClick={handleCreateMeetupClick}>Create Meetup</MenuItem>
+                    <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
+                    <MenuItem onClick={handleAddClassesClick}>Add Class(es) or Area(s) of Study</MenuItem>
+                    <MenuItem onClick={handleEditClassesClick}>Edit Class(es) or Area(s) of Study</MenuItem>
                     <MenuItem onClick={handleMessagesClick}>Messaging</MenuItem>
                     <MenuItem onClick={handleNotificationsClick}>Notifications</MenuItem>
                     <MenuItem onClick={handleFriendListClick}>Friend List</MenuItem>
