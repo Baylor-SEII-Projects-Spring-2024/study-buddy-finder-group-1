@@ -3,6 +3,7 @@ package studybuddy.api.meeting;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+
 import java.util.*;
 
 @Data
@@ -10,7 +11,8 @@ import java.util.*;
 @Table(name = Meeting.TABLE_NAME)
 public class Meeting {
 
-    //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
+  //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
+
     public static final String TABLE_NAME = "MEETINGS";
 
     @Id
@@ -19,6 +21,7 @@ public class Meeting {
             name = TABLE_NAME + "_GENERATOR",
             sequenceName = TABLE_NAME + "_SEQUENCE"
     )
+
     @Column(name = "SESSION_ID")
     Long id;
 
@@ -34,6 +37,7 @@ public class Meeting {
     @Column(name = "LOCATION_ID")
     Long locID;
 
+
     @Getter
     @Column(name = "START_TIME")
     Date startTime;
@@ -41,6 +45,7 @@ public class Meeting {
     @Getter
     @Column(name = "END_TIME")
     Date endTime;
+
 
     @Getter
     @Column(name = "USER_EMAIL")
@@ -82,3 +87,4 @@ public class Meeting {
         this.userEmail = userEmail;
     }
 }
+

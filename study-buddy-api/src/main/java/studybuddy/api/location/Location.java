@@ -30,7 +30,7 @@ public class Location {
     String address;
 
     @Getter
-    @Column(name = "CAPCITY")
+    @Column(name = "CAPACITY")
     int capacity;
 
     @Getter
