@@ -109,7 +109,17 @@ const MeetupCreationPage = () => {
             );
 
             if (response.status === 200 && response.data.userId) {
-                // Your logic here
+                console.log("Meetup created succesfuly!");
+
+                setClassAndArea('');
+                setLocation('');
+                setMeetingType('');
+                setAvailableRooms([]);
+                setRoom('');
+                setDate('');
+                setTimeSlot('');
+                setUserEmail('');
+
             }
         } catch (error) {
             console.error("Error during update:", error);
