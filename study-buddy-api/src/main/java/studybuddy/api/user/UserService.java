@@ -66,6 +66,18 @@ public class UserService {
         return user;
     }
 
+    //delete course from user
+    public User deleteCourseFromUser(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+        user.getCourses().remove(course);
+        userRepository.save(user);
+
+        return user;
+    }
+
+
     public Set<Course> getAllUserCourses (Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
 
