@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, Select, MenuItem } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const AddClasses = () => {
     const [className, setClassName] = useState('');
@@ -12,7 +13,7 @@ const AddClasses = () => {
     useEffect(() => {
         // Fetch user's classes or areas of study from the backend
         // Mocking data for demonstration
-        const mockClasses = ['Mathematics', 'Physics', 'Biology'];
+        const mockClasses = ['Linear Algebra', 'Physics', 'Biology'];
         setClasses(mockClasses);
     }, []);
 
@@ -28,15 +29,30 @@ const AddClasses = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (className.trim() !== '') {
-            setClasses([...classes, className]);
-            setClassName('');
-        }
-        if (areaOfStudy.trim() !== '') {
-            setClasses([...classes, areaOfStudy]);
-            setAreaOfStudy('');
-        }
-        setChangesSaved(false);
+
+        //const userId = localStorage.getItem('userId'); -------------- original (BAD) --------------
+
+        // ----------- Must do it this way for it to work -----------
+        //Both below are from profile page ------ (GOOD)-----------
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+        // ----------- Must do it this way for it to work -----------
+
+        // Construct the payload with the new course name
+        const payload = {
+            courseName: className, // Using the state variable that holds the course text
+        };
+
+        axios.delete(`http://localhost:8080/users/${userId}/deleteCourse`, payload)
+            .then(response => {
+                console.log('Course deleted from user successfully');
+                // Handle success
+                setClassName(''); // Clear the input field upon successful submission
+            })
+            .catch(error => {
+                console.error('There was an error:', error);
+                // Handle error
+            });
     };
 
     const handleRemoveClass = () => {
@@ -46,7 +62,7 @@ const AddClasses = () => {
         setChangesSaved(false);
     };
 
-    const handleSaveChanges = () => {
+    const handleAddClass = () => {
         // Code to save changes to the backend
         setChangesSaved(true);
     };
@@ -86,7 +102,7 @@ const AddClasses = () => {
                         Add a Class
                     </Typography>
 
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleAddClass}>
                         <TextField
                             label="Class Name"
                             variant="outlined"
@@ -108,7 +124,7 @@ const AddClasses = () => {
                         </Button>
                     </form>
 
-                    <Button onClick={handleSaveChanges} variant="contained" color="primary" fullWidth disabled={changesSaved} style={{ marginTop: '20px' }}>
+                    <Button onClick={handleSubmit} variant="contained" color="primary" fullWidth disabled={changesSaved} style={{ marginTop: '20px' }}>
                         Save Changes
                     </Button>
                 </Container>
