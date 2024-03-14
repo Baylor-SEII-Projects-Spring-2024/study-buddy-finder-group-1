@@ -7,21 +7,36 @@ const AddClasses = () => {
 
     const [className, setClassName] = useState('');
 
-    const [classesList, setClassesList] = useState([
-        "Biology 101",
-        "Introduction to Computer Science",
-        "Calculus II",
-        "World History",
-        "Literature 101",
-        "Environmental Science",
-        "Psychology 101",
-        "American Government",
-        "Philosophy 101",
-        "Art History",
-        "Statistics",
-        "Physics I",
-        "Linear Algebra"
-    ]);
+    // const [classesList, setClassesList] = useState([
+    //     "Biology 101",
+    //     "Introduction to Computer Science",
+    //     "Calculus II",
+    //     "World History",
+    //     "Literature 101",
+    //     "Environmental Science",
+    //     "Psychology 101",
+    //     "American Government",
+    //     "Philosophy 101",
+    //     "Art History",
+    //     "Statistics",
+    //     "Physics I",
+    //     "Linear Algebra"
+    // ]);
+
+    const [classesList, setClassesList] = useState([])
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/courses`)
+                setClassesList(response.data);
+            }
+            catch (error) {
+                console.log("No courses found", error);
+            }
+        };
+        fetchCourses();
+    }, []);
 
     const handleClassNameChange = (event) => {
         setClassName(event.target.value);
@@ -62,7 +77,7 @@ const AddClasses = () => {
 
         // Construct the payload with the new course name
         const payload = {
-            courseName: className, // Using the state variable that holds the course text
+            courseName: className.name, // Using the state variable that holds the course text
         };
 
         axios.post(`http://localhost:8080/users/${userId}/addCourse`, payload)
@@ -96,7 +111,7 @@ const AddClasses = () => {
                             >
                                 {classesList.map((course, index) => (
                                     <MenuItem key={index} value={course}>
-                                        {course}
+                                        {course.name}
                                     </MenuItem>
                                 ))}
                             </Select>
