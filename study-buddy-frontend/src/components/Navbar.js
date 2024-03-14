@@ -127,7 +127,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                         <img onClick={handleIconClick} src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ cursor: 'pointer', maxWidth: '80px', maxHeight: '80px', marginRight: '8px' }} />
                     </Link>
                         <Typography variant="h2" sx={{ fontSize: '2.5rem', fontFamily: '"YourCustomFont", serif', color: 'white', transition: '0.3s ease' }}>
-                        Study Buddies
+                        Study Buddies Boom here comes the change
                     </Typography>
                 </Box>
 
@@ -189,7 +189,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                                         Sign In
                                     </Button>
                                 </Link>
-                                <Link href="/study-buddy-frontend/src/components/register" passHref>
+                                <Link href="/register" passHref>
                                     <Button className={styles.whiteButton} sx={{
                                         fontSize: '1.2rem',
                                         my: 1,
