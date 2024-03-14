@@ -3,18 +3,36 @@ import { Box, Container, Typography, TextField, Button, Select, MenuItem } from 
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
-const AddClasses = () => {
+const EditClasses = () => {
     const [className, setClassName] = useState('');
     const [areaOfStudy, setAreaOfStudy] = useState('');
     const [classes, setClasses] = useState([]);
     const [selectedClass, setSelectedClass] = useState('');
     const [changesSaved, setChangesSaved] = useState(false);
 
+    // useEffect(() => {
+    //     // Fetch user's classes or areas of study from the backend
+    //     // Mocking data for demonstration
+    //     const mockClasses = ['Linear Algebra', 'Physics', 'Biology'];
+    //     setClasses(mockClasses);
+    // }, []);
+
     useEffect(() => {
-        // Fetch user's classes or areas of study from the backend
-        // Mocking data for demonstration
-        const mockClasses = ['Linear Algebra', 'Physics', 'Biology'];
-        setClasses(mockClasses);
+        const fetchUserCourses = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                if (userId) {
+                    const response = await axios.get(`http://localhost:8080/users/${userId}/courses/`);
+                    setClasses(response.data)
+                }
+            }
+            catch (error) {
+                console.log("Error: ", error)
+            }
+        }
+        fetchUserCourses();
     }, []);
 
     const handleClassNameChange = (event) => {
@@ -89,7 +107,7 @@ const AddClasses = () => {
                     >
                         {classes.map((item, index) => (
                             <MenuItem key={index} value={item}>
-                                {item}
+                                {item.name}
                             </MenuItem>
                         ))}
                     </Select>
@@ -134,4 +152,4 @@ const AddClasses = () => {
     );
 };
 
-export default AddClasses;
+export default EditClasses;
