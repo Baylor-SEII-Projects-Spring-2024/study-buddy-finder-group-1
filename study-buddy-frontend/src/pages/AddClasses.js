@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Container, Typography, Button, Select, MenuItem, FormControl, InputLabel, Snackbar } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
 
@@ -24,6 +24,7 @@ const AddClasses = () => {
     // ]);
 
     const [classesList, setClassesList] = useState([])
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -40,6 +41,13 @@ const AddClasses = () => {
 
     const handleClassNameChange = (event) => {
         setClassName(event.target.value);
+    };
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
     };
 
     // ------------- New way of identifying logged in user by id -------------
@@ -83,12 +91,11 @@ const AddClasses = () => {
         axios.post(`http://localhost:8080/users/${userId}/addCourse`, payload)
             .then(response => {
                 console.log('Course added to user successfully');
-                // Handle success
-                setClassName(''); // Clear the input field upon successful submission
+                setClassName('');
+                setOpenSnackbar(true);
             })
             .catch(error => {
                 console.error('There was an error:', error);
-                // Handle error
             });
     };
 
@@ -123,6 +130,12 @@ const AddClasses = () => {
                 </Container>
             </Box>
             <Box height={100} />
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message="Course added successfully!"
+            />
         </div>
     );
 };
