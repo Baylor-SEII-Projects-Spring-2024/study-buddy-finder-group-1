@@ -56,7 +56,7 @@ export default function RegisterForm() {
 
     return (
         <div style={{ flexGrow: 1 }}>
-            <Container component="main" maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
+            <Container component="main" maxWidth="sm" sx={{ mt: 20, mb: 4 }}>
                 <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
                     Create Account
                 </Typography>

@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
-
 import java.util.Date;
 import java.util.List;
-
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,7 +27,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             // Update last login timestamp
             User user = userOptional.get();
-            user.setLastLogin(new Date()); // Assuming you're using java.util.Date
+            user.setLastLogin(new Date());
             userRepository.save(user);
         }
         return userOptional.isPresent();
@@ -53,11 +51,9 @@ public class UserService {
     }
     public void deleteUser(Long userId) { userRepository.deleteById(userId); }
 
-    // -------------------- Added to fetch data from database since i cant view the tables --------------------
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
-    // -------------------- Added to fetch data from database since i cant view the tables --------------------
 
     // add courses to user
     public User addCourseToUser(Long userId, Long courseId) {
@@ -69,6 +65,18 @@ public class UserService {
 
         return user;
     }
+
+    //delete course from user
+    public User deleteCourseFromUser(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+        user.getCourses().remove(course);
+        userRepository.save(user);
+
+        return user;
+    }
+
 
     public Set<Course> getAllUserCourses (Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);

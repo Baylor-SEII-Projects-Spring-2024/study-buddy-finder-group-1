@@ -14,8 +14,8 @@ const AboutUs = () => {
     return (
         <div>
             <Navbar showLinks={false} />
-            <Container maxWidth="md" style={{ marginTop: '250px' }}>
-                <Box mt={5}>
+            <Container maxWidth="md" style={{ marginTop: '150px' }}>
+                <Box mt={5} pb={10}>
                     <Typography variant="h4" gutterBottom style={textStyle}>
                         About Us
                     </Typography>

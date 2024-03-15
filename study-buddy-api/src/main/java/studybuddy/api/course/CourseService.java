@@ -13,7 +13,19 @@ public class CourseService {
 
     public Optional<Course> findCourse(Long courseId) { return courseRepository.findById(courseId); }
 
-    public Optional<Course> findCourseByName(String name) { return courseRepository.findByCourseName(name).stream().findFirst(); }
+    public Optional<Course> findCourseByName(String name) {
+        Optional<Course> courses = courseRepository.findByCourseName(name).stream().findFirst();
+
+        if (courses.isPresent()) {
+            courses.toString();
+            System.err.println("Present");
+        }
+        else {
+            System.err.println("NOT PRESENT");
+        }
+
+        return courseRepository.findByCourseName(name).stream().findFirst();
+    }
 
     public List<Course> findCourseByDescription(String description) { return courseRepository.findByCourseDescriptionLike(description); }
 
@@ -26,6 +38,4 @@ public class CourseService {
     public Course saveCourse(Course course) { return courseRepository.save(course); }
 
     public void deleteCourseById(Long id) { courseRepository.deleteById(id); }
-
-
 }
