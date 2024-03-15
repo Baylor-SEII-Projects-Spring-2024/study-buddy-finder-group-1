@@ -25,6 +25,9 @@ const AddClasses = () => {
 
     const [classesList, setClassesList] = useState([])
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [userClasses, setUserClasses] = useState([]);
+    const [snackbarType, setSnackbarType] = useState('success');
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -60,6 +63,8 @@ const AddClasses = () => {
                 if (userId) {
                     const basePath = 'http://localhost:8080';
                     const response = await axios.get(`${basePath}/ProfilePage/${userId}`);
+                    const userClassesResponse = await axios.get(`${basePath}/users/${userId}/courses/`);
+                    setUserClasses(userClassesResponse.data);
                     setLoginInfo(response.data);
                 } else {
                     console.error('No user ID found in localStorage');
@@ -74,6 +79,14 @@ const AddClasses = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        const alreadyEnrolled = userClasses.some(course => course.id === className.id);
+        if (alreadyEnrolled) {
+            setOpenSnackbar(true);
+            setSnackbarType('error');
+            setSnackbarMessage('You have already added this class!');
+            return;
+        }
 
         //const userId = localStorage.getItem('userId'); -------------- original (BAD) --------------
 
@@ -92,10 +105,15 @@ const AddClasses = () => {
             .then(response => {
                 console.log('Course added to user successfully');
                 setClassName('');
+                setSnackbarMessage('Course added successfully!');
+                setSnackbarType('success');
                 setOpenSnackbar(true);
             })
             .catch(error => {
-                console.error('There was an error:', error);
+                console.error('There was an error:', error.response.data);
+                setOpenSnackbar(true);
+                setSnackbarMessage(error.response.data);
+                setSnackbarType('error');
             });
     };
 
@@ -134,7 +152,12 @@ const AddClasses = () => {
                 open={openSnackbar}
                 autoHideDuration={6000}
                 onClose={handleCloseSnackbar}
-                message="Course added successfully!"
+                message={snackbarMessage}
+                ContentProps={{
+                    style: {
+                        backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                    },
+                }}
             />
         </div>
     );

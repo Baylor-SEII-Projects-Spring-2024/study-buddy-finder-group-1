@@ -12,6 +12,8 @@ const EditClasses = () => {
     const [changesSaved, setChangesSaved] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
+    const [snackbarType, setSnackbarType] = useState('success'); // 'success' or 'error'
+
 
 
     // useEffect(() => {
@@ -126,10 +128,13 @@ const EditClasses = () => {
                 setClasses(updatedClasses);
                 setSelectedClass('');
                 handleClose();
+                setSnackbarType('success');
                 setOpenDeleteSnackbar(true);
             })
             .catch(error => {
                 console.error('There was an error:', error);
+                setSnackbarType('error');
+                setOpenDeleteSnackbar(true);
             });
     };
 
@@ -163,36 +168,6 @@ const EditClasses = () => {
                     <Button onClick={handleClickOpen} variant="contained" color="primary" fullWidth disabled={!selectedClass} style={{ marginTop: '20px' }}>
                         Remove Class
                     </Button>
-
-                    <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>
-                        Add a Class
-                    </Typography>
-
-                    <form onSubmit={handleAddClass}>
-                        <TextField
-                            label="Class Name"
-                            variant="outlined"
-                            value={className}
-                            onChange={handleClassNameChange}
-                            fullWidth
-                            margin="normal"
-                        />
-                        <TextField
-                            label="Area of Study"
-                            variant="outlined"
-                            value={areaOfStudy}
-                            onChange={handleAreaOfStudyChange}
-                            fullWidth
-                            margin="normal"
-                        />
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Add Class
-                        </Button>
-                    </form>
-
-                    <Button onClick={handleSubmit} variant="contained" color="primary" fullWidth disabled={changesSaved} style={{ marginTop: '20px' }}>
-                        Save Changes
-                    </Button>
                 </Container>
             </Box>
             <Box height={100} />
@@ -219,7 +194,12 @@ const EditClasses = () => {
                 open={openDeleteSnackbar}
                 autoHideDuration={6000}
                 onClose={handleCloseDeleteSnackbar}
-                message="Course removed successfully!"
+                message={snackbarType === 'success' ? "Course removed successfully!" : "Error removing course"}
+                ContentProps={{
+                    style: {
+                        backgroundColor: snackbarType === 'success' ? 'green' : 'red',
+                    },
+                }}
             />
         </div>
     );
