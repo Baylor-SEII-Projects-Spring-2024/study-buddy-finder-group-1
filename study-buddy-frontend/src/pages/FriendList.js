@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box, Container, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, Paper } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const FriendList = () => {
     // Sample friend list data
@@ -10,6 +11,28 @@ const FriendList = () => {
         { id: 3, name: 'Alice Johnson', userType: 'Student', major: 'Education', bio: 'I am a teacher and enjoy helping students learn and grow academically.' },
         // Add more friends as needed
     ];
+
+    const [friendsList, setFriendsList] = useState([]);
+
+    useEffect(() => {
+        const getFriendsList = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                if (userId) {
+                    const basePath = 'http://localhost:8080';
+                    const response = await axios.get(`${basePath}/friendships/${userId}/friends`);
+                    setFriendsList(response.data);
+                    console.log(response.data);
+                }
+
+            } catch (error) {
+                console.log("Error", error)
+            }
+        }
+        getFriendsList();
+    }, []);
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -21,26 +44,26 @@ const FriendList = () => {
                     </Typography>
                     <Paper elevation={3}>
                         <List>
-                            {friends.map(friend => (
+                            {friendsList.map(friend => (
                                 <div key={friend.id}>
                                     <ListItem button alignItems="flex-start">
                                         <ListItemAvatar>
-                                            <Avatar alt={friend.name} src={`https://ui-avatars.com/api/?name=${encodeURIComponent(friend.name)}&background=random`} />
+                                            <Avatar alt={friend.name} src={`https://ui-avatars.com/api/?name=${encodeURIComponent(friend.firstName)}&background=random`} />
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={friend.name}
                                             secondary={
                                                 <>
                                                     <Typography variant="body1" component="span">
-                                                        User Type: {friend.userType}
+                                                        First Name: {friend.firstName}
                                                     </Typography>
                                                     <br />
                                                     <Typography variant="body1" component="span">
-                                                        Major: {friend.major}
+                                                        Last Name: {friend.lastName}
                                                     </Typography>
                                                     <br />
                                                     <Typography variant="body2">
-                                                        Bio: {friend.bio}
+                                                        User Type: {friend.userType}
                                                     </Typography>
                                                 </>
                                             }
