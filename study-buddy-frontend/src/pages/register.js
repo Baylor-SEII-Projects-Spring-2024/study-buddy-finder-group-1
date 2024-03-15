@@ -5,6 +5,11 @@ import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 
 export default function Register() {
+    try {
+        // Your code that may throw an error
+
+    console.log('Here!!!!!!!!!!!!!',window.location);
+
     const router = useRouter();
     const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
 
@@ -39,4 +44,13 @@ export default function Register() {
             )}
         </div>
     );
+    } catch (error) {
+        console.error("Error in register.js:", error);
+        // Optionally, you can also log the stack trace
+        console.error(error.stack);
+        // Optionally, you can display a user-friendly error message on the page
+        // This is particularly useful for client-side rendering errors
+        // For example:
+        // setError("An error occurred. Please try again later.");
+    }
 }

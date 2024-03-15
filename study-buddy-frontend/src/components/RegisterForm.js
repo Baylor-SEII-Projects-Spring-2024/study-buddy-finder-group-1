@@ -1,10 +1,11 @@
 import {Button, Container, TextField, Typography, MenuItem} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {router} from "next/client";
+import {useRouter} from "next/router";
 
 
 export default function RegisterForm() {
+    const router = useRouter(); // Initialize router using useRouter()
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -27,6 +28,8 @@ export default function RegisterForm() {
     };
 
     const handleSubmit = async (event) => {
+        console.log('Here!!!!!!!!!!!!!',window.location);
+
         event.preventDefault();
 
         try {

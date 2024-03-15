@@ -3,13 +3,14 @@ package studybuddy.api.location;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import studybuddy.api.endpoint.LocationEndpoint;
 
 import java.util.*;
 
 @Data
 @Entity
 @Table(name = studybuddy.api.location.Location.TABLE_NAME)
-public class Location {
+public class Location extends LocationEndpoint {
     public static final String TABLE_NAME = "LOCATIONS";
 
     @Id
