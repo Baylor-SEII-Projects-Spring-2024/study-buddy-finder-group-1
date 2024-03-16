@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
 import { Box, TextField, Button, Card, CardContent, Typography, CircularProgress, Grid } from "@mui/material";
@@ -8,12 +8,18 @@ const AddFriends = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [pendingRequests, setPendingRequests] = useState([]);
+    const [acceptedRequests, setAcceptedRequests] = useState([]);
+
 
     const fetchSearchResults = async (searchTerm) => {
         setLoading(true);
         try {
             const response = await axios.get(`http://localhost:8080/users/search`, { params: { name: searchTerm } });
-            setSearchResults(response.data);
+            const requester = JSON.parse(localStorage.getItem('user'));
+            const requesterId = requester.id;
+            const filteredResults = response.data.filter(user => user.id !== requesterId);
+            setSearchResults(filteredResults);
         } catch (error) {
             console.error("Error fetching search results:", error);
             setSearchResults([]);
@@ -21,6 +27,37 @@ const AddFriends = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const fetchPendingRequests = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/friendships/pending`);
+                setPendingRequests(response.data);
+            } catch (error) {
+                console.error("Error fetching pending friend requests:", error);
+            }
+        };
+        fetchPendingRequests();
+    }, []);
+
+    useEffect(() => {
+        const fetchAcceptedRequests = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/friendships/accepted`);
+                setAcceptedRequests(response.data);
+            } catch (error) {
+                console.error("Error fetching accepted friend requests:", error);
+            }
+        };
+        fetchAcceptedRequests();
+    }, []);
+
+    const isAlreadyFriend = (userId) => {
+        return acceptedRequests.some(request =>
+            (request.requested.id === userId || request.requester.id === userId) && request.status === 'accepted'
+        );
+    };
+
 
     // Use useCallback to memoize the debounced version
     const debouncedSearch = useCallback(debounce(fetchSearchResults, 500), []);
@@ -35,15 +72,23 @@ const AddFriends = () => {
         }
     };
 
-    const handleSendFriendRequest = async (requestedId) => {
+    const isPendingRequest = (userId) => {
+        return pendingRequests.some(request => request.requested.id === userId);
+    }
 
+    const handleSendFriendRequest = async (requestedId) => {
         try {
             const requester = JSON.parse(localStorage.getItem('user'));
             const requesterId = requester.id;
             if (requesterId) {
-                await axios.post(`http://localhost:8080/friendships/request`, null, {
+
+                const response = await axios.post(`http://localhost:8080/friendships/request`, null, {
                     params: { requesterId, requestedId }
                 });
+
+                const newPendingRequest = response.data;
+
+                setPendingRequests(prevRequests => [...prevRequests, newPendingRequest]);
                 alert("Friend request sent!");
             }
         } catch (error) {
@@ -51,6 +96,7 @@ const AddFriends = () => {
             alert("Failed to send friend request.");
         }
     };
+
 
 
     // Direct search function for search button click
@@ -91,14 +137,29 @@ const AddFriends = () => {
                                 {user.email_address}
                             </Typography>
                         </CardContent>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleSendFriendRequest(user.id)}
-                            sx={{ m: 1 }}
-                        >
-                            Add Friend
-                        </Button>
+                        {isAlreadyFriend(user.id) ? (
+                            <Typography sx={{ m: 1 }} color="text.secondary">
+                                Already friends
+                            </Typography>
+                        ) : isPendingRequest(user.id) ? (
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                disabled
+                                sx={{ m: 1 }}
+                            >
+                                Pending
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleSendFriendRequest(user.id)}
+                                sx={{ m: 1 }}
+                            >
+                                Add Friend
+                            </Button>
+                        )}
                     </Card>
                 ))}
             </Box>
