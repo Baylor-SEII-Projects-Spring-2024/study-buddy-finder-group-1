@@ -8,7 +8,7 @@ import studybuddy.api.friendships.FriendshipService;
 import studybuddy.api.user.User;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/friendships")
 public class FriendshipEndpoint {
@@ -36,11 +36,11 @@ public class FriendshipEndpoint {
         }
     }
 
-    @PostMapping("/{friendshipId}/decline")
+    @DeleteMapping("/{friendshipId}/decline")
     public ResponseEntity<?> declineFriendRequest(@PathVariable Long friendshipId) {
         try {
-            Friendship friendship = friendshipService.declineFriendRequest(friendshipId);
-            return ResponseEntity.ok(friendship);
+            friendshipService.declineFriendRequest(friendshipId);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -49,6 +49,12 @@ public class FriendshipEndpoint {
     @GetMapping("/pending")
     public ResponseEntity<List<Friendship>> getPendingRequests() {
         List<Friendship> friendships = friendshipService.getPendingRequests();
+        return ResponseEntity.ok(friendships);
+    }
+
+    @GetMapping("/accepted")
+    public ResponseEntity<List<Friendship>> getAcceptedRequests() {
+        List<Friendship> friendships = friendshipService.getAcceptedRequests();
         return ResponseEntity.ok(friendships);
     }
 
