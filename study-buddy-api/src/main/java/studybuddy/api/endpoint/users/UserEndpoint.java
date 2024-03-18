@@ -81,12 +81,6 @@ public class UserEndpoint {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/users/{userId}/courses/{courseId}")
-    public ResponseEntity<?> deleteCourseFromUser(@PathVariable Long userId, @PathVariable Long courseId) {
-        User updatedUser = userService.deleteCourseFromUser(userId, courseId);
-        return ResponseEntity.ok(updatedUser);
-    }
-
     // --------- Saving courses to the user account [Temporarily-MS2] ---------
     @PostMapping("/users/{userId}/addCourse")
     public ResponseEntity<?> addCourseToUserMS2(@PathVariable Long userId, @RequestBody String courseName) {
@@ -108,62 +102,32 @@ public class UserEndpoint {
         }
 
         //find the course
-        Optional<Course> course = courseService.findCourseByName(parsedName);
-
+        Optional<Course> courseOpt = courseService.findCourseByName(parsedName);
+        if (courseOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("Course not found");
+        }
         //find the user
         User user = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (course.isPresent()) {
-            Course newCourse = course.get();
-            user.getCourses().add(newCourse);
-        }
-        else {
-            return ResponseEntity.ofNullable("Course not found");
+        if (user.getCourses().contains(courseOpt.get())) {
+            return ResponseEntity.badRequest().body("User is already enrolled in this class");
         }
 
+
+        user.getCourses().add(courseOpt.get());
         userService.saveUser(user);
         return ResponseEntity.ok().body("Course added successfully");
     }
 
-    @DeleteMapping("/users/{userId}/deleteCourse")
-    public ResponseEntity<?> removeCourseFromUserMS2(@PathVariable Long userId, @RequestBody String courseName) {
-        String parsedName;
-        //parse the name from the given data
-        try {
-            // Create ObjectMapper instance
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // Parse JSON string to JsonNode
-            JsonNode jsonNode = objectMapper.readTree(courseName);
-
-            // Extract value of "courseName" field
-            parsedName = jsonNode.get("courseName").asText();
-        } catch (Exception e) {
-            // Handle exception
-            e.printStackTrace();
-            parsedName = "ERROR PARSING DATA";
-        }
-
-        //find the course
-        Optional<Course> course = courseService.findCourseByName(parsedName);
-
-        //find the user
-        User user = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        if (course.isPresent()) {
-            Course newCourse = course.get();
-            user.getCourses().remove(newCourse);
-        }
-        else {
-            return ResponseEntity.ofNullable("Course not found");
-        }
-
-        userService.saveUser(user);
-        return ResponseEntity.ok().body("Course removed successfully");
+    @DeleteMapping("/users/{userId}/courses/{courseId}")
+    public ResponseEntity<?> removeCourseFromUserMS2(@PathVariable Long userId, @PathVariable Long courseId) {
+        userService.deleteCourseFromUser(userId, courseId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/courses/")
-    public Set<Course> findAllUserCourses(@PathVariable Long userId) {
-        return userService.getAllUserCourses(userId);
+    public ResponseEntity<Set<Course>> findAllUserCourses(@PathVariable Long userId) {
+        Set<Course> courses = userService.getAllUserCourses(userId);
+        return ResponseEntity.ok(courses);
     }
 }

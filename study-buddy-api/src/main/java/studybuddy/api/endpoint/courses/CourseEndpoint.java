@@ -90,6 +90,7 @@ import studybuddy.api.course.CourseService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -103,5 +104,6 @@ public class CourseEndpoint {
     @Autowired
     private UserService userService;
 
-    //for dynamically adding classes as a user
+    @GetMapping("/courses")
+    public List<Course>  findAllCourses() { return courseService.findAllCourses(); }
 }
