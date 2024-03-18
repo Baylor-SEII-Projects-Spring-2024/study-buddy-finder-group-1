@@ -52,15 +52,18 @@ public class Meeting {
     String timeSlot;
 
     @Getter
-    @Column(name = "USER_EMAIL")
-    String userEmail;
+    @Column(name = "USER_ID")
+    Long userId;
+
+    @OneToMany(mappedBy = "meeting")
+    private Set<MeetingUser> attendees = new HashSet<>();
 
     public Meeting() {}
 
-    public Meeting(String location, String timeSlot, String userEmail, String date, String room) {
+    public Meeting(String location, String timeSlot, Long userId, String date, String room) {
         this.location = location;
         this.timeSlot = timeSlot;
-        this.userEmail = userEmail;
+        this.userId = userId;
         this.date = date;
         this.room = room;
     }
@@ -92,8 +95,8 @@ public class Meeting {
         this.timeSlot = timeSlot;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
 

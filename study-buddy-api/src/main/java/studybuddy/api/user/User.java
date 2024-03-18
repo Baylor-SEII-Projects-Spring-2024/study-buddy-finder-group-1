@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import studybuddy.api.course.Course;
+import studybuddy.api.meeting.*;
 
 import java.util.*;
 
@@ -52,6 +53,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Course> courses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MeetingUser> meetings = new HashSet<>();
 
     public User(String email, String password, String userType) {
         this.email_address = email;
