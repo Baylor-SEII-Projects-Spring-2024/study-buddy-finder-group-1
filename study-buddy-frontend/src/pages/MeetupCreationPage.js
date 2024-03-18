@@ -64,55 +64,36 @@ const MeetupCreationPage = () => {
         setRoom(event.target.value);
     };
 
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.email) {
+            setUserEmail(user.email);
+        }
+    }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Code to handle meetup creation
-        const meetupData = {
-            classAndArea: classAndArea,
-            location: location,
-            room: room,
-            //meetingType: meetingType,
-            date: date,
-            timeSlot: timeSlot,
-            userEmail: userEmail
-        };
 
+
+
+        const basePath = 'http://localhost:8080'; // Use environment variables in real apps
         try {
-
-            //--------------- This is how you grab the current user ---------------
             const user = JSON.parse(localStorage.getItem('user'));
-            const userEmail = user.user;
+            const userId = user.id;
 
-            if (userEmail) {
-                const basePath = 'http://localhost:8080';
-                const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
-                setUserEmail(response.data.email_address);
-            } else {
-                console.error('No email found in localStorage');
+            const response = await axios.post(`${basePath}/meetings/create`, {
+                location,
+                room,
+                date,
+                timeSlot,
+                userId: userId
+            });
+            if (response.status === 200) {
+                console.log("Meeting created successfully", response.data);
+                // handle post-meeting creation logic here (e.g., redirect or clear form)
             }
         } catch (error) {
-            console.error('Error fetching login info:', error);
-        }
-
-        try {
-            const response = await axios.post(
-                "http://localhost:8080/createMeetup",
-                {
-                    //classAndArea: meetupData.classAndArea,
-                    location: meetupData.location,
-                    room: meetupData.room,
-                    //meetingType: meetupData.meetingType,
-                    date: meetupData.date,
-                    timeSlot: meetupData.timeSlot,
-                    userEmail: meetupData.userEmail
-                }
-            );
-
-            if (response.status === 200 && response.data.userId) {
-                // Your logic here
-            }
-        } catch (error) {
-            console.error("Error during update:", error);
+            console.error("Error creating meeting:", error);
         }
     };
 
