@@ -9,6 +9,8 @@ import studybuddy.api.user.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FriendshipService {
@@ -50,6 +52,15 @@ public class FriendshipService {
 
     public List<Friendship> getPendingRequests() {
         return friendshipRepository.findAllPending();
+    }
+
+    public List<User> getAllFriends(Long userId) {
+        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndStatusAccepted(userId);
+        return friendships.stream()
+                .flatMap(friendship -> Stream.of(friendship.getRequester(), friendship.getRequested()))
+                .distinct()
+                .filter(user -> !user.getId().equals(userId))
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,4 +1,4 @@
-  {
+{
   "name": "study-buddy-frontend",
   "version": "1.0.0",
   "private": true,
@@ -17,6 +17,7 @@
     "@mui/material-nextjs": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.5",
+    "lodash": "^4.17.21",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",

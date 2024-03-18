@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipService;
+import studybuddy.api.user.User;
 
 import java.util.List;
 
@@ -49,6 +50,12 @@ public class FriendshipEndpoint {
     public ResponseEntity<List<Friendship>> getPendingRequests() {
         List<Friendship> friendships = friendshipService.getPendingRequests();
         return ResponseEntity.ok(friendships);
+    }
+
+    @GetMapping("/{userId}/friends")
+    public ResponseEntity<List<User>> getAllFriends(@PathVariable Long userId) {
+        List<User> friends = friendshipService.getAllFriends(userId);
+        return ResponseEntity.ok(friends);
     }
 
 }
