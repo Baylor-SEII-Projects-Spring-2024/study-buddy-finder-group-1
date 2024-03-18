@@ -43,16 +43,18 @@ public class FriendshipService {
     }
 
     @Transactional
-    public Friendship declineFriendRequest(Long friendshipId) {
-        Friendship friendship = friendshipRepository.findById(friendshipId).orElseThrow(() -> new RuntimeException("Friend request not found."));
+    public void declineFriendRequest(Long friendshipId) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new RuntimeException("Friend request not found."));
 
-        friendship.setStatus("declined");
-        return friendshipRepository.save(friendship);
+        friendshipRepository.delete(friendship);
     }
 
     public List<Friendship> getPendingRequests() {
         return friendshipRepository.findAllPending();
     }
+
+    public List<Friendship> getAcceptedRequests() { return friendshipRepository.findAllAccepted(); }
 
     public List<User> getAllFriends(Long userId) {
         List<Friendship> friendships = friendshipRepository.findAllByUserIdAndStatusAccepted(userId);
