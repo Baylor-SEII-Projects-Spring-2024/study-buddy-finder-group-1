@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, MenuItem, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const locations = [
     "Moody Library",
@@ -19,6 +20,7 @@ const mockClasses = [
 ];
 
 const EditMeetupPage = () => {
+    const [userRooms, setUserRooms] = useState([]);
     const [selectedMeetupId, setSelectedMeetupId] = useState('');
     const [classAndAreaInput, setClassAndAreaInput] = useState('');
     const [locationInput, setLocationInput] = useState('');
@@ -68,6 +70,22 @@ const EditMeetupPage = () => {
     const handleRoomChange = (event) => {
         setSelectedRoom(event.target.value);
     };
+
+    useEffect(() => {
+        const fetchUserMeetings = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`)
+                setUserRooms(response.data);
+                console.log(response.data)
+            } catch (error) {
+                console.log("Error: ", error)
+            }
+        }
+        fetchUserMeetings();
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -131,8 +149,10 @@ const EditMeetupPage = () => {
                             margin="normal"
                         >
                             {/* You may dynamically populate this dropdown with user's meetups */}
-                            <MenuItem value="1">Meetup 1</MenuItem>
-                            <MenuItem value="2">Meetup 2</MenuItem>
+                            {userRooms.map((userRoom) => (
+                                <MenuItem key={userRoom.id} value={userRoom.id}>{userRoom.location} - {userRoom.date}</MenuItem>
+                            ))}
+
                         </TextField>
 
                         <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>
