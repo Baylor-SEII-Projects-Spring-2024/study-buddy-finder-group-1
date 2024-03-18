@@ -8,6 +8,7 @@ import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -35,6 +36,15 @@ public class MeetupEndpoint {
         return meetingService.getMeetingById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Optional<List<Meeting>>> getMeetingsByUserId(@PathVariable Long userId) {
+        Optional<List<Meeting>> meetings = meetingService.getMeetingsByUserId(userId);
+        if (meetings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(meetings);
     }
 
     @PutMapping("/{id}")

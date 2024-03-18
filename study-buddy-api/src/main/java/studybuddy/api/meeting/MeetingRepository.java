@@ -15,7 +15,7 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
 
     @Query("SELECT m FROM Meeting m WHERE m.userId = :USER_ID")
-    Optional<Meeting> findMeetingByUserId(@Param("USER_ID") Long userId);
+    Optional<List<Meeting>> findMeetingsByUserId(@Param("USER_ID") Long userId);
 
 
 
