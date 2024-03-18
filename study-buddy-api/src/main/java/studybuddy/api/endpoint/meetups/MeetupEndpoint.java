@@ -4,25 +4,55 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import studybuddy.api.location.Location;
-import studybuddy.api.location.LocationService;
 import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingService;
 
-import java.util.*;
+import java.util.List;
 
 @Log4j2
 @RestController
+@RequestMapping("/meetings") // Added a base path for meeting-related endpoints
 @CrossOrigin(origins = "http://localhost:3000")
 public class MeetupEndpoint {
+
     @Autowired
     private MeetingService meetingService;
 
-    @PostMapping("/createMeetup")
-    public ResponseEntity<String> createMeetup(@RequestBody Meeting newMeeting) {
-        System.err.println(newMeeting.toString());
-        meetingService.saveMeeting(newMeeting);
+    @PostMapping("/create")
+    public ResponseEntity<Meeting> createMeetup(@RequestBody Meeting newMeeting) {
+        Meeting createdMeeting = meetingService.saveMeeting(newMeeting);
+        return ResponseEntity.ok(createdMeeting);
+    }
 
-        return ResponseEntity.ok("Meeting created.");
+    @GetMapping("/all")
+    public ResponseEntity<List<Meeting>> getAllMeetings() {
+        List<Meeting> meetings = meetingService.getAllMeetings();
+        return ResponseEntity.ok(meetings);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Meeting> getMeetingById(@PathVariable Long id) {
+        return meetingService.getMeetingById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Meeting> updateMeeting(@PathVariable Long id, @RequestBody Meeting meetingDetails) {
+        return meetingService.getMeetingById(id).map(existingMeeting -> {
+            // update the existing meeting with new details
+            existingMeeting.setLocation(meetingDetails.getLocation());
+            existingMeeting.setDate(meetingDetails.getDate());
+            existingMeeting.setTimeSlot(meetingDetails.getTimeSlot());
+
+            Meeting updatedMeeting = meetingService.saveMeeting(existingMeeting);
+            return ResponseEntity.ok(updatedMeeting);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
+        meetingService.deleteMeeting(id);
+        return ResponseEntity.ok().build();
     }
 }
