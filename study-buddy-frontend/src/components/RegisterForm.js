@@ -1,7 +1,7 @@
 import {Button, Container, TextField, Typography, MenuItem} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {router} from "next/client";
+import {router} from "next/router";
 
 
 export default function RegisterForm() {
