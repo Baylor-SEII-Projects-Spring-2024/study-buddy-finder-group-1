@@ -2,10 +2,6 @@ package studybuddy.api.location;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import studybuddy.api.location.Location;
-import studybuddy.api.location.LocationRepository;
 
 import java.util.*;
 
@@ -42,6 +38,15 @@ public class LocationService {
 
     public List<Location> findLocationByName(String name){
         return locationRepository.findByName(name);
+    }
+
+    public Location saveLocation(Location location) {
+        return locationRepository.save(location);
+    }
+
+    public Location deleteLocation(Long id) {
+        locationRepository.deleteById(id);
+        return null;
     }
 
 }
