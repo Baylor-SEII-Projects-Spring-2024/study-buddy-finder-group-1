@@ -8,6 +8,7 @@ import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @RestController
@@ -55,4 +56,16 @@ public class MeetupEndpoint {
         meetingService.deleteMeeting(id);
         return ResponseEntity.ok().build();
     }
+
+    // -------------- Added for Review Tutor --------------
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Meeting>> getMeetingsByUser(@PathVariable Long userId) {
+        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId); // This method needs to be implemented
+        if (userMeetings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(userMeetings);
+    }
+
+    // -------------- Added for Review Tutor --------------
 }
