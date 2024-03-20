@@ -88,4 +88,5 @@ public class UserService {
             throw new EntityNotFoundException("User not found");
         }
     }
+
 }

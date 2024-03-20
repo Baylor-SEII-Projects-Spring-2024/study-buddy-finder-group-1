@@ -91,6 +91,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         router.push(`/EditClasses`);
     }
 
+    const handleAddFriendsClick = () => {
+        router.push(`/AddFriends`);
+    }
+
     const handleMessagesClick = () => {
         router.push(`/MessagingPage`);
     }
@@ -118,6 +122,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const handleHomeClick = () => {
         router.push(`/home`);
     }
+
 
     return (
         <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
@@ -234,13 +239,13 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     open={open}
                     onClose={handleClose}
                 >
-                    {/* Function calls are embedded below */}
                     <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
                     <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
                     <MenuItem onClick={handleCreateMeetupClick}>Create Meetup</MenuItem>
                     <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
                     <MenuItem onClick={handleAddClassesClick}>Add Class(es) or Area(s) of Study</MenuItem>
                     <MenuItem onClick={handleEditClassesClick}>Edit Class(es) or Area(s) of Study</MenuItem>
+                    <MenuItem onClick={handleAddFriendsClick}>Add Friends</MenuItem>
                     <MenuItem onClick={handleMessagesClick}>Messaging</MenuItem>
                     <MenuItem onClick={handleNotificationsClick}>Notifications</MenuItem>
                     <MenuItem onClick={handleFriendListClick}>Friend List</MenuItem>
@@ -250,11 +255,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                     {isLoggedIn && (
                         <MenuItem onClick={() => {
-                            handleLogout()
-                            handleClose()
+                            handleLogout();
+                            handleClose();
                         }}>Logout</MenuItem>
                     )}
-
                 </Menu>
             </Toolbar>
         </AppBar>
