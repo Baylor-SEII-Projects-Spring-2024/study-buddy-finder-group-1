@@ -30,7 +30,10 @@ const WhyBecomeTutorPage = () => {
                         Tutoring also enhances your own understanding of the subject matter, as teaching often requires a deeper understanding of the material.
                     </Typography>
                     <Box textAlign="center" marginTop="20px"> {/* Center the button */}
+
+
                         <Link href="/register" passHref>
+
                             <Button variant="contained" color="primary">
                                 Register as a Tutor
                             </Button>

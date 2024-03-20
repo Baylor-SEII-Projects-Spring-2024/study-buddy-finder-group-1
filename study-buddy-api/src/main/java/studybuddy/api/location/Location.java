@@ -6,8 +6,9 @@ import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import studybuddy.api.room.Room;
+
 
 import java.util.*;
 
