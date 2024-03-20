@@ -3,6 +3,8 @@ package studybuddy.api.meeting;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import studybuddy.api.location.Location;
+import studybuddy.api.user.User;
 
 import java.util.*;
 
@@ -11,7 +13,7 @@ import java.util.*;
 @Table(name = Meeting.TABLE_NAME)
 public class Meeting {
 
-  //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
+    //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
 
     public static final String TABLE_NAME = "MEETINGS";
 
@@ -26,8 +28,10 @@ public class Meeting {
     Long id;
 
     @Getter
-    @Column(name = "LOCATION")
-    String location;
+    @ManyToOne
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
 
 /*
     @Getter
@@ -51,19 +55,20 @@ public class Meeting {
     @Column(name = "TIME_SLOT")
     String timeSlot;
 
-    @Getter
-    @Column(name = "USER_ID")
-    Long userId;
+    @ManyToMany
+    @JoinTable(
+            name = "user_meetings",
+            joinColumns = @JoinColumn(name = "meeting_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "meeting")
-    private Set<MeetingUser> attendees = new HashSet<>();
+    public Meeting() {
+    }
 
-    public Meeting() {}
-
-    public Meeting(String location, String timeSlot, Long userId, String date, String room) {
+    public Meeting(Location location, String timeSlot, String date, String room) {
         this.location = location;
         this.timeSlot = timeSlot;
-        this.userId = userId;
         this.date = date;
         this.room = room;
     }
@@ -76,9 +81,6 @@ public class Meeting {
         this.date = date;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     /*
     public void setStartTime(Date startTime) {
@@ -95,7 +97,8 @@ public class Meeting {
         this.timeSlot = timeSlot;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
