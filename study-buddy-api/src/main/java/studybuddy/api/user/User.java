@@ -54,8 +54,8 @@ public class User {
     )
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MeetingUser> meetings = new HashSet<>();
+    @ManyToMany(mappedBy = "users")
+    private Set<Meeting> meetings = new HashSet<>();
 
     public User(String email, String password, String userType) {
         this.email_address = email;
