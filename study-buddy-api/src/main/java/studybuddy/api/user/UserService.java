@@ -22,6 +22,10 @@ public class UserService {
 
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
+    public List<User> findUsersByName(String name) {
+        return userRepository.searchByFirstNameOrLastNameContainingIgnoreCase(name);
+    }
+
     public boolean attemptLogin(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail_AddressAndPassword(email, password);
         if (userOptional.isPresent()) {

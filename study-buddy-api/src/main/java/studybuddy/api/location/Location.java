@@ -1,22 +1,21 @@
 package studybuddy.api.location;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Resource;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
-<<<<<<< HEAD
-import studybuddy.api.endpoint.LocationEndpoint;
-=======
-import org.springframework.beans.factory.annotation.Qualifier;
->>>>>>> e365d6023f55c9297cd542d4c0e721da7fa8d213
+
+import studybuddy.api.room.Room;
+
 
 import java.util.*;
 
 @Data
 @Entity
 @Table(name = studybuddy.api.location.Location.TABLE_NAME)
-public class Location extends LocationEndpoint {
+public class Location {
     public static final String TABLE_NAME = "LOCATIONS";
 
     @Id
@@ -48,6 +47,9 @@ public class Location extends LocationEndpoint {
     @Column(name = "AVAILABLE_END")
     Date hoursAvailableEnd;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Room> rooms = new ArrayList<>();
 
     public Location() {
     }
@@ -79,6 +81,17 @@ public class Location extends LocationEndpoint {
     public void setHoursAvailableEnd(Date hoursAvailableEnd) {
         this.hoursAvailableEnd = hoursAvailableEnd;
     }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+        room.setLocation(this);
+    }
+
+    public void removeRoom(Room room) {
+        rooms.remove(room);
+        room.setLocation(null);
+    }
+
 
     @Override
     public boolean equals(Object p){

@@ -1,47 +1,40 @@
 package studybuddy.api.room;
-import jakarta.annotation.Resource;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import studybuddy.api.location.Location;
 import lombok.Data;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.*;
+@Data
+@Entity
+@Table(name = "ROOMS")
 public class Room {
-    //number,isbooked,locationNamr
-    public static final String TABLE_NAME = "ROOMS";
-
     @Id
-    @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
-    @SequenceGenerator(
-            name = TABLE_NAME + "_GENERATOR",
-            sequenceName = TABLE_NAME + "_SEQUENCE"
-    )
-    @Column(name = "LOCATION_ID")
-    Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROOM_ID")
+    private Long id;
 
     @Getter
-    @Column(name = "name")
-    String name;
+    @Column(name = "NAME")
+    private String name;
 
     @Getter
-    @Column(name = "isBooked")
-    Boolean isBooked;
+    @Column(name = "CAPACITY")
+    private int capacity;
 
-    @Getter
-    @Column(name = "location")
-    String location;
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "LOCATION_ID", nullable = false)
+    private Location location;
 
-    //test
-    public void setName(String name) {
+    public Room(String name, int capacity, Location location) {
         this.name = name;
-    }
-
-    public void setBooked(Boolean booked) {
-        isBooked = booked;
-    }
-
-    public void setLocation(String location) {
+        this.capacity = capacity;
         this.location = location;
+    }
+
+    public Room() {
+
     }
 }

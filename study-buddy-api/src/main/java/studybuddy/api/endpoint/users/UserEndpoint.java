@@ -29,6 +29,12 @@ public class UserEndpoint {
         return userService.findAllUsers();
     }
 
+    @GetMapping("/users/search")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam(required = false) String name) {
+        List<User> users = userService.findUsersByName(name);
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/users/{id}")
     public User findUserById(@PathVariable Long id) {
         var user = userService.findUser(id).orElse(null);
