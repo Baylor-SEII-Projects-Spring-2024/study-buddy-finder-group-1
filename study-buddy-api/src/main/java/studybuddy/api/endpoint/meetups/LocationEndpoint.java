@@ -48,7 +48,7 @@ public class LocationEndpoint {
     }
 
     @GetMapping("/locations/by-name")
-    public List<Location> findLocationByName(@RequestParam String name) {
+    public Location findLocationByName(@RequestParam String name) {
         return locationService.findLocationByName(name);
     }
 

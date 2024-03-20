@@ -36,7 +36,7 @@ public class LocationService {
         return locationRepository.findByHoursAvailableEnd(end);
     }
 
-    public List<Location> findLocationByName(String name){
+    public Location findLocationByName(String name){
         return locationRepository.findByName(name);
     }
 
