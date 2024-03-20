@@ -87,25 +87,33 @@ const EditMeetupPage = () => {
         fetchUserMeetings();
     }, []);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Code to handle meetup update
-        const meetupData = {
-            id: selectedMeetupId, // Include the selected meetup ID for identification
-            classAndArea: classAndAreaInput,
-            location: locationInput,
+
+
+        const payload = {
+            locationId: locationInput,
             room: selectedRoom,
-            meetingType: meetingType,
             date: selectedDate,
-            timeSlot: selectedTimeSlot
+            timeSlot: selectedTimeSlot,
         };
-        console.log(meetupData);
+
+        console.log(payload)
+
+        try {
+
+            const response = await axios.put(`http://localhost:8080/meetings/${selectedMeetupId}`, payload);
+            console.log('Meeting updated successfully:', response.data);
+
+        } catch (error) {
+            console.error('Error updating meeting:', error);
+
+        }
     };
 
+
     useEffect(() => {
-        // Fetch meetup details based on the selectedMeetupId
-        // Here you might want to fetch meetup details from your backend API
-        // Update classAndAreaInput, locationInput, selectedRoom, selectedDate, selectedTimeSlot, and meetingType accordingly
+
     }, [selectedMeetupId]);
 
     const fetchRoomsByLocation = (location) => {
@@ -148,12 +156,14 @@ const EditMeetupPage = () => {
                             fullWidth
                             margin="normal"
                         >
-                            {/* You may dynamically populate this dropdown with user's meetups */}
                             {userRooms.map((userRoom) => (
-                                <MenuItem key={userRoom.id} value={userRoom.id}>{userRoom.location} - {userRoom.date}</MenuItem>
+                                <MenuItem key={userRoom.id} value={userRoom.id}>
+                                    {/* Display a combination of location name, date, and time slot as a string */}
+                                    {`${userRoom.location.name}: ${userRoom.date} @ ${userRoom.timeSlot}`}
+                                </MenuItem>
                             ))}
-
                         </TextField>
+
 
                         <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>
                             Changes to be Made:
