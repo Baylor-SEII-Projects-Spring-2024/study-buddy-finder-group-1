@@ -20,6 +20,16 @@ services:
     environment:
       MYSQL_HOST: db
 
+  api-test:
+    image: study-buddy-api-test
+    build:
+      context: ../study-buddy-api
+      dockerfile: ../docker/study-buddy-api-test.Dockerfile
+    depends_on:
+      - api
+    environment:
+      MYSQL_HOST: db
+
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
