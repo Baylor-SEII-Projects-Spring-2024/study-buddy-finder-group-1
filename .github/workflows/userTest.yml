@@ -14,7 +14,7 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          docker build -t my_image .
+          docker build -t my_image docker/study-buddy-api.Dockerfile
           docker run my_image
 
 
