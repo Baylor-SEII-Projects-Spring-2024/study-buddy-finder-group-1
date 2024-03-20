@@ -6,23 +6,6 @@ import axios from 'axios';
 const AddClasses = () => {
 
     const [className, setClassName] = useState('');
-
-    // const [classesList, setClassesList] = useState([
-    //     "Biology 101",
-    //     "Introduction to Computer Science",
-    //     "Calculus II",
-    //     "World History",
-    //     "Literature 101",
-    //     "Environmental Science",
-    //     "Psychology 101",
-    //     "American Government",
-    //     "Philosophy 101",
-    //     "Art History",
-    //     "Statistics",
-    //     "Physics I",
-    //     "Linear Algebra"
-    // ]);
-
     const [classesList, setClassesList] = useState([])
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -123,7 +106,7 @@ const AddClasses = () => {
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
-                        Add Class(es) or Area(s) of Study
+                        Add Class(es)
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <FormControl fullWidth margin="normal">

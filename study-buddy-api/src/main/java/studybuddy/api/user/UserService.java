@@ -5,10 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
+import studybuddy.api.meeting.Meeting;
+import studybuddy.api.meeting.MeetingUser;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -93,4 +97,13 @@ public class UserService {
         }
     }
 
+    // ---------------- Added for Review Tutor ----------------
+    public Set<Meeting> getAllUserMeetings(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return user.getMeetings().stream()
+                .map(MeetingUser::getMeeting)
+                .collect(Collectors.toSet());
+    }
+    // ---------------- Added for Review Tutor ----------------
 }

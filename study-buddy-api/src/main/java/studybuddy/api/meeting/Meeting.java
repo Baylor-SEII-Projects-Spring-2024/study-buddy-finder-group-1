@@ -99,4 +99,3 @@ public class Meeting {
         this.userId = userId;
     }
 }
-

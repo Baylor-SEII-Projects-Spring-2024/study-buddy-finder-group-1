@@ -77,6 +77,7 @@ public class AuthEndpoint {
 
 package studybuddy.api.endpoint.authentication;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -85,11 +86,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Log4j2
 @RestController
@@ -160,4 +163,16 @@ public class AuthEndpoint {
         }
     }
     // -------------------- Added to fetch data from database since I cant view the tables --------------------
+
+    // ---------------- Added for Review Tutor ----------------
+    @GetMapping("/api/users/{userId}/meetups")
+    public ResponseEntity<?> getUserMeetups(@PathVariable Long userId) {
+        try {
+            Set<Meeting> meetups = userService.getAllUserMeetings(userId);
+            return ResponseEntity.ok(meetups);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    // ---------------- Added for Review Tutor ----------------
 }

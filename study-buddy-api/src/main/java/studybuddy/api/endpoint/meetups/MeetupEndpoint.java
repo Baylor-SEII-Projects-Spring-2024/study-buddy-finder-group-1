@@ -58,14 +58,13 @@ public class MeetupEndpoint {
     }
 
     // -------------- Added for Review Tutor --------------
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{userId}") //Dont change
     public ResponseEntity<List<Meeting>> getMeetingsByUser(@PathVariable Long userId) {
-        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId); // This method needs to be implemented
+        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId);
         if (userMeetings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(userMeetings);
     }
-
     // -------------- Added for Review Tutor --------------
 }

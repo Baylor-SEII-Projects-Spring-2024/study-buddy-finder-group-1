@@ -83,6 +83,9 @@ const MeetupCreationPage = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             const userEmail = user.user;
 
+            //Kyle added this
+            console.log("User email that is being used for create meetup: " + userEmail);
+
             if (userEmail) {
                 const basePath = 'http://localhost:8080';
                 const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
