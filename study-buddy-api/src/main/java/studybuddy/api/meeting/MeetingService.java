@@ -24,6 +24,8 @@ public class MeetingService {
         return m;
     }
 
+    public Optional<List<Meeting>> getMeetingsByUserId(Long userId) { return meetingRepository.findMeetingsByUserId(userId); }
+
     public void deleteMeeting(Long meetingId){
         meetingRepository.deleteById(meetingId);
     }

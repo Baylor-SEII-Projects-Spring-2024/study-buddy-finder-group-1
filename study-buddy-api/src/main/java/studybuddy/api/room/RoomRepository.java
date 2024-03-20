@@ -1,15 +1,24 @@
 package studybuddy.api.room;
-import java.util.*;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import studybuddy.api.room.Room;
+import studybuddy.api.location.Location;
 
-/*public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Query("SELECT r FROM Room r WHERE r.location  = : location")
-    public Optional<Room> findByName(@Param("location") String locationName);
+import java.util.List;
 
-    //test
+@Repository
+public interface RoomRepository extends JpaRepository<Room, Long> {
+
+    List<Room> findByLocationId(Long locationId);
+
+    List<Room> findByName(String name);
+
+    List<Room> findByCapacity(int capacity);
+
+    List<Room> findByLocation(Location location);
+
+    List<Room> findByCapacityGreaterThanEqual(int capacity);
+
+    List<Room> findByCapacityLessThanEqual(int capacity);
+
 }
-*/
