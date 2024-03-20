@@ -26,5 +26,4 @@ jobs:
           docker image prune -af
       - name: Run Tests
         run: |
-          docker compose -f docker/ci.docker-compose.yml run --rm app sh -c "./gradlew test"
-
+          docker-compose -f docker/ci.docker-compose.yml run --rm sh -c "./gradlew test"
