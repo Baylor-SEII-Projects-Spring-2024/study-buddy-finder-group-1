@@ -98,12 +98,12 @@ public class UserService {
     }
 
     // ---------------- Added for Review Tutor ----------------
-    public Set<Meeting> getAllUserMeetings(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return user.getMeetings().stream()
-                .map(MeetingUser::getMeeting)
-                .collect(Collectors.toSet());
-    }
+//    public Set<Meeting> getAllUserMeetings(Long userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+//        return user.getMeetings().stream()
+//                .map(MeetingUser::getMeeting)
+//                .collect(Collectors.toSet());
+//    }
     // ---------------- Added for Review Tutor ----------------
 }

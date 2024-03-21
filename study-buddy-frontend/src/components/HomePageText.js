@@ -30,7 +30,7 @@ export default function HomePageText({mainFont, whiteText}) {
                         }
                     }}
                 >
-                    Start Searching for Study Buddies!
+                    Start Searching for Study Meetups!
                 </Button>
             </Link>
         </Container>

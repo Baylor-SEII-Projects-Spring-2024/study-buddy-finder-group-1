@@ -165,14 +165,14 @@ public class AuthEndpoint {
     // -------------------- Added to fetch data from database since I cant view the tables --------------------
 
     // ---------------- Added for Review Tutor ----------------
-    @GetMapping("/api/users/{userId}/meetups")
-    public ResponseEntity<?> getUserMeetups(@PathVariable Long userId) {
-        try {
-            Set<Meeting> meetups = userService.getAllUserMeetings(userId);
-            return ResponseEntity.ok(meetups);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
+//    @GetMapping("/api/users/{userId}/meetups")
+//    public ResponseEntity<?> getUserMeetups(@PathVariable Long userId) {
+//        try {
+//            Set<Meeting> meetups = userService.getAllUserMeetings(userId);
+//            return ResponseEntity.ok(meetups);
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//        }
+//    }
     // ---------------- Added for Review Tutor ----------------
 }

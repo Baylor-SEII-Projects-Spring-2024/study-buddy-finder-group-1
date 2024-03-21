@@ -247,25 +247,7 @@ const EditMeetupPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <FormControl component="fieldset" margin="normal">
-                            <FormLabel component="legend">Meeting Type</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-label="meetingType"
-                                name="meetingType"
-                                value={meetingType}
-                                onChange={handleMeetingTypeChange}
-                            >
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-tutor" control={<Radio />} label="Group Meeting with Tutor" />
-                                    <FormControlLabel value="one-on-one-tutor" control={<Radio />} label="One-on-One Meeting with Tutor" />
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-study-buddies" control={<Radio />} label="Group Meeting with Study Buddies" />
-                                    <FormControlLabel value="one-on-one-study-buddy" control={<Radio />} label="One-on-One Meeting with Study Buddy" />
-                                </div>
-                            </RadioGroup>
-                        </FormControl>
+
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Edit Meetup
                         </Button>

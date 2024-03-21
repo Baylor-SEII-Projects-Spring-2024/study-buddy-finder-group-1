@@ -57,30 +57,32 @@ const EditProfile = () => {
             return;
         }
 
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id; // Make sure this is the correct way to obtain the userId
+
         const profileData = {
             firstName: firstName,
             lastName: lastName,
-            email_address: email_address,
+            email_address: email_address, // Make sure to include the email
             password: password,
             userType: userType
         };
 
+        console.log(profileData);
+
         try {
             const response = await axios.put(
-                "http://localhost:8080/editProfile",
+                `http://localhost:8080/editProfile/${userId}`, // Corrected endpoint URL
                 profileData
             );
 
             if (response.status === 200) {
                 setSuccessMessage('User profile updated successfully!');
-                setFirstName('');
-                setLastName('');
-                setEmail('');
-                setPassword('');
-                setConfirmPassword('');
+                // Consider resetting form fields here if needed
             }
         } catch (error) {
             console.error("Error during update:", error);
+            setErrorMessage(error.response.data); // Display server-provided error message if available
         }
     };
 
