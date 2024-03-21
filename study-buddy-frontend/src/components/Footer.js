@@ -70,19 +70,19 @@ export default function Footer({mainFont, whiteText}) {
                             Social Media
                         </Typography>
                         <Box>
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="https://www.facebook.com" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Facebook
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="https://www.x.com" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 X (Twitter)
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="https://www.tiktok.com" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Tik Tok
                             </MuiLink>
                             <br />
-                            <MuiLink href="/about-us" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
+                            <MuiLink href="https://www.snapchat.com" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
                                 Snapchat
                             </MuiLink>
                         </Box>
