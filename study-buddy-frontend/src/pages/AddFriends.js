@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
-import { Box, TextField, Button, Card, CardContent, Typography, CircularProgress, Grid } from "@mui/material";
+import { Container, Box, TextField, Button, Card, CardContent, Typography, CircularProgress, Grid } from "@mui/material";
 import { debounce } from 'lodash';
 
 const AddFriends = () => {
@@ -97,8 +97,6 @@ const AddFriends = () => {
         }
     };
 
-
-
     // Direct search function for search button click
     const handleSearchButtonClick = () => {
         if (searchTerm.trim()) {
@@ -109,59 +107,45 @@ const AddFriends = () => {
     return (
         <div>
             <Navbar showLinks={false}/>
-            <Box sx={{ pt: '8rem', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 0 }}>
-                <Grid container spacing={2} alignItems="center" justifyContent="center">
-                    <Grid item xs={8}>
-                        <TextField
-                            label="Search Users"
-                            variant="outlined"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Button variant="contained" color="primary" onClick={handleSearchButtonClick} disabled={loading}>
-                            Search
-                        </Button>
-                    </Grid>
-                </Grid>
-                {loading && <CircularProgress />}
-                {searchResults.map((user) => (
-                    <Card key={user.id} sx={{ minWidth: 275, mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <CardContent>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                {user.firstName} {user.lastName}
-                            </Typography>
-                            <Typography variant="body2">
-                                {user.email_address}
-                            </Typography>
-                        </CardContent>
-                        {isAlreadyFriend(user.id) ? (
-                            <Typography sx={{ m: 1 }} color="text.secondary">
-                                Already friends
-                            </Typography>
-                        ) : isPendingRequest(user.id) ? (
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                disabled
-                                sx={{ m: 1 }}
-                            >
-                                Pending
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => handleSendFriendRequest(user.id)}
-                                sx={{ m: 1 }}
-                            >
-                                Add Friend
-                            </Button>
-                        )}
-                    </Card>
-                ))}
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
+                <Container maxWidth="md">
+                    <Typography variant="h3" component="h1" gutterBottom style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        Search for Friends
+                    </Typography>
+
+                    <TextField
+                        label="Search Users"
+                        variant="outlined"
+                        fullWidth
+                        style={{ margin: "20px 0" }}
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                    <Button variant="contained" color="primary" onClick={handleSearchButtonClick}>
+                        Search
+                    </Button>
+
+                    {loading && <CircularProgress />}
+                    {searchResults.map((user) => (
+                        <Card key={user.id} style={{ margin: "20px 0" }}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">{`${user.firstName} ${user.lastName}`}</Typography>
+                                <Typography color="textSecondary">{user.email_address}</Typography>
+                                {isAlreadyFriend(user.id) ? (
+                                    <Typography color="textSecondary">Already friends</Typography>
+                                ) : isPendingRequest(user.id) ? (
+                                    <Button variant="contained" color="secondary" disabled style={{marginTop: "10px"}}>
+                                        Pending
+                                    </Button>
+                                ) : (
+                                    <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleSendFriendRequest(user.id)}>
+                                        Add Friend
+                                    </Button>
+                                )}
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Container>
             </Box>
         </div>
     );

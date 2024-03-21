@@ -106,6 +106,19 @@ const MeetupCreationPage = () => {
     }, []);
 
 
+        //     //Kyle added this
+        //     console.log("User email that is being used for create meetup: " + userEmail);
+        //
+        //     if (userEmail) {
+        //         const basePath = 'http://localhost:8080';
+        //         const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
+        //         setUserEmail(response.data.email_address);
+        //     } else {
+        //         console.error('No email found in localStorage');
+        //     }
+        // } catch (error) {
+        //     console.error('Error fetching login info:', error);
+        // }
 
     useEffect(() => {
         const getFriendsList = async () => {
@@ -342,26 +355,9 @@ const MeetupCreationPage = () => {
                                     </MenuItem>
                                 ))}
                             </Select>
+
                         </FormControl>
-                        <FormControl component="fieldset" margin="normal">
-                            <FormLabel component="legend">Meeting Type</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-label="meetingType"
-                                name="meetingType"
-                                value={meetingType}
-                                onChange={handleMeetingTypeChange}
-                            >
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-tutor" control={<Radio />} label="Group Meeting with Tutor" />
-                                    <FormControlLabel value="one-on-one-tutor" control={<Radio />} label="One-on-One Meeting with Tutor" />
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-study-buddies" control={<Radio />} label="Group Meeting with Study Buddies" />
-                                    <FormControlLabel value="one-on-one-study-buddy" control={<Radio />} label="One-on-One Meeting with Study Buddy" />
-                                </div>
-                            </RadioGroup>
-                        </FormControl>
+
                         <Snackbar
                             open={openSnackbar}
                             autoHideDuration={6000}

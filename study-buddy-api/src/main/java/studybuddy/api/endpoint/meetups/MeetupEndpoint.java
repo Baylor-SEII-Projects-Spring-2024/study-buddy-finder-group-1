@@ -12,9 +12,7 @@ import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -125,4 +123,15 @@ public class MeetupEndpoint {
         meetingService.deleteMeeting(id);
         return ResponseEntity.ok().build();
     }
+
+    // -------------- Added for Review Tutor --------------
+//    @GetMapping("/user/{userId}") //Dont change
+//    public ResponseEntity<List<Meeting>> getMeetingsByUser(@PathVariable Long userId) {
+//        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId);
+//        if (userMeetings.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(userMeetings);
+//    }
+    // -------------- Added for Review Tutor --------------
 }

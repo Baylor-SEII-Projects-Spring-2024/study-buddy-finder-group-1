@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 
 const EditClasses = () => {
+
     const [className, setClassName] = useState('');
     const [areaOfStudy, setAreaOfStudy] = useState('');
     const [classes, setClasses] = useState([]);
@@ -13,15 +14,6 @@ const EditClasses = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
     const [snackbarType, setSnackbarType] = useState('success'); // 'success' or 'error'
-
-
-
-    // useEffect(() => {
-    //     // Fetch user's classes or areas of study from the backend
-    //     // Mocking data for demonstration
-    //     const mockClasses = ['Linear Algebra', 'Physics', 'Biology'];
-    //     setClasses(mockClasses);
-    // }, []);
 
     useEffect(() => {
         const fetchUserCourses = async () => {
@@ -144,7 +136,7 @@ const EditClasses = () => {
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" component="h1" gutterBottom style={{ textAlign: 'center' }}>
-                        Edit Class(es) or Area(s) of Study
+                        Edit Class(es)
                     </Typography>
 
                     <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>

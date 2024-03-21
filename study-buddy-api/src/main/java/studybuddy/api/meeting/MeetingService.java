@@ -34,6 +34,12 @@ public class MeetingService {
         meetingRepository.deleteById(meetingId);
     }
 
+    // -------------- Added for Review Tutor --------------
+    //public List<Meeting> getMeetingsByUserId(Long userId) {
+        //return meetingRepository.findByUserId(userId);
+    //}
+    // -------------- Added for Review Tutor --------------
+
     public List<Meeting> getMeetingsByUserId(Long userId) {
         return meetingRepository.findMeetingsByUserId(userId);
     }

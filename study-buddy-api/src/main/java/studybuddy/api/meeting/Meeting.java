@@ -13,7 +13,7 @@ import java.util.*;
 @Table(name = Meeting.TABLE_NAME)
 public class Meeting {
 
-  //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
+    //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userEmail
 
     public static final String TABLE_NAME = "MEETINGS";
 
@@ -63,7 +63,8 @@ public class Meeting {
     )
     private Set<User> users = new HashSet<>();
 
-    public Meeting() {}
+    public Meeting() {
+    }
 
     public Meeting(Location location, String timeSlot, String date, String room) {
         this.location = location;
@@ -100,7 +101,4 @@ public class Meeting {
     public void setLocation(Location location) {
         this.location = location;
     }
-
 }
-
-

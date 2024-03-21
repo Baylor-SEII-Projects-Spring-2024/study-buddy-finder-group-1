@@ -12,6 +12,16 @@ import java.util.*;
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     //meeting needs id, title, description, location id, startTime(DATE), endTime(DATE), and userID
+
+
+    //@Query("SELECT m FROM Meeting m WHERE m.userId = :USER_ID")
+    //Optional<Meeting> findMeetingByUserId(@Param("USER_ID") Long userId);
+
+    // -------------- Added for Review Tutor --------------
+    //@Query("SELECT m FROM Meeting m WHERE m.userId = :userId")
+    //List<Meeting> findByUserId(@Param("userId") Long userId);
+    // -------------- Added for Review Tutor --------------
+
     @Query("SELECT m FROM Meeting m JOIN m.users u WHERE u.id = :userId")
     List<Meeting> findMeetingsByUserId(@Param("userId") Long userId);
 

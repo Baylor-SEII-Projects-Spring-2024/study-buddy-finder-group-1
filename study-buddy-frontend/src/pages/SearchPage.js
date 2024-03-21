@@ -1,56 +1,55 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, TextField, Button, Card, CardContent } from '@mui/material';
+import {
+    Box,
+    Container,
+    Typography,
+    TextField,
+    Button,
+    Card,
+    CardContent
+} from '@mui/material';
 import Navbar from "@/components/Navbar";
 
 const SearchPage = () => {
-
-    // Our custom style for the text
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
     };
 
-    // State to hold the search query
     const [searchQuery, setSearchQuery] = useState('');
-    // State to hold search results
-    const [results, setResults] = useState([]);
+    const [courses, setCourses] = useState([]);
 
-    // ------------------------------- Mock function to simulate search - Replace with search logic -------------------------------
     const performSearch = () => {
-        // Simulated results
-        const simulatedResults = [
-            { name: "Taylor Garcia", subject: "Calculus 1", location: "Browning Library" },
-            { name: "Casey Jones", subject: "Computer Science 1", location: "Baylor Science Building" },
-            { name: "Peyton Williams", subject: "Software Engineering 2", location: "Moody Library" },
-            { name: "Taylor Johnson", subject: "Basket Weaving", location: "Student Union Building" },
+        // Simulated fetching from backend
+        const simulatedCourses = [
+            { id: 1, name: "Introduction to Programming", description: "Learn the basics of programming", credit: 4, department: "Computer Science" },
+            { id: 2, name: "Advanced Mathematics", description: "Dive deep into calculus and algebra", credit: 4, department: "Mathematics" },
+            { id: 3, name: "Calculus I", description: "Introduction to differential calculus", credit: 4, department: "Mathematics" },
+
         ];
-        setResults(simulatedResults);
+
+        // Replace this with actual search logic based on searchQuery
+        setCourses(simulatedCourses);
     };
 
-    // ------------------------------- Mock function to handle sending a friend request -------------------------------
-    const handleSendFriendRequest = (name) => {
-        alert(`Friend request sent to ${name}!`);
-
-        // ------------------------------- Here, implement the logic to actually send a friend request -------------------------------
-
-
+    const handleJoinCourseStudyGroup = (courseId) => {
+        alert(`You have expressed interest in joining a study group for course ID: ${courseId}!`);
+        // Implement the logic to actually join a study group or session
     };
-
 
     return (
         <div>
             <Navbar showLinks={false} />
-
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md" style={textStyle}>
                     <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center' }}>
-                        Search for Study Buddies
+                        Find Study Meetups
                     </Typography>
 
                     <TextField
-                        label="Search by class, area of study, etc."
+                        label="Search courses by name, department, etc."
                         variant="outlined"
                         fullWidth
-                        style={{margin: "20px 0"}}
+                        style={{ margin: "20px 0" }}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -58,14 +57,14 @@ const SearchPage = () => {
                         Search
                     </Button>
 
-                    {results.map((result, index) => (
-
+                    {courses.map((course, index) => (
                         <Card key={index} style={{ margin: "20px 0" }}>
                             <CardContent>
-                                <Typography variant="h5" component="h2">{result.name}</Typography>
-                                <Typography color="textSecondary">{result.subject}</Typography>
-                                <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleSendFriendRequest(result.name)}>
-                                    Send Friend Request
+                                <Typography variant="h5" component="h2">{course.name}</Typography>
+                                <Typography color="textSecondary">{course.description}</Typography>
+                                <Typography color="textSecondary">{`Credit: ${course.credit} | Department: ${course.department}`}</Typography>
+                                <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleJoinCourseStudyGroup(course.id)}>
+                                    Join Study Group
                                 </Button>
                             </CardContent>
                         </Card>
