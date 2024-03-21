@@ -1,4 +1,4 @@
-name:  Test User
+name: Test User
 
 on:
   push:
@@ -6,30 +6,16 @@ on:
       - main
 
 jobs:
-  build:
-
+  build-and-deploy:
     runs-on: self-hosted
-
-    services:
-      mysql:
-        image: mysql:latest
-
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        java-version: '17'
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Build with Gradle
-      run: ./gradlew build
-
-    - name: Run tests
-      run: ./gradlew test
-
+      - name: Build and Deploy
+        run: |
+          docker build -t my_image docker/study-buddy-api.Dockerfile
+          docker run my_image
 
 
 

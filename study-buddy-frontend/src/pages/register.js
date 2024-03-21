@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Grid } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 
 export default function Register() {
+    try {
+        // Your code that may throw an error
+
+    console.log('Here!!!!!!!!!!!!!',window.location);
 
     const router = useRouter();
     const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
@@ -13,6 +17,15 @@ export default function Register() {
     const handleRegistrationSuccess = () => {
         setRegistrationSuccess(true); // Set registration success state to true
     };
+    console.log('Debug message: Register component is rendering.');
+    // Use useEffect to run code only on the client-side
+    useEffect(() => {
+        // Check if window object is defined
+        if (typeof window !== 'undefined') {
+            // Access window.location only if window object is available
+            console.log('Debug message: window.location',window.location);
+        }
+    }, []);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -31,4 +44,13 @@ export default function Register() {
             )}
         </div>
     );
+    } catch (error) {
+        console.error("Error in register.js:", error);
+        // Optionally, you can also log the stack trace
+        console.error(error.stack);
+        // Optionally, you can display a user-friendly error message on the page
+        // This is particularly useful for client-side rendering errors
+        // For example:
+        // setError("An error occurred. Please try again later.");
+    }
 }

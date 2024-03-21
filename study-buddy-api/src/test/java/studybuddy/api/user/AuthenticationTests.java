@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("testdb")  // make these tests use the H2 in-memory DB instead of your actual DB
 @Transactional             // make these tests revert their DB changes after the test is complete
 public class AuthenticationTests {
-/*    @Autowired
+    @Autowired
     private UserService userService;
 
     @Test
@@ -40,5 +40,5 @@ public class AuthenticationTests {
     void testUserFind() {
         Optional<User> user1 = userService.findUser(1L);
         assertTrue(user1.isEmpty());
-    }*/
+    }
 }
