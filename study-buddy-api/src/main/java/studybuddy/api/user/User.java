@@ -46,6 +46,10 @@ public class User {
     @Column(name = "USER_TYPE")
     String userType;
 
+    @Getter
+    @Column(name = "USER_RATING")
+    Double rating;
+
     @ManyToMany
     @JoinTable(
             name = "USER_COURSES",
@@ -88,4 +92,13 @@ public class User {
 
     public String getEmail() { return email_address;}
 
+    public Set<User> isFriendOf(Set<User> users) {
+        Set<User> friends = new HashSet<>();
+
+        for (User u : users) {
+            //code to search database for the users friends
+            friends.add(u);
+        }
+        return friends;
+    }
 }
