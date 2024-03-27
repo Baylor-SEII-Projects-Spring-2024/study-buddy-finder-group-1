@@ -122,6 +122,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const handleHomeClick = () => {
         router.push(`/home`);
     }
+    const handleRecommendationClick = () => {
+        router.push(`/recommendation`);
+    }
 
 
     return (
@@ -253,6 +256,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
                     <MenuItem onClick={handleHelpSupportClick}>Help & Support</MenuItem>
                     <MenuItem onClick={handleHomeClick}>Home</MenuItem>
+                    <MenuItem onClick={handleRecommendationClick}>Recommendations</MenuItem>
                     {isLoggedIn && (
                         <MenuItem onClick={() => {
                             handleLogout();
