@@ -17,11 +17,10 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     //location has : id, name , address, capacity,  available_start, available_end
 
     /* would be used for search option if ever created */
-<<<<<<< HEAD
+
     @Query("SELECT l FROM Location l WHERE l.name  = : nagit gme")
     public List<Location> findByName(@Param("name") String end);
-=======
->>>>>>> 130f12a800b2b909bf19e368e16a85cfad913529
+
     @Query("SELECT l FROM Location l WHERE l.hoursAvailableEnd  = : end")
     public List<Location> findByHoursAvailableEnd(@Param("end") Date end);
     @Query("SELECT l FROM Location l WHERE l.hoursAvailableStart  = : start")
