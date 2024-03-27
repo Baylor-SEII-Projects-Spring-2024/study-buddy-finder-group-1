@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Container, Typography, TextField, Button, MenuItem, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import {
+    Box,
+    Container,
+    Typography,
+    TextField,
+    Button,
+    MenuItem,
+    FormControl,
+    FormLabel,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+    InputLabel, Select, OutlinedInput, Chip, Snackbar
+} from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
@@ -21,13 +34,19 @@ const mockClasses = [
 
 const MeetupCreationPage = () => {
     const [classAndArea, setClassAndArea] = useState('');
-    const [location, setLocation] = useState('');
+    const [locations, setLocations] = useState([]);
     const [meetingType, setMeetingType] = useState('');
     const [availableRooms, setAvailableRooms] = useState([]);
     const [room, setRoom] = useState('');
     const [date, setDate] = useState('');
     const [timeSlot, setTimeSlot] = useState('');
     const [userEmail, setUserEmail] = useState('');
+    const [friendsList, setFriendsList] = useState([]);
+    const [selectedFriends, setSelectedFriends] = useState([]);
+    const [location, setLocation] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
 
     const timeSlots = [
         "10:00 AM - 12:00 PM",
@@ -64,50 +83,57 @@ const MeetupCreationPage = () => {
         setRoom(event.target.value);
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        // Code to handle meetup creation
-        const meetupData = {
-            classAndArea: classAndArea,
-            location: location,
-            room: room,
-            //meetingType: meetingType,
-            date: date,
-            timeSlot: timeSlot,
-            userEmail: userEmail
+    const handleSelectChange = (event) => {
+        const value = event.target.value;
+        setSelectedFriends(
+            // on autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
+    useEffect(() => {
+        const fetchLocations = async () => {
+            const basePath = 'http://localhost:8080';
+            try {
+                const response = await axios.get(`${basePath}/locations`);
+                setLocations(response.data); // Assuming response.data is an array of location objects
+            } catch (error) {
+                console.error("Error fetching locations:", error);
+            }
         };
 
-        try {
+        fetchLocations();
+    }, []);
 
-            //--------------- This is how you grab the current user ---------------
-            const user = JSON.parse(localStorage.getItem('user'));
-            const userEmail = user.user;
 
-            if (userEmail) {
-                const basePath = 'http://localhost:8080';
-                const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
-                setUserEmail(response.data.email_address);
-            } else {
-                console.error('No email found in localStorage');
-            }
-        } catch (error) {
-            console.error('Error fetching login info:', error);
-        }
+        //     //Kyle added this
+        //     console.log("User email that is being used for create meetup: " + userEmail);
+        //
+        //     if (userEmail) {
+        //         const basePath = 'http://localhost:8080';
+        //         const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
+        //         setUserEmail(response.data.email_address);
+        //     } else {
+        //         console.error('No email found in localStorage');
+        //     }
+        // } catch (error) {
+        //     console.error('Error fetching login info:', error);
+        // }
 
-        try {
-            const response = await axios.post(
-                "http://localhost:8080/createMeetup",
-                {
-                    //classAndArea: meetupData.classAndArea,
-                    location: meetupData.location,
-                    room: meetupData.room,
-                    //meetingType: meetupData.meetingType,
-                    date: meetupData.date,
-                    timeSlot: meetupData.timeSlot,
-                    userEmail: meetupData.userEmail
+    useEffect(() => {
+        const getFriendsList = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                if (userId) {
+                    const basePath = 'http://localhost:8080';
+                    const response = await axios.get(`${basePath}/friendships/${userId}/friends`);
+                    setFriendsList(response.data);
+                    console.log(response.data);
                 }
-            );
 
+<<<<<<< HEAD
             if (response.status === 200 && response.data.userId) {
                 console.log("Meetup created succesfuly!");
 
@@ -120,11 +146,54 @@ const MeetupCreationPage = () => {
                 setTimeSlot('');
                 setUserEmail('');
 
+=======
+            } catch (error) {
+                console.log("Error", error)
+            }
+        }
+        getFriendsList();
+    }, []);
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.email) {
+            setUserEmail(user.email);
+        }
+    }, []);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const basePath = 'http://localhost:8080';
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+
+        // Ensure you are sending 'userIds' and 'userId' in your payload
+        const payload = {
+            locationId: location,
+            room: room,
+            date: date,
+            timeSlot: timeSlot,
+            userIds: selectedFriends.map(id => parseInt(id)), // Ensure IDs are integers
+            userId: userId, // Make sure this matches the expected key in the backend
+        };
+
+        console.log(payload);
+
+        try {
+            const response = await axios.post(`${basePath}/meetings/create`, payload);
+
+            if (response.status === 200) {
+                console.log("Meeting created successfully", response.data);
+                setOpenSnackbar(true);
+                setSnackbarMessage("Meeting successfully created!");
+>>>>>>> 130f12a800b2b909bf19e368e16a85cfad913529
             }
         } catch (error) {
-            console.error("Error during update:", error);
+            console.error("Error creating meeting:", error);
         }
     };
+
 
     useEffect(() => {
         if (location) {
@@ -155,6 +224,13 @@ const MeetupCreationPage = () => {
             dates.push(date.toISOString().split('T')[0]); // Format: YYYY-MM-DD
         }
         return dates;
+    };
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
     };
 
     return (
@@ -191,8 +267,8 @@ const MeetupCreationPage = () => {
                             margin="normal"
                         >
                             {locations.map((location) => (
-                                <MenuItem key={location} value={location}>
-                                    {location}
+                                <MenuItem key={location.id} value={location.id}>
+                                    {location.name}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -244,25 +320,70 @@ const MeetupCreationPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <FormControl component="fieldset" margin="normal">
-                            <FormLabel component="legend">Meeting Type</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-label="meetingType"
-                                name="meetingType"
-                                value={meetingType}
-                                onChange={handleMeetingTypeChange}
+                        <FormControl fullWidth margin="normal">
+                            <InputLabel id="friends-select-label">Select Friends</InputLabel>
+                            <Select
+                                labelId="friends-select-label"
+                                id="friends-select"
+                                multiple
+                                value={selectedFriends}
+                                onChange={handleSelectChange}
+                                input={<OutlinedInput id="select-multiple-chip" label="Select Friends" />}
+                                renderValue={(selected) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                        {selected.map((value) => {
+                                            const friend = friendsList.find(friend => friend.id === value);
+                                            if (!friend) return null;
+
+                                            const initials = `${friend.firstName[0]}${friend.lastName[0]}`;
+
+                                            const chipStyle = {
+                                                backgroundColor: friend.userType === 'Tutor' ? 'yellow' : 'blue',
+                                                color: 'black',
+                                            };
+
+                                            return (
+                                                <Chip
+                                                    key={value}
+                                                    label={initials.toUpperCase()}
+                                                    style={chipStyle}
+                                                />
+                                            );
+                                        })}
+                                    </Box>
+                                )}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            maxHeight: 224,
+                                            width: 250,
+                                        },
+                                    },
+                                }}
                             >
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-tutor" control={<Radio />} label="Group Meeting with Tutor" />
-                                    <FormControlLabel value="one-on-one-tutor" control={<Radio />} label="One-on-One Meeting with Tutor" />
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-study-buddies" control={<Radio />} label="Group Meeting with Study Buddies" />
-                                    <FormControlLabel value="one-on-one-study-buddy" control={<Radio />} label="One-on-One Meeting with Study Buddy" />
-                                </div>
-                            </RadioGroup>
+                                {friendsList.map((friend) => (
+                                    <MenuItem
+                                        key={friend.id}
+                                        value={friend.id}
+                                    >
+                                        {friend.firstName} {friend.lastName} with a role of: {friend.userType}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+
                         </FormControl>
+
+                        <Snackbar
+                            open={openSnackbar}
+                            autoHideDuration={6000}
+                            onClose={handleCloseSnackbar}
+                            message={snackbarMessage}
+                            ContentProps={{
+                                style: {
+                                    backgroundColor: 'green', // You can customize this as needed
+                                },
+                            }}
+                        />
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Create Meetup
                         </Button>

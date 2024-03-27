@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import studybuddy.api.course.Course;
+import studybuddy.api.meeting.*;
 
 import java.util.*;
 
@@ -45,6 +46,10 @@ public class User {
     @Column(name = "USER_TYPE")
     String userType;
 
+    @Getter
+    @Column(name = "USER_RATING")
+    Double rating;
+
     @ManyToMany
     @JoinTable(
             name = "USER_COURSES",
@@ -52,6 +57,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     private Set<Course> courses = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Meeting> meetings = new HashSet<>();
 
     public User(String email, String password, String userType) {
         this.email_address = email;
@@ -84,4 +92,13 @@ public class User {
 
     public String getEmail() { return email_address;}
 
+    public Set<User> isFriendOf(Set<User> users) {
+        Set<User> friends = new HashSet<>();
+
+        for (User u : users) {
+            //code to search database for the users friends
+            friends.add(u);
+        }
+        return friends;
+    }
 }

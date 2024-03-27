@@ -13,13 +13,14 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class EditProfileEndpoint {
+
     @Autowired
     private UserService userService;
 
-    @PutMapping("/editProfile")
-    public ResponseEntity<String> editUserProfile(@RequestBody User updatedUser) {
+    @PutMapping("/editProfile/{id}")
+    public ResponseEntity<String> editUserProfile(@PathVariable("id") Long userId, @RequestBody User updatedUser) {
+        System.out.println("Received update for user: " + updatedUser.toString());
         try {
-            // Perform validation on the updated user data
             if (updatedUser.getFirstName() == null || updatedUser.getFirstName().isEmpty() ||
                     updatedUser.getLastName() == null || updatedUser.getLastName().isEmpty() ||
                     updatedUser.getEmail() == null || updatedUser.getEmail().isEmpty() ||
@@ -29,27 +30,22 @@ public class EditProfileEndpoint {
                 return ResponseEntity.badRequest().body("All fields are required");
             }
 
-            // Retrieve the existing user from the database
-            Optional<User> existingUserOptional = userService.findUserByEmail(updatedUser.getEmail());
+            Optional<User> existingUserOptional = userService.findUser(userId);
             if (!existingUserOptional.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Unwrap the Optional to get the actual User object
             User existingUser = existingUserOptional.get();
-
-            // Update the user data
             existingUser.setFirstName(updatedUser.getFirstName());
             existingUser.setLastName(updatedUser.getLastName());
+            existingUser.setEmail_address(updatedUser.getEmail());
             existingUser.setPassword(updatedUser.getPassword());
             existingUser.setUserType(updatedUser.getUserType());
 
-            // Save the updated user to the database
             userService.saveUser(existingUser);
 
             return ResponseEntity.ok("Profile updated successfully");
         } catch (Exception e) {
-            // Log any exceptions
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update profile");
         }

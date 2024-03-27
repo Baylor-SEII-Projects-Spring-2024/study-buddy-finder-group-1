@@ -1,5 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import { Box, Container, Typography, TextField, Button, Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from '@mui/material';
+import {
+    Box,
+    Container,
+    Typography,
+    TextField,
+    Button,
+    Radio,
+    RadioGroup,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Alert
+} from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
@@ -10,6 +22,8 @@ const EditProfile = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [userType, setUserType] = useState('student'); // Default to student
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
@@ -37,32 +51,38 @@ const EditProfile = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Code to handle profile update
+
+        if (password !== confirmPassword) {
+            setErrorMessage('Passwords do not match.');
+            return;
+        }
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id; // Make sure this is the correct way to obtain the userId
+
         const profileData = {
             firstName: firstName,
             lastName: lastName,
-            email_address: email_address,
+            email_address: email_address, // Make sure to include the email
             password: password,
             userType: userType
         };
 
+        console.log(profileData);
+
         try {
-            const response = await axios.post(
-                "http://localhost:8080/editProfile",
-                {
-                    firstName: profileData.firstName,
-                    lastName: profileData.lastName,
-                    email_address: profileData.email_address,
-                    password: profileData.password,
-                    userType: profileData.userType
-                }
+            const response = await axios.put(
+                `http://localhost:8080/editProfile/${userId}`, // Corrected endpoint URL
+                profileData
             );
 
-            if (response.status === 200 && response.data.userId) {
-                // Your logic here
+            if (response.status === 200) {
+                setSuccessMessage('User profile updated successfully!');
+                // Consider resetting form fields here if needed
             }
         } catch (error) {
             console.error("Error during update:", error);
+            setErrorMessage(error.response.data); // Display server-provided error message if available
         }
     };
 
@@ -132,6 +152,16 @@ const EditProfile = () => {
                                 <FormControlLabel value="tutor" control={<Radio/>} label="Tutor"/>
                             </RadioGroup>
                         </FormControl>
+                        {errorMessage && (
+                            <Alert severity="error" style={{ marginBottom: '20px' }}>
+                                {errorMessage}
+                            </Alert>
+                        )}
+                        {successMessage && (
+                            <Alert severity="success" style={{ marginBottom: '20px' }}>
+                                {successMessage}
+                            </Alert>
+                        )}
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Update Profile
                         </Button>

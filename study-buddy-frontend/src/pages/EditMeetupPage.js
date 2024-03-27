@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, TextField, Button, MenuItem, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
 
 const locations = [
     "Moody Library",
@@ -19,6 +20,7 @@ const mockClasses = [
 ];
 
 const EditMeetupPage = () => {
+    const [userRooms, setUserRooms] = useState([]);
     const [selectedMeetupId, setSelectedMeetupId] = useState('');
     const [classAndAreaInput, setClassAndAreaInput] = useState('');
     const [locationInput, setLocationInput] = useState('');
@@ -69,25 +71,49 @@ const EditMeetupPage = () => {
         setSelectedRoom(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    useEffect(() => {
+        const fetchUserMeetings = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+
+                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`)
+                setUserRooms(response.data);
+                console.log(response.data)
+            } catch (error) {
+                console.log("Error: ", error)
+            }
+        }
+        fetchUserMeetings();
+    }, []);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Code to handle meetup update
-        const meetupData = {
-            id: selectedMeetupId, // Include the selected meetup ID for identification
-            classAndArea: classAndAreaInput,
-            location: locationInput,
+
+
+        const payload = {
+            locationId: locationInput,
             room: selectedRoom,
-            meetingType: meetingType,
             date: selectedDate,
-            timeSlot: selectedTimeSlot
+            timeSlot: selectedTimeSlot,
         };
-        console.log(meetupData);
+
+        console.log(payload)
+
+        try {
+
+            const response = await axios.put(`http://localhost:8080/meetings/${selectedMeetupId}`, payload);
+            console.log('Meeting updated successfully:', response.data);
+
+        } catch (error) {
+            console.error('Error updating meeting:', error);
+
+        }
     };
 
+
     useEffect(() => {
-        // Fetch meetup details based on the selectedMeetupId
-        // Here you might want to fetch meetup details from your backend API
-        // Update classAndAreaInput, locationInput, selectedRoom, selectedDate, selectedTimeSlot, and meetingType accordingly
+
     }, [selectedMeetupId]);
 
     const fetchRoomsByLocation = (location) => {
@@ -130,10 +156,14 @@ const EditMeetupPage = () => {
                             fullWidth
                             margin="normal"
                         >
-                            {/* You may dynamically populate this dropdown with user's meetups */}
-                            <MenuItem value="1">Meetup 1</MenuItem>
-                            <MenuItem value="2">Meetup 2</MenuItem>
+                            {userRooms.map((userRoom) => (
+                                <MenuItem key={userRoom.id} value={userRoom.id}>
+                                    {/* Display a combination of location name, date, and time slot as a string */}
+                                    {`${userRoom.location.name}: ${userRoom.date} @ ${userRoom.timeSlot}`}
+                                </MenuItem>
+                            ))}
                         </TextField>
+
 
                         <Typography variant="h5" component="h1" gutterBottom style={{ textAlign: 'center', marginTop: '40px' }}>
                             Changes to be Made:
@@ -217,25 +247,7 @@ const EditMeetupPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <FormControl component="fieldset" margin="normal">
-                            <FormLabel component="legend">Meeting Type</FormLabel>
-                            <RadioGroup
-                                row
-                                aria-label="meetingType"
-                                name="meetingType"
-                                value={meetingType}
-                                onChange={handleMeetingTypeChange}
-                            >
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-tutor" control={<Radio />} label="Group Meeting with Tutor" />
-                                    <FormControlLabel value="one-on-one-tutor" control={<Radio />} label="One-on-One Meeting with Tutor" />
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <FormControlLabel value="group-study-buddies" control={<Radio />} label="Group Meeting with Study Buddies" />
-                                    <FormControlLabel value="one-on-one-study-buddy" control={<Radio />} label="One-on-One Meeting with Study Buddy" />
-                                </div>
-                            </RadioGroup>
-                        </FormControl>
+
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Edit Meetup
                         </Button>
