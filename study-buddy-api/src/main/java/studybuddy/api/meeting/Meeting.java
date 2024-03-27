@@ -56,8 +56,8 @@ public class Meeting {
     String timeSlot;
 
     @Getter
-    @Column(name = "SUBJECT")
-    String subject;
+    @Column(name = "COURSE_NAME")
+    String courseName;
 
     @ManyToMany
     @JoinTable(
@@ -81,7 +81,7 @@ public class Meeting {
         this.room = room;
     }
 
-    public void setDagitte(String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
