@@ -172,7 +172,6 @@ const MeetupCreationPage = () => {
                 console.log("Meeting created successfully", response.data);
                 setOpenSnackbar(true);
                 setSnackbarMessage("Meeting successfully created!");
->>>>>>> 130f12a800b2b909bf19e368e16a85cfad913529
             }
         } catch (error) {
             console.error("Error creating meeting:", error);
