@@ -132,21 +132,6 @@ const MeetupCreationPage = () => {
                     setFriendsList(response.data);
                     console.log(response.data);
                 }
-
-<<<<<<< HEAD
-            if (response.status === 200 && response.data.userId) {
-                console.log("Meetup created succesfuly!");
-
-                setClassAndArea('');
-                setLocation('');
-                setMeetingType('');
-                setAvailableRooms([]);
-                setRoom('');
-                setDate('');
-                setTimeSlot('');
-                setUserEmail('');
-
-=======
             } catch (error) {
                 console.log("Error", error)
             }
