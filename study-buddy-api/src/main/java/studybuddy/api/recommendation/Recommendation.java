@@ -49,8 +49,8 @@ public class Recommendation {
             double distanceFromTarget = 1;
 
             //TODO PARSE THE TIMES AND ASSIGN
-            LocalDate desiredLocalDateTime;
-            LocalDate meetingTime;
+            LocalDate desiredLocalDateTime = null;
+            LocalDate meetingTime = null;
 
             //get the difference
             long daysDifference = ChronoUnit.HOURS.between(desiredLocalDateTime, meetingTime);
