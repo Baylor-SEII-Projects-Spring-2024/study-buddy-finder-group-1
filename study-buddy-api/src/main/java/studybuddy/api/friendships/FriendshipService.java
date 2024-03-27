@@ -64,5 +64,4 @@ public class FriendshipService {
                 .filter(user -> !user.getId().equals(userId))
                 .collect(Collectors.toList());
     }
-
 }
