@@ -6,6 +6,7 @@ import lombok.Getter;
 import studybuddy.api.user.User;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -64,5 +65,18 @@ public class Course {
 
     public void setAreaOfStudy(String areaOfStudy) {
         this.areaOfStudy = areaOfStudy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(name, course.name) && Objects.equals(areaOfStudy, course.areaOfStudy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, areaOfStudy);
     }
 }

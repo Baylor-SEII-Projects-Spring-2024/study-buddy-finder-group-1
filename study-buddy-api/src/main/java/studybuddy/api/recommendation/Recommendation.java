@@ -79,25 +79,62 @@ public class Recommendation {
         }
         return recommendedMeetings;
     }
-    public static Set<User> getRecommendedFriends(User u, Set<User> allUsers) {
-        Set<User> recommendedFriends = new HashSet<>();
-        Set<Course> userCourses = u.getCourses();
-        //loop through all existing users
-        for (User q : allUsers) {
-            Set<Course> tempCourses = q.getCourses();
-            //loop through all our user's courses
-            for (Course c : userCourses) {
-                //loop through all the temp user's courses
-                for (Course t : tempCourses) {
-                    //if they have the same course, add to recommended friends
-                    if (c.getName().equals(t.getName())) {
-                        recommendedFriends.add(q);
+
+
+    /* under the assumption of list of users to befriend. Criteria will be based off of courses*/
+    //todo: Mutual friends would be a consideration as well for weight.
+    public static List<User> getRecommendedFriends(User u,List<User> allUsers){
+        //Use weighted map
+        Map<Double,User> weightedUsers = new HashMap<>();
+
+        for(User other: allUsers){
+            double weight = 0.0;
+            /* only do weights of other user*/
+            if(u.getId() != other.getId()) {
+                //fixme: check add weight if user course is in list of courses for other user
+                //fixme: TAX 1.5 FOR TUTORS!
+                for (Course uCourse : u.getCourses()) {
+                    if (other.getCourses().contains(uCourse)) {
+                        double add = SUBJECT_WEIGHT;
+
+                        if (other.getUserType().equals("Tutor")) {
+                            add *= 1.5;
+                        }
+                        weight += add;
                     }
                 }
+                weightedUsers.put(weight, other);
             }
         }
+
+        //sort meetings and return the top three
+        List<User> recommendedFriends = new ArrayList<>();
+
+        //sort the map
+        List<Map.Entry<Double, User>> sortedKeys = new ArrayList<>(weightedUsers.entrySet());
+        Collections.sort(sortedKeys, Collections.reverseOrder(Map.Entry.comparingByKey()));
+
+        System.out.println("Sorted map:");
+        for (Map.Entry<Double, User> entry : sortedKeys) {
+            System.out.println(entry.getKey());
+        }
+
+        //add the first three
+        int count = 0;
+        for (Map.Entry<Double, User> entry : sortedKeys) {
+            if (count < 3) {
+                recommendedFriends.add(entry.getValue());
+                count++;
+            }
+            else {
+                break;
+            }
+        }
+
         return recommendedFriends;
     }
+}
+    
     public static Set<User> getRecommendedTutors(User u, Set<User> allTutors) {
         Set<User> recommendedTutors = new HashSet<>();
         Set<Course> userCourses = u.getCourses();
@@ -127,3 +164,4 @@ public class Recommendation {
         return new HashSet<>(recommendedTutorsList);
     }
 }
+
