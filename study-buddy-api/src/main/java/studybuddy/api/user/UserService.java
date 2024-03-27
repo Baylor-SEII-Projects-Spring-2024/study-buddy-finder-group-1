@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
+import studybuddy.api.friendships.Friendship;
+import studybuddy.api.friendships.FriendshipRepository;
 import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingUser;
 
@@ -21,6 +23,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private FriendshipRepository friendshipRepository;
 
     public Optional<User> findUser(Long userId) { return userRepository.findById(userId); }
 
@@ -95,6 +99,19 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User not found");
         }
+    }
+
+    public List<User> findAllTutors() {
+        return userRepository.findAllTutors();
+    }
+
+    public boolean areUsersFriends(Long userId, Long otherUserId) {
+        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndStatusAccepted(userId);
+
+        // Check if any of these friendships involve the other user
+        return friendships.stream()
+                .anyMatch(friendship ->
+                        (friendship.getRequester().getId().equals(otherUserId) || friendship.getRequested().getId().equals(otherUserId)));
     }
 
     // ---------------- Added for Review Tutor ----------------
