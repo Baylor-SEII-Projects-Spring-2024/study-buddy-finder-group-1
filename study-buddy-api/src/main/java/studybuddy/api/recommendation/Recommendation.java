@@ -1,6 +1,7 @@
 package studybuddy.api.recommendation;
 
 import org.springframework.cglib.core.Local;
+import studybuddy.api.course.Course;
 import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
 
@@ -12,7 +13,7 @@ public class Recommendation {
     static double FRIEND_WEIGHT = 0.6;
     static double TUTOR_WEIGHT = 5.0;
     static double SUBJECT_WEIGHT = 1;
-    public static List<Meeting> getRecommendedMeetings(User u, List<Meeting> allMeetings, String subject, String desiredTime) {
+    public static Set<Meeting> getRecommendedMeetings(User u, Set<Meeting> allMeetings, Course course, String desiredTime) {
         //create a map to hold the meetings and their weights
         Map<Double, Meeting> weightedMeetings = new HashMap<>();
 
@@ -39,7 +40,7 @@ public class Recommendation {
             weight += tutorRating / TUTOR_WEIGHT;
 
             //Add subject weight
-            if (Objects.equals(m.getSubject(), subject)) {
+            if (Objects.equals(m.getCourseName(), course.getName())) {
                 weight += SUBJECT_WEIGHT;
             }
 
@@ -66,7 +67,7 @@ public class Recommendation {
         }
 
         //sort meetings and return the top three
-        List<Meeting> recommendedMeetings = new ArrayList<>();
+        Set<Meeting> recommendedMeetings = new HashSet<>();
 
         //sort the map
         List<Map.Entry<Double, Meeting>> sortedKeys = new ArrayList<>(weightedMeetings.entrySet());
@@ -91,5 +92,62 @@ public class Recommendation {
         }
 
         return recommendedMeetings;
+    }
+
+    public static Set<User> getRecommendedFriends(User u, Set<User> allUsers) {
+        Set<User> recommendedFriends = new HashSet<>();
+        Set<Course> userCourses = u.getCourses();
+
+        //loop through all existing users
+        for (User q : allUsers) {
+            Set<Course> tempCourses = q.getCourses();
+
+            //loop through all our user's courses
+            for (Course c : userCourses) {
+                //loop through all the temp user's courses
+                for (Course t : tempCourses) {
+                    //if they have the same course, add to recommended friends
+                    if (c.getName().equals(t.getName())) {
+                        recommendedFriends.add(q);
+                    }
+                }
+            }
+        }
+
+        return recommendedFriends;
+    }
+
+    public static Set<User> getRecommendedTutors(User u, Set<User> allTutors) {
+        Set<User> recommendedTutors = new HashSet<>();
+        Set<Course> userCourses = u.getCourses();
+
+        //loop through all existing tutors
+        for (User q : allTutors) {
+            Set<Course> tempCourses = q.getCourses();
+
+            //loop through all our user's courses
+            for (Course c : userCourses) {
+                //loop through all the tutor's courses
+                for (Course t : tempCourses) {
+                    //if they have the same course, add to recommended tutors
+                    if (c.getName().equals(t.getName())) {
+                        recommendedTutors.add(q);
+                    }
+                }
+            }
+        }
+
+        //convert to list to sort
+        List<User> recommendedTutorsList = new ArrayList<>(recommendedTutors);
+
+        //sort tutors and return top 3
+        Collections.sort(recommendedTutorsList, new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return Double.compare(user2.getRating(), user1.getRating());
+            }
+        });
+
+        return new HashSet<>(recommendedTutorsList);
     }
 }

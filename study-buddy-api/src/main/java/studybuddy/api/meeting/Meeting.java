@@ -56,8 +56,8 @@ public class Meeting {
     String timeSlot;
 
     @Getter
-    @Column(name = "SUBJECT")
-    String subject;
+    @Column(name = "COURSE_NAME")
+    String courseName;
 
     @ManyToMany
     @JoinTable(
