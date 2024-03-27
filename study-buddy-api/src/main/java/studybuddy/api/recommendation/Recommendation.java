@@ -1,7 +1,14 @@
 package studybuddy.api.recommendation;
 
 import org.springframework.cglib.core.Local;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import studybuddy.api.course.Course;
+
 import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
 
@@ -13,7 +20,11 @@ public class Recommendation {
     static double FRIEND_WEIGHT = 0.6;
     static double TUTOR_WEIGHT = 5.0;
     static double SUBJECT_WEIGHT = 1;
+
+    public static List<Meeting> getRecommendedMeetings(User u, List<Meeting> allMeetings, String subject, String desiredTime) {
+
     public static Set<Meeting> getRecommendedMeetings(User u, Set<Meeting> allMeetings, Course course, String desiredTime) {
+
         //create a map to hold the meetings and their weights
         Map<Double, Meeting> weightedMeetings = new HashMap<>();
 
@@ -50,13 +61,12 @@ public class Recommendation {
             double distanceFromTarget = 1;
 
             //TODO PARSE THE TIMES AND ASSIGN
+
+            LocalDate desiredLocalDateTime = null;
+            LocalDate meetingTime = null;
+
             String meetingTimeSlot = m.getTimeSlot();
             String meetingDate = m.getDate();
-
-
-
-            LocalDate desiredLocalDateTime;
-            LocalDate meetingTime;
 
             //get the difference
             long daysDifference = ChronoUnit.HOURS.between(desiredLocalDateTime, meetingTime);
