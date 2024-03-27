@@ -62,11 +62,13 @@ public class Recommendation {
 
             //TODO PARSE THE TIMES AND ASSIGN
 
+
             LocalDate desiredLocalDateTime = null;
             LocalDate meetingTime = null;
 
             String meetingTimeSlot = m.getTimeSlot();
             String meetingDate = m.getDate();
+
 
             //get the difference
             long daysDifference = ChronoUnit.HOURS.between(desiredLocalDateTime, meetingTime);

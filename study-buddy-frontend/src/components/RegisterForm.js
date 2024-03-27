@@ -5,9 +5,8 @@ import axios from "axios";
 import {router} from "next/router";
 
 
-
 export default function RegisterForm() {
-    const router = useRouter(); // Initialize router using useRouter()
+    //const router = useRouter(); // Initialize router using useRouter()
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -25,22 +24,22 @@ export default function RegisterForm() {
     }, [isRegistered, router]);
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = event.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleSubmit = async (event) => {
-        console.log('Here!!!!!!!!!!!!!',window.location);
+        console.log('Here!!!!!!!!!!!!!', window.location);
 
         event.preventDefault();
 
         try {
             const response = await axios.post("http://localhost:8080/register", {
                 firstName: formData.firstName,
-                lastName : formData.lastName,
-                email_address : formData.email,
-                password : formData.password,
-                userType : formData.userType
+                lastName: formData.lastName,
+                email_address: formData.email,
+                password: formData.password,
+                userType: formData.userType
             })
             const data = response.data;
             console.log(data);
@@ -57,9 +56,9 @@ export default function RegisterForm() {
     };
 
     return (
-        <div style={{ flexGrow: 1 }}>
-            <Container component="main" maxWidth="sm" sx={{ mt: 20, mb: 4 }}>
-                <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
+        <div style={{flexGrow: 1}}>
+            <Container component="main" maxWidth="sm" sx={{mt: 20, mb: 4}}>
+                <Typography component="h1" variant="h5" align="center" sx={{mb: 3}}>
                     Create Account
                 </Typography>
                 <form onSubmit={handleSubmit} noValidate>
@@ -75,7 +74,7 @@ export default function RegisterForm() {
                         autoFocus
                         value={formData.firstName}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     />
                     <TextField
                         variant="outlined"
@@ -88,7 +87,7 @@ export default function RegisterForm() {
                         autoComplete="lname"
                         value={formData.lastName}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     />
                     <TextField
                         variant="outlined"
@@ -101,7 +100,7 @@ export default function RegisterForm() {
                         autoComplete="email"
                         value={formData.email}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     />
                     <TextField
                         variant="outlined"
@@ -115,7 +114,7 @@ export default function RegisterForm() {
                         autoComplete="current-password"
                         value={formData.password}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     />
                     <TextField
                         variant="outlined"
@@ -129,7 +128,7 @@ export default function RegisterForm() {
                         autoComplete="new-password"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     />
                     <TextField
                         select
@@ -143,7 +142,7 @@ export default function RegisterForm() {
                         autoComplete="choose-option"
                         value={formData.userType}
                         onChange={handleChange}
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                     >
                         <MenuItem value="Student">Student</MenuItem>
                         <MenuItem value="Tutor">Tutor</MenuItem>
@@ -153,7 +152,7 @@ export default function RegisterForm() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{mt: 3, mb: 2}}
                     >
                         Register
                     </Button>

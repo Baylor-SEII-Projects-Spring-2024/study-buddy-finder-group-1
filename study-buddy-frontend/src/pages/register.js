@@ -4,14 +4,13 @@ import { Grid } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 
-export default function Register() {
-    try {
+ const Register = () =>  {
+/*    try {
         // Your code that may throw an error
 
     console.log('Here!!!!!!!!!!!!!',window.location);
 
-    const router = useRouter();
-    const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
+    //const router = useRouter();
 
     // Function to handle successful registration
     const handleRegistrationSuccess = () => {
@@ -25,9 +24,13 @@ export default function Register() {
             // Access window.location only if window object is available
             console.log('Debug message: window.location',window.location);
         }
-    }, []);
+    }, []);*/
+     const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
+     const handleRegistrationSuccess = () => {
+         setRegistrationSuccess(true); // Set registration success state to true
+     };
 
-    return (
+     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar showLinks={false} />
             <Grid container style={{ flex: 1 }}>
@@ -44,7 +47,7 @@ export default function Register() {
             )}
         </div>
     );
-    } catch (error) {
+   /* } catch (error) {
         console.error("Error in register.js:", error);
         // Optionally, you can also log the stack trace
         console.error(error.stack);
@@ -52,5 +55,6 @@ export default function Register() {
         // This is particularly useful for client-side rendering errors
         // For example:
         // setError("An error occurred. Please try again later.");
-    }
+    }*/
 }
+export default Register;
