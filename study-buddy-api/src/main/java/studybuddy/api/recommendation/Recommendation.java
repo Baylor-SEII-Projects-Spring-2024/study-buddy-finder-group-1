@@ -50,6 +50,11 @@ public class Recommendation {
             double distanceFromTarget = 1;
 
             //TODO PARSE THE TIMES AND ASSIGN
+            String meetingTimeSlot = m.getTimeSlot();
+            String meetingDate = m.getDate();
+
+
+
             LocalDate desiredLocalDateTime;
             LocalDate meetingTime;
 
