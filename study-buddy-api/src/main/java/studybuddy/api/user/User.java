@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import studybuddy.api.course.Course;
+import studybuddy.api.friendships.Friendship;
+import studybuddy.api.friendships.FriendshipService;
 import studybuddy.api.meeting.*;
 
 import java.util.*;
@@ -92,13 +94,23 @@ public class User {
 
     public String getEmail() { return email_address;}
 
-    public Set<User> isFriendOf(Set<User> users) {
-        Set<User> friends = new HashSet<>();
+    public Set<User> isFriendOf(Set<User> meetingUsers) {
+        FriendshipService friendshipService = new FriendshipService();
+        List<User> friends = friendshipService.getAllFriends(this.id);
 
-        for (User u : users) {
-            //code to search database for the users friends
-            friends.add(u);
+        Set<User> friendSet = new HashSet<>(friends);
+
+        //loop through all the friends
+        for (User u : friendSet) {
+            //loop through all the users
+            for (User q : meetingUsers) {
+                //if a user matches a friend then they are a friend
+                if (Objects.equals(u.id, q.id)) {
+                    friendSet.add(u);
+                }
+            }
         }
-        return friends;
+
+        return friendSet;
     }
 }
