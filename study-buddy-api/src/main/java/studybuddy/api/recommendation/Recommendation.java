@@ -133,7 +133,7 @@ public class Recommendation {
 
         return recommendedFriends;
     }
-}
+
     
     public static Set<User> getRecommendedTutors(User u, Set<User> allTutors) {
         Set<User> recommendedTutors = new HashSet<>();
