@@ -43,6 +43,6 @@ jobs:
         # You will need to point these commands to the correct Docker Compose file.
         run: |
           docker compose -f docker/ci.docker-compose.yml down
-          #docker compose -f docker/local.docker-compose.yml up -d
-          docker compose -f docker/ci.docker-compose.yml up -d --build -v
+          docker compose -f docker/local.docker-compose.yml up -d
+          docker compose -f docker/ci.docker-compose.yml up -d --build
           docker image prune -af
