@@ -18,8 +18,8 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     /* would be used for search option if ever created */
 
-    @Query("SELECT l FROM Location l WHERE l.name  = : nagit gme")
-    public List<Location> findByName(@Param("name") String end);
+/*    @Query("SELECT l FROM Location l WHERE l.name  = : nagit gme")
+    public List<Location> findByName(@Param("name") String end);*/
 
     @Query("SELECT l FROM Location l WHERE l.hoursAvailableEnd  = : end")
     public List<Location> findByHoursAvailableEnd(@Param("end") Date end);
