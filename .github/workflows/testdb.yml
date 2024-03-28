@@ -1,0 +1,32 @@
+name: Test MySQL Connection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-mysql-connection:
+    runs-on: self-hosted
+    services:
+      db:
+        image: mysql
+        ports:
+          - '3306:3306'
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: studybuddy
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and start services
+        run: docker compose -f ci.docker-compose.yml up -d --build
+
+      - name: Run tests
+        run: |
+          # Example: Run tests using curl or any other HTTP client
+          curl http://localhost:8080/healthcheck
+
+      - name: Clean up
+        run: docker-compose -f docker-compose.yml down
