@@ -4,6 +4,9 @@ import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, Menu
 import Link from "next/link";
 import {useAuth} from "@/components/AuthContext";
 import {useRouter} from "next/router";
+import { Badge } from '@mui/material';
+import axios from "axios";
+
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
 
@@ -13,6 +16,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const router = useRouter();
     console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [notificationCount, setNotificationCount] = useState(0);
     const open = Boolean(anchorEl);
 
     useEffect(() => {
@@ -20,6 +24,22 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         if (storedUserId) {
             setUserId(storedUserId);
         }
+    }, []);
+
+    useEffect(() => {
+        const fetchNotificationCount = async () => {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
+                const response = await axios.get(`http://localhost:8080/friendships/pending/count/${userId}`);
+                setNotificationCount(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.log("Error fetching notification count:", error);
+            }
+        };
+
+        fetchNotificationCount();
     }, []);
 
     // This is for the profile icon menu to make it NOT shift everything
@@ -250,7 +270,13 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <MenuItem onClick={handleEditClassesClick}>Edit Class(es)</MenuItem>
                     <MenuItem onClick={handleAddFriendsClick}>Add Friends</MenuItem>
                     <MenuItem onClick={handleMessagesClick}>Messaging</MenuItem>
-                    <MenuItem onClick={handleNotificationsClick}>Notifications</MenuItem>
+                    <MenuItem onClick={handleNotificationsClick} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <Typography variant="inherit">Notifications</Typography>
+                        <Box sx={{ flexGrow: 1 }} />
+                        {notificationCount > 0 && (
+                            <Badge badgeContent={notificationCount} color="primary" sx={{ marginRight: 2 }} />
+                        )}
+                    </MenuItem>
                     <MenuItem onClick={handleFriendListClick}>Friend List</MenuItem>
                     <MenuItem onClick={handleTutorReviewClick}>Review Tutors</MenuItem>
                     <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>

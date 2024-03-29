@@ -1,26 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    Box,
-    Container,
-    Typography,
-    List,
-    ListItem,
-    ListItemText,
-    Divider,
-    ListItemSecondaryAction, Button
+    Box, Container, Typography, List, ListItem, ListItemText, Divider,
+    ListItemSecondaryAction, Button, Snackbar
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
+import Alert from '@mui/material/Alert'; // Corrected import
+
+// Custom hook defined outside the Notifications component
+function useCustomNotification() {
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    const [severity, setSeverity] = useState("info"); // can be "error", "warning", "info", "success"
+
+    const showNotification = (message, severity = "info") => {
+        setMessage(message);
+        setSeverity(severity);
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
+
+    const NotificationComponent = () => (
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+                {message}
+            </Alert>
+        </Snackbar>
+    );
+
+    return { showNotification, NotificationComponent };
+}
 
 const Notifications = () => {
-    // Sample notifications data
-    // const notifications = [
-    //     { id: 1, title: 'New Message', description: 'You have a new message from John Doe.' },
-    //     { id: 2, title: 'Friend Request', description: 'Jane Smith sent you a friend request.' },
-    //     { id: 3, title: 'Meeting Reminder', description: 'Reminder: You have a meeting tomorrow at 10:00 AM.' },
-    //     // Add more notifications as needed
-    // ];
-
+    const { showNotification, NotificationComponent } = useCustomNotification();
     const [friendRequests, setFriendRequests] = useState([]);
 
     useEffect(() => {
@@ -42,8 +60,10 @@ const Notifications = () => {
             await axios.post(`http://localhost:8080/friendships/${friendshipId}/accept`);
             // update UI to remove the accepted friend request
             setFriendRequests(friendRequests.filter(friendship => friendship.id !== friendshipId));
+            showNotification("Friend request accepted!", "success");
         } catch (error) {
             console.error("Error accepting friend request:", error);
+            showNotification("Failed to accept friend request.", "error");
         }
     };
 
@@ -57,6 +77,34 @@ const Notifications = () => {
         }
     };
 
+    function useCustomNotification() {
+        const [open, setOpen] = useState(false);
+        const [message, setMessage] = useState("");
+        const [severity, setSeverity] = useState("info"); // can be "error", "warning", "info", "success"
+
+        const showNotification = (message, severity = "info") => {
+            setMessage(message);
+            setSeverity(severity);
+            setOpen(true);
+        };
+
+        const handleClose = (event, reason) => {
+            if (reason === 'clickaway') {
+                return;
+            }
+            setOpen(false);
+        };
+
+        const NotificationComponent = () => (
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
+        );
+
+        return { showNotification, NotificationComponent };
+    }
 
     return (
         <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
