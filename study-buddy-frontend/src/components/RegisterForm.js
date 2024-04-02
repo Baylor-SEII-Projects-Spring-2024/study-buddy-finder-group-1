@@ -1,12 +1,12 @@
 import {Button, Container, TextField, Typography, MenuItem} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-
-import {router} from "next/router";
-
+import { useRouter } from "next/router"; //Corrected
 
 export default function RegisterForm() {
-    //const router = useRouter(); // Initialize router using useRouter()
+
+    const router = useRouter(); // Corrected usage of useRouter()
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -17,6 +17,9 @@ export default function RegisterForm() {
     });
     const [isRegistered, setIsRegistered] = useState(false);
 
+    // State for validation message for requiring all fields to be filled before registration
+    const [validationMessage, setValidationMessage] = useState('');
+
     useEffect(() => {
         if (isRegistered) {
             router.push('/login');
@@ -26,12 +29,46 @@ export default function RegisterForm() {
     const handleChange = (event) => {
         const {name, value} = event.target;
         setFormData({...formData, [name]: value});
+
+        //Resetting the validation message
+        setValidationMessage('');
+    };
+
+    const handleCancel = () => {
+        // Display popup message
+        alert("Registration cancelled");
+
+        // Redirect to the homepage
+        router.push('/');
     };
 
     const handleSubmit = async (event) => {
+
+        // Basic character validation patterns
+        const namePattern = /^[A-Za-z\s'-]+$/; // Letters, spaces, apostrophes, and hyphens
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Very basic email pattern
+
         console.log('Here!!!!!!!!!!!!!', window.location);
 
         event.preventDefault();
+
+        // Check if all fields are filled
+        if (!Object.values(formData).every(field => field.trim() !== '')) {
+            setValidationMessage('Please fill out all fields.'); // Set validation message
+            return; // Prevent form submission
+        }
+
+        // Name validation, we need to check if names contain only valid characters
+        if (!namePattern.test(formData.firstName) || !namePattern.test(formData.lastName)) {
+            setValidationMessage('Names can only contain letters, apostrophes, hyphens, and spaces.');
+            return; // Stop the form submission
+        }
+
+        // Email validation, we need to check if email ends with "baylor.edu" and contains valid characters
+        if (!formData.email.endsWith("baylor.edu") || !emailPattern.test(formData.email)) {
+            setValidationMessage('Please use a valid Baylor University email address (ends with "baylor.edu").');
+            return; // Stop the form submission
+        }
 
         try {
             const response = await axios.post("http://localhost:8080/register", {
@@ -45,13 +82,23 @@ export default function RegisterForm() {
             console.log(data);
             if (response.status === 200) {
 
+                // Display the popup message for successful registration
+                alert("Account created");
                 router.push('/login');
             } else {
                 console.log("Registration was successful but the status code is not 200.");
             }
 
         } catch (error) {
-            console.log("Error: ", error)
+            console.log("Error: ", error);
+            // Check for the specific error indicating an existing account
+            if (error.response && error.response.status === 409) {
+                // Set an error message indicating the account already exists
+                setValidationMessage('Account already exists. Please use a different email or log in.');
+            } else {
+                // Handle other types of errors (e.g., network error, server error)
+                setValidationMessage('An unexpected error occurred. Please try again later.');
+            }
         }
     };
 
@@ -61,6 +108,13 @@ export default function RegisterForm() {
                 <Typography component="h1" variant="h5" align="center" sx={{mb: 3}}>
                     Create Account
                 </Typography>
+
+                {validationMessage && (
+                    <Typography color="error" align="center">
+                        {validationMessage}
+                    </Typography>
+                )}
+
                 <form onSubmit={handleSubmit} noValidate>
                     <TextField
                         variant="outlined"
@@ -158,20 +212,22 @@ export default function RegisterForm() {
                     </Button>
 
                     <Button
-                        type="submit"
+                        type="button"
                         fullWidth
                         variant="contained"
                         sx={{
                             mt: 3,
                             mb: 2,
-                            backgroundColor: 'primary', // This makes the button blue
+                            backgroundColor: 'primary.main', // Corrected color property
                             '&:hover': {
                                 backgroundColor: 'darkred', // Darker red on hover
                             },
                         }}
+                        onClick={handleCancel} // Attach the handleCancel function
                     >
                         Cancel
                     </Button>
+
                 </form>
             </Container>
         </div>
