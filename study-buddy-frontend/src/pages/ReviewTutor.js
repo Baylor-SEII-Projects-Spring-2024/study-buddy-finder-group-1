@@ -13,21 +13,18 @@ const ReviewTutor = () => {
     useEffect(() => {
         const fetchMeetings = async () => {
 
-            //Right here is where I need to handle when a user is NOT logged in, keep getting an error
+            // Attempt to parse user item from localStorage
             const user = JSON.parse(localStorage.getItem('user'));
-            const userId = user.id;
 
-            console.log("User id to pass to backend for fetching meetups: " + userId);
-
-            //We need to check if they are not null (else block)
-            if (user && user.id) {
-                const userId = user.id;
-                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
+            // Check if user is null or doesn't have an id property
+            if(!user || !user.id){
+                //User is not logged in or storage format is incorrect, so nothing will happen
+                console.log("User not logged in or user data is invalid");
+            } else {
+                // Since user exists and has an id, proceed to fetch meetings
+                console.log("User id to pass to backend for fetching meetups: " + user.id);
+                const response = await axios.get(`http://localhost:8080/meetings/user/${user.id}`);
                 setMeetings(response.data);
-            }
-            else {
-                //User is not logged in so nothing will happen
-                console.log("User not logged in");
             }
         };
         fetchMeetings();
