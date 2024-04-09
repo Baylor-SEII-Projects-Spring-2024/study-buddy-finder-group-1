@@ -33,24 +33,24 @@ const ReviewTutor = () => {
         fetchMeetings();
     }, []);
 
-    /*
     // Fetch tutors when a meeting is selected
     useEffect(() => {
         const fetchTutors = async () => {
             if(selectedMeetingId) {
-
-                // --------------- IMPLEMENT THIS ENDPOINT ---------------
-                const response = await axios.get(`http://localhost:8080/tutors/meeting/${selectedMeetingId}`);
-                setTutors(response.data);
+                axios.get(`http://localhost:8080/tutors/meeting/${selectedMeetingId}`)
+                    .then(response => {
+                        setTutors(response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching tutors:', error);
+                    });
             }
         };
         fetchTutors();
     }, [selectedMeetingId]); // This effect depends on selectedMeetingId
 
-     */
-
     const handleMeetingChange = (event) => {
-        setSelectedMeetingId(event.target.value);
+        setSelectedMeetingId(event.target.value); // Grabbing the meeting id from selected meetup, for the endpoint call
         // Reset tutors and selected tutor ID when meeting changes
         setTutors([]);
         setSelectedTutorId('');

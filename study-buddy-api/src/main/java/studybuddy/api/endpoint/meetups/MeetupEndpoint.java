@@ -117,7 +117,6 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(updatedMeeting);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
         meetingService.deleteMeeting(id);

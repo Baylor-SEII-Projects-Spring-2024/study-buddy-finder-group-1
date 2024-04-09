@@ -35,13 +35,14 @@ public class MeetingService {
         meetingRepository.deleteById(meetingId);
     }
 
+    //For review tutor use case
     public List<User> getTutorsByMeetingId(Long meetingId) {
         Optional<Meeting> meetingOptional = meetingRepository.findById(meetingId);
 
         if (meetingOptional.isPresent()) {
             Meeting meeting = meetingOptional.get();
             return meeting.getUsers().stream()
-                    .filter(user -> "tutor".equals(user.getUserType())) // "tutor" is the userType for tutors
+                    .filter(user -> "tutor".equals(user.getUserType())) // "tutor" is the userType for tutors!!!
                     .collect(Collectors.toList());
         } else {
             // If no meeting is found, return an empty list
@@ -52,5 +53,4 @@ public class MeetingService {
     public List<Meeting> getMeetingsByUserId(Long userId) {
         return meetingRepository.findMeetingsByUserId(userId);
     }
-
 }
