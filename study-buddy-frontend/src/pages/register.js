@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 
+
  const Register = () =>  {
 /*    try {
         // Your code that may throw an error
@@ -25,6 +26,7 @@ import RegisterForm from "@/components/RegisterForm";
             console.log('Debug message: window.location',window.location);
         }
     }, []);*/
+
      const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
      const handleRegistrationSuccess = () => {
          setRegistrationSuccess(true); // Set registration success state to true
