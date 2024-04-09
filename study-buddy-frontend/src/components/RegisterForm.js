@@ -9,7 +9,7 @@ export async function GET(request) {
     return new Response('Hello, Next.js!', {
         status: 200,
         headers: {
-            'Access-Control-Allow-Origin': 'http://34.125.65.178:3000/register',
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
