@@ -10,7 +10,7 @@ module.exports = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "*", // Set your origin
+            value: "http://34.125.65.178:3000", // Set your origin
           },
           {
             key: "Access-Control-Allow-Methods",
