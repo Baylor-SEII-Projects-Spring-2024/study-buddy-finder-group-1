@@ -48,7 +48,7 @@ export default function RegisterForm() {
         const namePattern = /^[A-Za-z\s'-]+$/; // Letters, spaces, apostrophes, and hyphens
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Very basic email pattern
 
-        console.log('Here!!!!!!!!!!!!!', window.location);
+        console.log('Issue Here in Register Form!!!!!!!!!!!!!', window.location);
 
         event.preventDefault();
 
