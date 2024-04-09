@@ -14,7 +14,7 @@ module.exports = {
           },
           {
             key: "Access-Control-Allow-Methods",
-            value: "POST",//GET, , PUT, DELETE, OPTIONS
+            value: "GET, POST, PUT, DELETE, OPTIONS",//
           },
           {
             key: "Access-Control-Allow-Headers",
