@@ -4,10 +4,13 @@ import Navbar from "@/components/Navbar";
 import axios from 'axios';
 
 const ReviewTutor = () => {
+
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [selectedMeetingId, setSelectedMeetingId] = useState('');
     const [meetings, setMeetings] = useState([]);
+    const [selectedTutorId, setSelectedTutorId] = useState('');
+    const [tutors, setTutors] = useState([]); // State to store tutors
 
     // Fetches the meetings for a given user
     useEffect(() => {
@@ -30,13 +33,37 @@ const ReviewTutor = () => {
         fetchMeetings();
     }, []);
 
+    /*
+    // Fetch tutors when a meeting is selected
+    useEffect(() => {
+        const fetchTutors = async () => {
+            if(selectedMeetingId) {
+
+                // --------------- IMPLEMENT THIS ENDPOINT ---------------
+                const response = await axios.get(`http://localhost:8080/tutors/meeting/${selectedMeetingId}`);
+                setTutors(response.data);
+            }
+        };
+        fetchTutors();
+    }, [selectedMeetingId]); // This effect depends on selectedMeetingId
+
+     */
+
     const handleMeetingChange = (event) => {
         setSelectedMeetingId(event.target.value);
+        // Reset tutors and selected tutor ID when meeting changes
+        setTutors([]);
+        setSelectedTutorId('');
+    };
+
+    const handleTutorChange = (event) => {
+        setSelectedTutorId(event.target.value);
     };
 
     const handleSubmitReview = () => {
         const reviewData = {
             meetingId: selectedMeetingId,
+            tutorId: selectedTutorId, // Includes tutorId
             rating,
             comment,
             reviewDate: new Date(),
@@ -82,14 +109,27 @@ const ReviewTutor = () => {
                             </Select>
                         </FormControl>
 
-                        {/* Dynamically display the tutor's name */}
-                        {selectedMeeting && (
-                            <Typography sx={{ marginBottom: 2 }}>
-                                Tutor: {selectedMeeting.tutorName}
-                            </Typography>
-                        )}
+                        <FormControl fullWidth variant="outlined" sx={{ marginBottom: 2 }}>
+                            <InputLabel id="tutor-select-label">Select Tutor</InputLabel>
+                            <Select
+                                labelId="tutor-select-label"
+                                id="tutor-select"
+                                value={selectedTutorId}
+                                onChange={handleTutorChange}
+                                label="Select Tutor"
+                            >
+                                {tutors.map((tutor) => (
+                                    <MenuItem key={tutor.id} value={tutor.id}>
+                                        {tutor.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
                         {/* Other form fields like rating and comment */}
+                        <Typography variant="subtitle1" align="center" sx={{ marginBottom: 2 }}>
+                            Please rate your tutor's performance
+                        </Typography>
                         <Rating name="rating" value={rating} onChange={(event, newValue) => setRating(newValue)} precision={0.5} sx={{ marginBottom: 2 }} />
                         <TextField label="Write your review" multiline rows={4} variant="outlined" value={comment} onChange={(event) => setComment(event.target.value)} fullWidth margin="normal" sx={{ marginBottom: 2 }} />
                         <Button onClick={handleSubmitReview} variant="contained" color="primary">

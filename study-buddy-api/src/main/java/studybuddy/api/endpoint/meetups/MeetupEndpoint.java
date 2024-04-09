@@ -124,14 +124,17 @@ public class MeetupEndpoint {
         return ResponseEntity.ok().build();
     }
 
-    // -------------- Added for Review Tutor --------------
-//    @GetMapping("/user/{userId}") //Dont change
-//    public ResponseEntity<List<Meeting>> getMeetingsByUser(@PathVariable Long userId) {
-//        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId);
-//        if (userMeetings.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(userMeetings);
-//    }
-    // -------------- Added for Review Tutor --------------
+    // Fetch tutors for a specific meeting - For review tutor use case
+    @GetMapping("/tutors/meeting/{meetingId}")
+    public ResponseEntity<List<User>> getTutorsByMeeting(@PathVariable Long meetingId) {
+        try {
+            List<User> tutors = meetingService.getTutorsByMeetingId(meetingId);
+            if (tutors.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(tutors, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

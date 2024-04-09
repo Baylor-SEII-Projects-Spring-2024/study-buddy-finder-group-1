@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import studybuddy.api.reviewtutor.ReviewTutor;
 import studybuddy.api.reviewtutor.ReviewTutorService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewTutorEndpoint {

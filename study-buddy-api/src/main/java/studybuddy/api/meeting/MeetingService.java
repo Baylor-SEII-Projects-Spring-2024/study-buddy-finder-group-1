@@ -7,6 +7,7 @@ import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -34,11 +35,19 @@ public class MeetingService {
         meetingRepository.deleteById(meetingId);
     }
 
-    // -------------- Added for Review Tutor --------------
-    //public List<Meeting> getMeetingsByUserId(Long userId) {
-        //return meetingRepository.findByUserId(userId);
-    //}
-    // -------------- Added for Review Tutor --------------
+    public List<User> getTutorsByMeetingId(Long meetingId) {
+        Optional<Meeting> meetingOptional = meetingRepository.findById(meetingId);
+
+        if (meetingOptional.isPresent()) {
+            Meeting meeting = meetingOptional.get();
+            return meeting.getUsers().stream()
+                    .filter(user -> "tutor".equals(user.getUserType())) // "tutor" is the userType for tutors
+                    .collect(Collectors.toList());
+        } else {
+            // If no meeting is found, return an empty list
+            return Collections.emptyList();
+        }
+    }
 
     public List<Meeting> getMeetingsByUserId(Long userId) {
         return meetingRepository.findMeetingsByUserId(userId);
