@@ -80,7 +80,7 @@ const AddFriends = () => {
     };
 
     const isPendingRequest = (userId) => {
-        return pendingRequests.some(request => request.requested.id === userId);
+        return pendingRequests.some(request => request.requested.id === userId || request.requester.id === userId);
     }
 
     const handleSendFriendRequest = async (requestedId) => {
