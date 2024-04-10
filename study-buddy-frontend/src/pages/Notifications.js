@@ -70,22 +70,29 @@ const Notifications = () => {
             }
         };
 
-        const fetchUpcomingMeetings = async () => {
+        const fetchMeetings = async () => {
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
-                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}/upcoming`);
+                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
                 const currentMoment = moment();
-
-                response.data.forEach(meeting => {
+                console.log(currentMoment);
+                const upcomingMeetings = response.data.filter(meeting => {
                     const startTime = moment(meeting.date + " " + meeting.timeSlot.split(" - ")[0], "YYYY-MM-DD hh:mm A");
-                    if (startTime.diff(currentMoment, 'minutes') <= 60 && startTime.diff(currentMoment, 'minutes') >= 0) {
-                        setNotifications(prev => [...prev, { id: meeting.id, message: `Your meeting "${meeting.title}" is starting soon at ${meeting.timeSlot.split(" - ")[0]}.` }]);
-                    }
+                    console.log(startTime);
+                    // check if the meeting starts within the next hour
+                    return startTime.diff(currentMoment, 'minutes') <= 60 && startTime.diff(currentMoment, 'minutes') > 0;
                 });
-                setUpcomingMeetings(response.data);
+
+                // if you want to show notifications for these meetings
+                upcomingMeetings.forEach(meeting => {
+                    console.log(`Meeting ${meeting.id} is starting soon.`);
+                    setNotifications(prev => [...prev, { id: meeting.id, message: `Your meeting "${meeting.title || 'Meeting'}" is starting soon at ${meeting.timeSlot.split(" - ")[0]}.` }]);
+                });
+
+                setUpcomingMeetings(upcomingMeetings); // update state with upcoming meetings
             } catch (error) {
-                console.log("Error fetching upcoming meetings:", error);
+                console.log("Error fetching meetings:", error);
             }
         };
 
@@ -93,7 +100,7 @@ const Notifications = () => {
 
         fetchFriendRequests();
         fetchMeetingInvitations();
-        fetchUpcomingMeetings();
+        fetchMeetings();
     }, []);
 
     const handleAccept = async (friendshipId) => {
