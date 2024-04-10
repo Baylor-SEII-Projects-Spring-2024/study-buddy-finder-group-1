@@ -4,6 +4,18 @@ import { Grid } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 
+export const dynamic = 'force-dynamic' // defaults to auto
+
+export async function GET(request) {
+    return new Response('Hello, Next.js!', {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+    })
+}
  const Register = () =>  {
 /*    try {
         // Your code that may throw an error
@@ -25,6 +37,7 @@ import RegisterForm from "@/components/RegisterForm";
             console.log('Debug message: window.location',window.location);
         }
     }, []);*/
+
      const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
      const handleRegistrationSuccess = () => {
          setRegistrationSuccess(true); // Set registration success state to true
