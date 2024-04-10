@@ -6,7 +6,8 @@ import {
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import Alert from '@mui/material/Alert';
-import moment from "moment"; // Corrected import
+import moment from "moment";
+import {useNotification} from "@/contexts/NotificationContext"; // Corrected import
 
 // Custom hook defined outside the Notifications component
 function useCustomNotification() {
@@ -44,9 +45,11 @@ const Notifications = () => {
     const [meetingInvitations, setMeetingInvitations] = useState([]);
     const [upcomingMeetings, setUpcomingMeetings] = useState([]);
     const [notifications, setNotifications] = useState([]);
-
+    const { setNotificationCount } = useNotification();
 
     useEffect(() => {
+
+
         const fetchFriendRequests = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/friendships/pending`)
@@ -76,10 +79,8 @@ const Notifications = () => {
                 const userId = user.id;
                 const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
                 const currentMoment = moment();
-                console.log(currentMoment);
                 const upcomingMeetings = response.data.filter(meeting => {
                     const startTime = moment(meeting.date + " " + meeting.timeSlot.split(" - ")[0], "YYYY-MM-DD hh:mm A");
-                    console.log(startTime);
                     // check if the meeting starts within the next hour
                     return startTime.diff(currentMoment, 'minutes') <= 60 && startTime.diff(currentMoment, 'minutes') > 0;
                 });
@@ -96,12 +97,18 @@ const Notifications = () => {
             }
         };
 
-
-
+        const totalNotifications = friendRequests.length + meetingInvitations.length + upcomingMeetings.length;
+        setNotificationCount(totalNotifications);
+        console.log("total notifications: " + totalNotifications);
         fetchFriendRequests();
         fetchMeetingInvitations();
         fetchMeetings();
     }, []);
+
+    useEffect(() => {
+        const totalNotifications = friendRequests.length + meetingInvitations.length + upcomingMeetings.length;
+        setNotificationCount(totalNotifications);
+    }, [friendRequests, meetingInvitations, upcomingMeetings, setNotificationCount]);
 
     const handleAccept = async (friendshipId) => {
         try {
@@ -125,6 +132,11 @@ const Notifications = () => {
             showNotification("Failed to decline friend request.", "error");
         }
     };
+
+    const handleMarkAsRead = (notificationId) => {
+        const updatedNotifications = notifications.filter(notification => notification.id !== notificationId);
+        setNotifications(updatedNotifications);
+    }
 
     const handleAcceptMeetingInvitation = async (invitationId) => {
         try {
@@ -220,7 +232,7 @@ const Notifications = () => {
                                         <ListItemSecondaryAction>
                                             <Button
                                                 color="primary"
-                                                onClick={() => setNotifications(notifications.filter(n => n.id !== notification.id))}
+                                                onClick={() => handleMarkAsRead(notification.id)}
                                             >
                                                 Mark as Read
                                             </Button>

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { Provider as ReduxProvider } from 'react-redux';
+import { NotificationProvider } from '../contexts/NotificationContext';
+
 
 import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import { CssBaseline } from '@mui/material';
@@ -47,7 +49,9 @@ export default function App({ Component, pageProps }) {
             <CssBaseline />
               <Layout>
                   <AuthProvider>
-                    <Component {...pageProps} />
+                      <NotificationProvider> {/* Wrap the component with NotificationProvider */}
+                          <Component {...pageProps} />
+                      </NotificationProvider>
                   </AuthProvider>
               </Layout>
           </StudyBuddyThemeProvider>

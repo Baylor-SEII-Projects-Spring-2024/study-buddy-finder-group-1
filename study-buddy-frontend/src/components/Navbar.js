@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Navbar.module.css';
-import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuItem} from "@mui/material";
+import { AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography, Menu, MenuItem, Badge } from "@mui/material";
 import Link from "next/link";
-import {useAuth} from "@/components/AuthContext";
-import {useRouter} from "next/router";
-import { Badge } from '@mui/material';
+import { useAuth } from "@/components/AuthContext";
+import { useRouter } from "next/router";
 import axios from "axios";
+import { useNotification } from '../contexts/NotificationContext'; // Correctly placed at the top
 
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
 
     const { isLoggedIn, logout } = useAuth();
+    const { notificationCount } = useNotification();
     const [isLoggedOut, setIsLoggedOut] = useState(false);
     const [userId, setUserId] = useState(null);
     const router = useRouter();
     console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [notificationCount, setNotificationCount] = useState(0);
     const open = Boolean(anchorEl);
 
     useEffect(() => {
