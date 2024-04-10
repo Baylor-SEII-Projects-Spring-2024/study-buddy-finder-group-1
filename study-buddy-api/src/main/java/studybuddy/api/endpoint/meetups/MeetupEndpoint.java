@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
 import studybuddy.api.meeting.Meeting;
+import studybuddy.api.meeting.MeetingInvitation;
+import studybuddy.api.meeting.MeetingInvitationService;
 import studybuddy.api.meeting.MeetingService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
@@ -29,41 +31,50 @@ public class MeetupEndpoint {
     @Autowired
     private LocationRepository locationRepository;
 
-    @PostMapping("/create")
-    public ResponseEntity<Meeting> createMeetup(@RequestBody Map<String, Object> payload) {
-        Long userId = Long.parseLong(payload.get("userId").toString());
-        Long locationId = Long.parseLong(payload.get("locationId").toString()); // Assuming locationId is sent in payload
+    @Autowired
+    private MeetingInvitationService invitationService;
 
+    @PostMapping("/create")
+    public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
+        Long userId = Long.parseLong(payload.get("userId").toString());
+        Long locationId = Long.parseLong(payload.get("locationId").toString());
+
+        // Find the user creating the meeting and the meeting location
         User userCreatingMeeting = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + userId));
-
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Location not found: " + locationId));
 
+        // Create and save the new meeting without adding users to it
         Meeting newMeeting = new Meeting();
         newMeeting.setLocation(location);
-
-        String room = String.valueOf(payload.get("room"));
-        String date = String.valueOf(payload.get("date"));
-        String timeSlot = String.valueOf(payload.get("timeSlot"));
-
-        newMeeting.setRoom(room);
-        newMeeting.setDate(date);
-        newMeeting.setTimeSlot(timeSlot);
+        newMeeting.setRoom(String.valueOf(payload.get("room")));
+        newMeeting.setDate(String.valueOf(payload.get("date")));
+        newMeeting.setTimeSlot(String.valueOf(payload.get("timeSlot")));
 
         Set<User> users = new HashSet<>();
         users.add(userCreatingMeeting);
-
-        List<Integer> userIds = (List<Integer>) payload.get("userIds");
-        userIds.forEach(id -> {
-            userRepository.findById(id.longValue()).ifPresent(users::add);
-        });
-
         newMeeting.setUsers(users);
 
         Meeting createdMeeting = meetingService.saveMeeting(newMeeting);
+
+        List<Integer> userIds = (List<Integer>) payload.get("userIds");
+        userIds.stream()
+                .distinct() // Ensure no duplicate IDs, just in case
+                .filter(id -> !id.equals(userId)) // Exclude the meeting creator
+                .forEach(id -> {
+                    userRepository.findById(id.longValue()).ifPresent(invitee -> {
+                        MeetingInvitation invitation = new MeetingInvitation();
+                        invitation.setMeeting(createdMeeting);
+                        invitation.setInvitee(invitee);
+                        invitation.setStatus("pending");
+                        invitationService.createInvitation(createdMeeting, invitee);
+                    });
+                });
+
         return ResponseEntity.ok(createdMeeting);
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<Meeting>> getAllMeetings() {
         List<Meeting> meetings = meetingService.getAllMeetings();
@@ -117,6 +128,15 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(updatedMeeting);
     }
 
+    @GetMapping("/user/{userId}/upcoming")
+    public ResponseEntity<List<Meeting>> getUpcomingMeetingsByUserId(@PathVariable Long userId) {
+        try {
+            List<Meeting> upcomingMeetings = meetingService.getUpcomingMeetingsByUserId(userId);
+            return ResponseEntity.ok(upcomingMeetings);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {

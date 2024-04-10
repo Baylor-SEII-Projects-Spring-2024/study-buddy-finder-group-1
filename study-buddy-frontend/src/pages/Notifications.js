@@ -5,7 +5,8 @@ import {
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
-import Alert from '@mui/material/Alert'; // Corrected import
+import Alert from '@mui/material/Alert';
+import moment from "moment"; // Corrected import
 
 // Custom hook defined outside the Notifications component
 function useCustomNotification() {
@@ -42,6 +43,8 @@ const Notifications = () => {
     const [friendRequests, setFriendRequests] = useState([]);
     const [meetingInvitations, setMeetingInvitations] = useState([]);
     const [upcomingMeetings, setUpcomingMeetings] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+
 
     useEffect(() => {
         const fetchFriendRequests = async () => {
@@ -69,7 +72,17 @@ const Notifications = () => {
 
         const fetchUpcomingMeetings = async () => {
             try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user.id;
                 const response = await axios.get(`http://localhost:8080/meetings/user/${userId}/upcoming`);
+                const currentMoment = moment();
+
+                response.data.forEach(meeting => {
+                    const startTime = moment(meeting.date + " " + meeting.timeSlot.split(" - ")[0], "YYYY-MM-DD hh:mm A");
+                    if (startTime.diff(currentMoment, 'minutes') <= 60 && startTime.diff(currentMoment, 'minutes') >= 0) {
+                        setNotifications(prev => [...prev, { id: meeting.id, message: `Your meeting "${meeting.title}" is starting soon at ${meeting.timeSlot.split(" - ")[0]}.` }]);
+                    }
+                });
                 setUpcomingMeetings(response.data);
             } catch (error) {
                 console.log("Error fetching upcoming meetings:", error);
@@ -192,17 +205,24 @@ const Notifications = () => {
                                 </div>
                             ))
                         }
-                        {upcomingMeetings.map(meeting => (
-                            <div key={meeting.id}>
-                                <ListItem>
-                                    <ListItemText
-                                        primary={`Upcoming Meeting: ${meeting.title}`}
-                                        secondary={`Scheduled at ${meeting.date} ${meeting.timeSlot}`}
-                                    />
-                                </ListItem>
-                                <Divider />
-                            </div>
-                        ))}
+                        {
+                            notifications.map(notification => (
+                                <div key={notification.id}>
+                                    <ListItem>
+                                        <ListItemText primary={notification.message} />
+                                        <ListItemSecondaryAction>
+                                            <Button
+                                                color="primary"
+                                                onClick={() => setNotifications(notifications.filter(n => n.id !== notification.id))}
+                                            >
+                                                Mark as Read
+                                            </Button>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                    <Divider />
+                                </div>
+                            ))
+                        }
                     </List>
                 </Box>
             </Container>

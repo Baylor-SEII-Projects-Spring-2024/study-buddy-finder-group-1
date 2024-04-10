@@ -1,12 +1,18 @@
 package studybuddy.api.meeting;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -26,6 +32,7 @@ public class MeetingService {
         return  meetingRepository.findById(id);
     }
 
+    @Transactional
     public Meeting saveMeeting(Meeting meeting){
         return meetingRepository.save(meeting);
     }
@@ -44,4 +51,29 @@ public class MeetingService {
         return meetingRepository.findMeetingsByUserId(userId);
     }
 
+    public List<Meeting> getUpcomingMeetingsByUserId(Long userId) {
+        List<Meeting> allUserMeetings = meetingRepository.findMeetingsByUserId(userId);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime oneDayAhead = now.plusDays(1);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+        return allUserMeetings.stream()
+                .filter(meeting -> {
+                    try {
+                        LocalDate meetingDate = LocalDate.parse(meeting.getDate(), dateFormatter);
+                        LocalTime meetingStartTime = meeting.getStartTime();
+
+                        if (meetingDate == null || meetingStartTime == null) {
+                            return false;
+                        }
+
+                        LocalDateTime meetingDateTime = LocalDateTime.of(meetingDate, meetingStartTime);
+                        return meetingDateTime.isAfter(now) && meetingDateTime.isBefore(oneDayAhead);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .collect(Collectors.toList());
+    }
 }

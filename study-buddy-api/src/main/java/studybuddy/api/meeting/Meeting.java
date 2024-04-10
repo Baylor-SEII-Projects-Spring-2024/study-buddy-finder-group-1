@@ -5,8 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 import studybuddy.api.location.Location;
 import studybuddy.api.user.User;
+import java.time.format.DateTimeFormatter;
 
-import java.util.*;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -59,7 +64,7 @@ public class Meeting {
     @Column(name = "COURSE_NAME")
     String courseName;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "user_meetings",
             joinColumns = @JoinColumn(name = "meeting_id"),
@@ -104,5 +109,26 @@ public class Meeting {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public LocalTime getStartTime() {
+        if (timeSlot != null && !timeSlot.isEmpty()) {
+            String startTimeString = timeSlot.split(" - ")[0]; // Extracts "10:00 AM"
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+            return LocalTime.parse(startTimeString, formatter);
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "id=" + id +
+                ", location=" + (location != null ? location.getName() : "null") +
+                ", room='" + room + '\'' +
+                ", date='" + date + '\'' +
+                ", timeSlot='" + timeSlot + '\'' +
+                ", users=" + users.stream().map(User::getId).toList() +
+                '}';
     }
 }
