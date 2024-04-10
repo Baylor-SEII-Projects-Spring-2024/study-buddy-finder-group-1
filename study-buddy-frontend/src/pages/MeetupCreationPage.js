@@ -364,7 +364,7 @@ const MeetupCreationPage = () => {
                             message={snackbarMessage}
                             ContentProps={{
                                 style: {
-                                    backgroundColor: 'green', // You can customize this as needed
+                                    backgroundColor: 'green',
                                 },
                             }}
                         />
