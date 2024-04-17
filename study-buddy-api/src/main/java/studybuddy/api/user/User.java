@@ -63,13 +63,30 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private Set<Meeting> meetings = new HashSet<>();
 
-    public User(String email, String password, String userType) {
+    public User(String email, String password, String userType, Double initialRating) {
         this.email_address = email;
         this.password = password;
         this.userType = userType;
+        if ("Tutor".equals(userType)) {
+            this.rating = initialRating;
+        }
     }
 
     public User() {
+    }
+    public void setRating(Double rating) {
+        if ("Tutor".equals(this.userType)) {
+            this.rating = rating;
+        } else {
+            throw new IllegalStateException("Rating can only be set for users of type Tutor.");
+        }
+    }
+
+    public Double getRating() {
+        if ("Tutor".equals(this.userType)) {
+            return this.rating;
+        }
+        return null;
     }
 
     public void setEmailAddress(String emailAddress) {
@@ -113,4 +130,6 @@ public class User {
 
         return friendSet;
     }
+
+
 }

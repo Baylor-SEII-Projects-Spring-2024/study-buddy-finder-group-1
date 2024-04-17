@@ -41,7 +41,7 @@ class MeetupEndpointTest {
 
     @Test
     void testCreateMeetup() {
-        // Prepare mock data
+        // prepare mock data
         Long userId = 1L;
         Long locationId = 1L;
         User mockUser = new User();
@@ -54,12 +54,12 @@ class MeetupEndpointTest {
         mockMeeting.setLocation(mockLocation);
         mockMeeting.setUsers(users);
 
-        // Mock the interactions
+        // mock the interactions
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(mockUser));
         when(locationRepository.findById(any(Long.class))).thenReturn(Optional.of(mockLocation));
         when(meetingService.saveMeeting(any(Meeting.class))).thenReturn(mockMeeting);
 
-        // Prepare the payload
+        // prepare the payload
         Map<String, Object> payload = new HashMap<>();
         payload.put("userId", userId.toString());
         payload.put("locationId", locationId.toString());
@@ -68,10 +68,10 @@ class MeetupEndpointTest {
         payload.put("timeSlot", "10:00-12:00");
         payload.put("userIds", Collections.singletonList(userId.intValue()));
 
-        // Call the method to test
+        // call the method to test
         ResponseEntity<?> response = meetupEndpoint.createMeetup(payload);
 
-        // Verify the response
+        // verify the response
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody() instanceof Meeting);
@@ -81,7 +81,7 @@ class MeetupEndpointTest {
 
         System.out.println(mockMeeting);
 
-        // Verify interactions
+        // verify interactions
         verify(userRepository, atLeast(1)).findById(userId);
         verify(locationRepository, times(1)).findById(locationId);
         verify(meetingService, times(1)).saveMeeting(any(Meeting.class));

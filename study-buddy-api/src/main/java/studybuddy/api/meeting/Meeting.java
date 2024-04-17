@@ -131,4 +131,6 @@ public class Meeting {
                 ", users=" + users.stream().map(User::getId).toList() +
                 '}';
     }
+
+
 }
