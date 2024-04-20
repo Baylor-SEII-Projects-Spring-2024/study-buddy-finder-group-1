@@ -147,6 +147,20 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     }
 
 
+    const buttonStyle = {
+        fontSize: '1.2rem',
+        my: 1,
+        mx: 1.5,
+        fontFamily: 'YourCustomFont',
+        transition: 'color 0.3s, text-shadow 0.3s',
+        backgroundColor: 'transparent',
+        '&:hover': {
+            color: '#00BFFF',
+            textShadow: '0 0 10px #00BFFF',
+            backgroundColor: 'transparent',
+        },
+    };
+
     return (
         <AppBar position="fixed" color="default" elevation={0} sx={{ backgroundColor: 'rgba(0, 36, 53)' }}>
             <Toolbar>
@@ -154,88 +168,33 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     <Link href="/" passHref>
                         <img onClick={handleIconClick} src='/Images/Study%20Buddy%20Logo.webp' alt="Logo" style={{ cursor: 'pointer', maxWidth: '80px', maxHeight: '80px', marginRight: '8px' }} />
                     </Link>
-                        <Typography variant="h2" sx={{ fontSize: '2.5rem', fontFamily: '"YourCustomFont", serif', color: 'white', transition: '0.3s ease' }}>
+                    <Typography variant="h2" sx={{ fontSize: '2.5rem', fontFamily: '"YourCustomFont", serif', color: 'white', transition: '0.3s ease' }}>
                         Study Buddies
                     </Typography>
                 </Box>
 
                 <Box sx={{ flexGrow: 1 }}></Box>
 
-                {/* Conditional rendering for the links */}
-                {showLinks && (
+                {isLoggedIn ? (
                     <>
-                        <Button className={styles.whiteButton} sx={{
-                            fontSize: '1.2rem',
-                            my: 1,
-                            mx: 1.5,
-                            fontFamily: 'YourCustomFont',
-                            transition: 'color 0.3s, text-shadow 0.3s',
-                            backgroundColor: 'transparent',
-                            '&:hover': {
-                                color: '#00BFFF',
-                                textShadow: '0 0 10px #00BFFF',
-                                backgroundColor: 'transparent',
-                            },
-                        }}>
-                            <Link href="/StudyLocationsPage" passHref>
-                                Study Locations
-                            </Link>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/MeetupCreationPage" passHref>Create Meetup</Link>
                         </Button>
-                        <Button className={styles.whiteButton} sx={{
-                            fontSize: '1.2rem',
-                            my: 1,
-                            mx: 1.5,
-                            fontFamily: 'YourCustomFont',
-                            transition: 'color 0.3s, text-shadow 0.3s',
-                            backgroundColor: 'transparent',
-                            '&:hover': {
-                                color: '#00BFFF',
-                                textShadow: '0 0 10px #00BFFF',
-                                backgroundColor: 'transparent',
-                            },
-                        }}>
-                            <Link href="/OurMissionPage" passHref>
-                                Our Mission
-                            </Link>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/AddFriends" passHref>Search For Users</Link>
                         </Button>
-                        {!isLoggedIn && (
-                            <>
-                                <Link href="/login" passHref>
-                                    <Button className={styles.whiteButton} sx={{
-                                        fontSize: '1.2rem',
-                                        my: 1,
-                                        mx: 1.5,
-                                        fontFamily: 'YourCustomFont',
-                                        transition: 'color 0.3s, text-shadow 0.3s',
-                                        backgroundColor: 'transparent',
-                                        '&:hover': {
-                                            color: '#00BFFF',
-                                            textShadow: '0 0 10px #00BFFF',
-                                            backgroundColor: 'transparent',
-                                        },
-                                    }}>
-                                        Sign In
-                                    </Button>
-                                </Link>
-                                <Link href="/register" passHref>
-                                    <Button className={styles.whiteButton} sx={{
-                                        fontSize: '1.2rem',
-                                        my: 1,
-                                        mx: 1.5,
-                                        fontFamily: 'YourCustomFont',
-                                        transition: 'color 0.3s, text-shadow 0.3s',
-                                        backgroundColor: 'transparent',
-                                        '&:hover': {
-                                            color: '#00BFFF',
-                                            textShadow: '0 0 10px #00BFFF',
-                                            backgroundColor: 'transparent',
-                                        },
-                                    }}>
-                                        Create Account
-                                    </Button>
-                                </Link>
-                            </>
-                        )}
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/AddClasses" passHref>Add Class(es)</Link>
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/login" passHref>Sign In</Link>
+                        </Button>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/register" passHref>Create Account</Link>
+                        </Button>
                     </>
                 )}
 
@@ -262,35 +221,35 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
-                    <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
-                    <MenuItem onClick={handleCreateMeetupClick}>Create Meetup</MenuItem>
-                    <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
-                    <MenuItem onClick={handleAddClassesClick}>Add Class(es)</MenuItem>
-                    <MenuItem onClick={handleEditClassesClick}>Edit Class(es)</MenuItem>
-                    <MenuItem onClick={handleAddFriendsClick}>Add Friends</MenuItem>
-                    <MenuItem onClick={handleMessagesClick}>Messaging</MenuItem>
-                    <MenuItem onClick={handleNotificationsClick} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <Typography variant="inherit">Notifications</Typography>
-                        <Box sx={{ flexGrow: 1 }} />
-                        {notificationCount > 0 && (
-                            <Badge badgeContent={notificationCount} color="primary" sx={{ marginRight: 2 }} />
-                        )}
-                    </MenuItem>
-                    <MenuItem onClick={handleFriendListClick}>Friend List</MenuItem>
-                    <MenuItem onClick={handleTutorReviewClick}>Review Tutors</MenuItem>
-                    <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
-                    <MenuItem onClick={handleHelpSupportClick}>Help & Support</MenuItem>
                     <MenuItem onClick={handleHomeClick}>Home</MenuItem>
-                    <MenuItem onClick={handleRecommendationClick}>Recommendations</MenuItem>
                     {isLoggedIn && (
-                        <MenuItem onClick={() => {
-                            handleLogout();
-                            handleClose();
-                        }}>Logout</MenuItem>
+                        <>
+                            <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
+                            <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
+                            <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
+                            <MenuItem onClick={handleEditClassesClick}>Edit Class(es)</MenuItem>
+                            <MenuItem onClick={handleNotificationsClick} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                <Typography variant="inherit">Notifications</Typography>
+                                <Box sx={{ flexGrow: 1 }} />
+                                {notificationCount > 0 && (
+                                    <Badge badgeContent={notificationCount} color="primary" sx={{ marginRight: 2 }} />
+                                )}
+                            </MenuItem>
+                            <MenuItem onClick={handleFriendListClick}>My Friends</MenuItem>
+                            <MenuItem onClick={handleTutorReviewClick}>Review Tutors</MenuItem>
+                            <MenuItem onClick={handleRecommendationClick}>Recommendations</MenuItem>
+                            <MenuItem onClick={() => router.push('/StudyLocationsPage')}>Study Locations</MenuItem>
+                            <MenuItem onClick={() => router.push('/OurMissionPage')}>Our Mission</MenuItem>
+                            <MenuItem onClick={() => {
+                                handleLogout();
+                                handleClose();
+                            }}>Logout</MenuItem>
+                        </>
                     )}
                 </Menu>
             </Toolbar>
         </AppBar>
     );
+
+
 }
