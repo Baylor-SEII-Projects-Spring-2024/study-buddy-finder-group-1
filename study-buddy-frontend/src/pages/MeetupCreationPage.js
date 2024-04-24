@@ -51,7 +51,10 @@ const MeetupCreationPage = () => {
     const timeSlots = [
         "10:00 AM - 12:00 PM",
         "1:00 PM - 3:00 PM",
-        "4:00 PM - 6:00 PM"
+        "2:00 PM - 4:00 PM",
+        "4:00 PM - 6:00 PM",
+        "5:00 PM - 7:00 PM",
+        "6:00 PM - 8:00 PM",
     ];
 
     const handleClassAndAreaChange = (event) => {
@@ -152,6 +155,8 @@ const MeetupCreationPage = () => {
         const basePath = 'http://localhost:8080';
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user.id;
+
+        console.log(userId);
 
         // Ensure you are sending 'userIds' and 'userId' in your payload
         const payload = {

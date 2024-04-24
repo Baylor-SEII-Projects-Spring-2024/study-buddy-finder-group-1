@@ -10,6 +10,7 @@ const AddFriends = () => {
     const [loading, setLoading] = useState(false);
     const [pendingRequests, setPendingRequests] = useState([]);
     const [acceptedRequests, setAcceptedRequests] = useState([]);
+    const [currentId, setCurrentId] = useState('');
 
 
     const fetchSearchResults = async (searchTerm) => {
@@ -18,6 +19,7 @@ const AddFriends = () => {
             const response = await axios.get(`http://localhost:8080/users/search`, { params: { name: searchTerm } });
             const requester = JSON.parse(localStorage.getItem('user'));
             const requesterId = requester.id;
+            setCurrentId(requesterId)
             const filteredResults = response.data.filter(user => user.id !== requesterId);
             setSearchResults(filteredResults);
         } catch (error) {
@@ -53,9 +55,14 @@ const AddFriends = () => {
     }, []);
 
     const isAlreadyFriend = (userId) => {
-        return acceptedRequests.some(request =>
-            (request.requested.id === userId || request.requester.id === userId) && request.status === 'accepted'
-        );
+        console.log(userId);
+        acceptedRequests.map(request => console.log(request.requested.id + ' ' + request.requester.id + ' ' + ' ' + currentId))
+        console.log(acceptedRequests)
+        return acceptedRequests.some(request => {
+            const isUserInvolved = userId === request.requested.id || userId === request.requester.id;
+            const isCurrentUserInvolved = currentId === request.requested.id || currentId === request.requester.id;
+            return isUserInvolved && isCurrentUserInvolved && request.status === 'accepted';
+        });
     };
 
 
@@ -73,7 +80,7 @@ const AddFriends = () => {
     };
 
     const isPendingRequest = (userId) => {
-        return pendingRequests.some(request => request.requested.id === userId);
+        return pendingRequests.some(request => request.requested.id === userId || request.requester.id === userId);
     }
 
     const handleSendFriendRequest = async (requestedId) => {

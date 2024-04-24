@@ -4,37 +4,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import studybuddy.api.user.User;
+import studybuddy.api.user.UserRepository;
+
 import java.util.Date;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Service
 public class ReviewTutorService {
 
     private final ReviewTutorRepository reviewTutorRepository;
+    private final UserRepository userRepository;
+
 
     @Autowired
-    public ReviewTutorService(ReviewTutorRepository reviewTutorRepository) {
+    public ReviewTutorService(ReviewTutorRepository reviewTutorRepository, UserRepository userRepository) {
         this.reviewTutorRepository = reviewTutorRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public ReviewTutor addReview(ReviewTutor review) {
-        return reviewTutorRepository.save(review);
+    public ReviewTutor addReview(User tutor, int rating) {
+        ReviewTutor review = new ReviewTutor(tutor, rating);
+        reviewTutorRepository.save(review);
+
+        // Recalculate and update the tutor's average rating
+        double newAverageRating = calculateAverageRating(tutor);
+        tutor.setRating(newAverageRating);
+        userRepository.save(tutor); // Assuming userRepository is correctly autowired and set up
+
+        return review;
     }
 
-    public List<ReviewTutor> findReviewsByTutor(User tutor) {
-        return reviewTutorRepository.findByTutor(tutor);
-    }
-
-    public List<ReviewTutor> findReviewsByStudent(User student) {
-        return reviewTutorRepository.findByStudent(student);
-    }
-
-    public List<ReviewTutor> findReviewsByRating(int rating) {
-        return reviewTutorRepository.findByRating(rating);
-    }
-
-    public List<ReviewTutor> findReviewsInDateRange(Date startDate, Date endDate) {
-        return reviewTutorRepository.findByReviewDateBetween(startDate, endDate);
+    public double calculateAverageRating(User tutor) {
+        List<ReviewTutor> reviews = reviewTutorRepository.findByTutor(tutor);
+        OptionalDouble average = reviews.stream()
+                .mapToInt(ReviewTutor::getRating)
+                .average();
+        return average.isPresent() ? average.getAsDouble() : 0.0;
     }
 }

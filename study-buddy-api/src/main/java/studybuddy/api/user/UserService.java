@@ -1,12 +1,17 @@
 package studybuddy.api.user;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
+import studybuddy.api.friendships.Friendship;
+import studybuddy.api.friendships.FriendshipRepository;
 import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingUser;
+import studybuddy.api.reviewtutor.ReviewTutor;
+import studybuddy.api.reviewtutor.ReviewTutorRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +26,10 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private FriendshipRepository friendshipRepository;
+    @Autowired
+    private ReviewTutorRepository reviewTutorRepository;
 
     public Optional<User> findUser(Long userId) { return userRepository.findById(userId); }
 
@@ -95,6 +104,47 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User not found");
         }
+    }
+
+    public List<User> findAllTutors() {
+        return userRepository.findAllTutors();
+    }
+
+    public boolean areUsersFriends(Long userId, Long otherUserId) {
+        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndStatusAccepted(userId);
+
+        // Check if any of these friendships involve the other user
+        return friendships.stream()
+                .anyMatch(friendship ->
+                        (friendship.getRequester().getId().equals(otherUserId) || friendship.getRequested().getId().equals(otherUserId)));
+    }
+
+    @Transactional
+    public User rateTutor(Long userId, Double newRating) {
+        if (newRating < 0) {
+            throw new IllegalArgumentException("Rating must not be negative.");
+        }
+
+        User tutor = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found."));
+
+        if (!"Tutor".equals(tutor.getUserType())) {
+            throw new IllegalArgumentException("Rating can only be set for users of type Tutor.");
+        }
+
+        // Fetch all reviews for the tutor and calculate the new average rating
+        List<ReviewTutor> reviews = reviewTutorRepository.findByTutor(tutor);
+        double averageRating = reviews.stream()
+                .mapToDouble(ReviewTutor::getRating)
+                .average()
+                .orElse(0.0);  // Handle case where no ratings exist yet
+
+        double updatedAverageRating = (averageRating * reviews.size() + newRating) / (reviews.size() + 1);
+
+        tutor.setRating(updatedAverageRating);
+        userRepository.save(tutor);
+
+        return tutor;
     }
 
     // ---------------- Added for Review Tutor ----------------

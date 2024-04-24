@@ -54,6 +54,8 @@ public class FriendshipService {
         return friendshipRepository.findAllPending();
     }
 
+    public List<Friendship> getPendingRequestsFromUser(Long userId) { return friendshipRepository.findAllByUserIdAndStatusPending(userId); }
+
     public List<Friendship> getAcceptedRequests() { return friendshipRepository.findAllAccepted(); }
 
     public List<User> getAllFriends(Long userId) {
@@ -63,5 +65,9 @@ public class FriendshipService {
                 .distinct()
                 .filter(user -> !user.getId().equals(userId))
                 .collect(Collectors.toList());
+    }
+
+    public long getPendingRequestsCount(Long userId) {
+        return friendshipRepository.countByUserIdAndStatusPending(userId);
     }
 }

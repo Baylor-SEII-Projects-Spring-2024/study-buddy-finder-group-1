@@ -136,4 +136,10 @@ public class UserEndpoint {
         Set<Course> courses = userService.getAllUserCourses(userId);
         return ResponseEntity.ok(courses);
     }
+
+    @GetMapping("/users/tutors")
+    public ResponseEntity<List<User>> findAllTutors() {
+        List<User> users = userService.findAllTutors();
+        return ResponseEntity.ok(users);
+    }
 }

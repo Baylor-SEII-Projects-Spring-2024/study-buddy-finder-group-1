@@ -52,6 +52,18 @@ public class FriendshipEndpoint {
         return ResponseEntity.ok(friendships);
     }
 
+    @GetMapping("/pending/{userId}")
+    public ResponseEntity<List<Friendship>> getPendingRequestsFromUser(@PathVariable Long userId) {
+        List<Friendship> friendships = friendshipService.getPendingRequestsFromUser(userId);
+        return ResponseEntity.ok(friendships);
+    }
+
+    @GetMapping("/pending/count/{userId}")
+    public ResponseEntity<Long> getPendingRequestsCount(@PathVariable Long userId) {
+        long count = friendshipService.getPendingRequestsCount(userId);
+        return ResponseEntity.ok(count);
+    }
+
     @GetMapping("/accepted")
     public ResponseEntity<List<Friendship>> getAcceptedRequests() {
         List<Friendship> friendships = friendshipService.getAcceptedRequests();
