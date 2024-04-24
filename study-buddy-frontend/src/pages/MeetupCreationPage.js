@@ -135,7 +135,6 @@ const MeetupCreationPage = () => {
                     setFriendsList(response.data);
                     console.log(response.data);
                 }
-
             } catch (error) {
                 console.log("Error", error)
             }

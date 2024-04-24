@@ -4,11 +4,26 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import axios from "axios";
 import {router} from "next/client";
+import { useRouter } from "next/router";
 
+export const dynamic = 'force-dynamic' // defaults to auto
+
+
+export async function GET(request) {
+    return new Response('Hello, Next.js!', {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+    })
+}
 export default function RegisterForm() {
     const [emailError, setEmailError] = useState(false);
     const [passwordMatchError, setPasswordMatchError] = useState(false);
 
+    const router = useRouter(); // Corrected usage of useRouter()
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -92,12 +107,10 @@ export default function RegisterForm() {
             const data = response.data;
             console.log(data);
             if (response.status === 200) {
-
                 router.push('/login');
             } else {
                 console.log("Registration was successful but the status code is not 200.");
             }
-
         } catch (error) {
             console.log("Error: ", error)
         }
