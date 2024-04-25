@@ -32,7 +32,7 @@ const EditProfile = () => {
 
         if (user) {
             const response = await axios.get(`http://localhost:8080/users/${userId}`);
-            setFirstName(response.data.firstName || 'eeet');
+            setFirstName(response.data.firstName || '');
             setLastName(response.data.lastName || '');
             setEmail(response.data.email || '');
             setUserType(response.data.userType || 'student');
@@ -61,6 +61,24 @@ const EditProfile = () => {
 
     const handleUserTypeChange = (event) => {
         setUserType(event.target.value);
+    };
+
+    const deleteAccount = async (e) => {
+        e.preventDefault();
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete/${userId}`);
+
+            localStorage.setItem('isLoggedIn', 'false');
+            router.push('/');
+
+        } catch (error) {
+            console.error('Error deleting account:', error);
+        }
+        alert('Account deleted.');
     };
 
     const handleSubmit = async (event) => {
@@ -179,6 +197,8 @@ const EditProfile = () => {
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Update Profile
                         </Button>
+
+                        <button type="button" onClick={deleteAccount}>Delete</button>
                     </form>
                 </Container>
             </Box>
