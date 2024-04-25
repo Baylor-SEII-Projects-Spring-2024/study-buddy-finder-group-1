@@ -96,6 +96,12 @@ export default function RegisterForm() {
             return;
         }
 
+        // Password validation, check to ensure both passwords are the same
+        if (formData.confirmPassword !== formData.password) {
+            setValidationMessage('Passwords do not match.');
+            return; // Stop the form submission
+        }
+
         try {
             const response = await axios.post("http://localhost:8080/register", {
                 firstName: formData.firstName,
