@@ -12,7 +12,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
 
     const { isLoggedIn, logout } = useAuth();
     const { notificationCount } = useNotification();
-    const [isLoggedOut, setIsLoggedOut] = useState(false);
+    const [isLoggedOut, setIsLoggedOut] = useState(true);
     const [userId, setUserId] = useState(null);
     const router = useRouter();
     console.log("isLoggedIn:", isLoggedIn);
