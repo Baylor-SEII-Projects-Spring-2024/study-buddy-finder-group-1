@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
+import {router} from "next/client";
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -69,16 +70,23 @@ const EditProfile = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user.id;
 
+        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+
+        if (!confirmDelete) {
+            return; //if user cancels the confirmation, exit the function
+        }
+
         try {
             const response = await axios.delete(`http://localhost:8080/delete/${userId}`);
 
             localStorage.setItem('isLoggedIn', 'false');
-            router.push('/');
 
         } catch (error) {
             console.error('Error deleting account:', error);
         }
+
         alert('Account deleted.');
+        router.push('/home');
     };
 
     const handleSubmit = async (event) => {
@@ -198,7 +206,9 @@ const EditProfile = () => {
                             Update Profile
                         </Button>
 
-                        <button type="button" onClick={deleteAccount}>Delete</button>
+                        <Button type="button" variant="contained" color="primary" onClick={deleteAccount} fullWidth>
+                            Delete Profile
+                        </Button>
                     </form>
                 </Container>
             </Box>
