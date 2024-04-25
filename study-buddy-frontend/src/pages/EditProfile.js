@@ -25,6 +25,20 @@ const EditProfile = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
 
+    //autofill the existing values for the current user
+    useEffect(async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+
+        if (user) {
+            const response = await axios.get(`http://localhost:8080/users/${userId}`);
+            setFirstName(response.data.firstName || 'eeet');
+            setLastName(response.data.lastName || '');
+            setEmail(response.data.email || '');
+            setUserType(response.data.userType || 'student');
+        }
+    }, []);
+
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     };
