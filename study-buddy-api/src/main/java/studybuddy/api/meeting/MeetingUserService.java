@@ -31,6 +31,4 @@ public class MeetingUserService {
     public void deleteMeetingUser(Long id) {
         meetingUserRepository.deleteById(id);
     }
-
-    // additional methods, such as finding all users for a meeting or all meetings for a user, can be added
 }

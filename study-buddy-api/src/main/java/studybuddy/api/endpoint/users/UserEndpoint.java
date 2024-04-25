@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseService;
+import studybuddy.api.friendships.FriendshipService;
+import studybuddy.api.meeting.MeetingUserRepository;
+import studybuddy.api.meeting.MeetingUserService;
+import studybuddy.api.meeting.UserMeetingRepository;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.*;
@@ -23,6 +27,12 @@ public class UserEndpoint {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private FriendshipService friendshipService;
+
+    @Autowired
+    private UserMeetingRepository userMeetingRepository;
 
     @GetMapping("/users")
     public List<User> findAllUsers() {
@@ -54,6 +64,11 @@ public class UserEndpoint {
     @DeleteMapping("/delete/{id}")
     public void deleteUserById(@PathVariable Long id) {
         var user = userService.findUser(id).orElse(null);
+
+        //delete all friends and associated meetings to avoid foreign key constraint issues
+        //NOT DELETING MEETINGS THEMSELVES ONLY THE USER'S ASSOCIATION
+        friendshipService.deleteAllFriendships(id);
+        userMeetingRepository.deleteUserMeetings(id);
 
         if (user == null) {
             log.warn("User not found");

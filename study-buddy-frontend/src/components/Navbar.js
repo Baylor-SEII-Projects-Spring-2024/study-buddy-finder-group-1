@@ -53,12 +53,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         };
     }, []); // Empty dependency array means this effect runs only on mount and unmount
 
-    useEffect(() => {
-        if (isLoggedOut) {
-            router.push('/home');
-        }
-    }, [isLoggedOut, router]);
-
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -75,7 +69,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     }
 
     const handleLogout = () => {
-
         localStorage.removeItem('isLoggedIn');
 
         //How to reset the localstorage (cookies)
@@ -84,6 +77,8 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         setIsLoggedOut(true);
 
         logout();
+
+        router.push('/home');
     };
 
     const handleProfileClick = () => {
