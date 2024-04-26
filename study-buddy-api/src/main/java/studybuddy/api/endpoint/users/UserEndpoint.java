@@ -157,4 +157,12 @@ public class UserEndpoint {
         List<User> users = userService.findAllTutors();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/users/tutors")
+    public ResponseEntity<List<User>> findRecommendedTutors(@RequestParam(required = true) String courseName) {
+        List<User> users = userService.findAllTutors();
+        return ResponseEntity.ok(users);
+    }
+
+
 }
