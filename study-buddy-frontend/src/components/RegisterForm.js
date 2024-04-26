@@ -3,7 +3,7 @@ import { Button, Container, TextField, Typography, MenuItem, List, ListItem, Lis
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import axios from "axios";
-import {router} from "next/client";
+
 import { useRouter } from "next/router";
 
 export const dynamic = 'force-dynamic' // defaults to auto
@@ -97,7 +97,8 @@ export default function RegisterForm() {
         }
 
         try {
-            const response = await axios.post("http://localhost:8080/register", {
+            const response = await axios.post(
+                "http://localhost:8080/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email_address: formData.email,
@@ -107,7 +108,7 @@ export default function RegisterForm() {
             const data = response.data;
             console.log(data);
             if (response.status === 200) {
-                router.push('/login');
+                await router.push('/login');
             } else {
                 console.log("Registration was successful but the status code is not 200.");
             }
