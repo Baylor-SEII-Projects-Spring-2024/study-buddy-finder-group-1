@@ -56,16 +56,23 @@ const SearchMeetups = () => {
             const userId = requester.id;
 
             if (userId) {
-                const response = await axios.post(`http://localhost:8080/meetings/join`, {
-                    userId: userId,
-                    meetingId: meetingId
+                const response = await axios.post(`http://localhost:8080/meetings/join`, null, {
+                    params: {
+                        userId: userId,
+                        meetingId: meetingId
+                    }
                 });
 
+                if (response.status)
                 alert("Meeting joined!");
             }
         } catch (error) {
-            console.error("Error joining meeting:", error);
-            alert("Failed to join meeting.");
+            if (error.response && error.response.status === 400) {
+                alert(error.response.data);
+            } else {
+                console.error("Error joining meeting:", error);
+                alert("Failed to join meeting.");
+            }
         }
     };
 
