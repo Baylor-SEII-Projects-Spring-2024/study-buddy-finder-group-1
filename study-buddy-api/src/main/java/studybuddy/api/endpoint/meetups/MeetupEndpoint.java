@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
-import studybuddy.api.meeting.Meeting;
-import studybuddy.api.meeting.MeetingInvitation;
-import studybuddy.api.meeting.MeetingInvitationService;
-import studybuddy.api.meeting.MeetingService;
+import studybuddy.api.meeting.*;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
+import studybuddy.api.user.UserService;
+
 import java.util.*;
 
 @Log4j2
@@ -26,10 +25,16 @@ public class MeetupEndpoint {
     private MeetingService meetingService;
 
     @Autowired
+    private MeetingUserService meetingUserService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MeetingInvitationService invitationService;
@@ -51,6 +56,7 @@ public class MeetupEndpoint {
         newMeeting.setRoom(String.valueOf(payload.get("room")));
         newMeeting.setDate(String.valueOf(payload.get("date")));
         newMeeting.setTimeSlot(String.valueOf(payload.get("timeSlot")));
+        newMeeting.setCourseName(String.valueOf(payload.get("subject")));
 
         Set<User> users = new HashSet<>();
         users.add(userCreatingMeeting);
@@ -141,6 +147,37 @@ public class MeetupEndpoint {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
         meetingService.deleteMeeting(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = false) String course) {
+        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
+        List<Meeting> matchingMeetings = new ArrayList<>();
+
+        for (Meeting m : meetings) {
+            if (m.getCourseName().toLowerCase().contains((course.toLowerCase()))) {
+                matchingMeetings.add(m);
+            }
+        }
+
+
+        return ResponseEntity.ok(matchingMeetings);
+    }
+
+    @PostMapping("/join")
+    public ResponseEntity<?> joinMeeting(@RequestParam Long userId, @RequestParam Long meetingId) {
+        System.err.println("HERE");
+        MeetingUser meetingUser = new MeetingUser();
+        User user = userService.getUserById(userId).orElse(null);
+        Meeting meeting = meetingService.getMeetingById(meetingId).orElse(null);
+
+        //create a new meeting-user association
+        meetingUser.setUser(user);
+        meetingUser.setMeeting(meeting);
+        meetingUser.setRole("Student");
+        meetingUserService.saveMeetingUser(meetingUser);
+
         return ResponseEntity.ok().build();
     }
 
