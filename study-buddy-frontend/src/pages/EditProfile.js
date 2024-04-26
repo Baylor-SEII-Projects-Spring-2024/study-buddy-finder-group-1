@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
-import {router} from "next/client";
+//import {router} from "next/client";
+import {useRouter} from "next/router";
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -25,7 +26,16 @@ const EditProfile = () => {
     const [userType, setUserType] = useState('student'); // Default to student
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    //redirect if no one is logged in
+    const router = useRouter();
 
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            // If no user is logged in, redirect to the login page
+            router.push('/login');
+        }
+    }, [router]);
     //autofill the existing values for the current user
     useEffect(() => {
         async function fetchUserData() {

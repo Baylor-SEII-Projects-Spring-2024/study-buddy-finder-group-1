@@ -6,10 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import studybuddy.api.course.Course;
+import studybuddy.api.course.CourseService;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
 import studybuddy.api.location.LocationService;
 import studybuddy.api.meeting.*;
+import studybuddy.api.recommendation.RecommendationService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
 import studybuddy.api.user.UserService;
@@ -26,7 +29,7 @@ public class MeetupEndpoint {
     private MeetingService meetingService;
 
     @Autowired
-    private MeetingUserService meetingUserService;
+    private UserMeetingRepository userMeetingRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -38,10 +41,13 @@ public class MeetupEndpoint {
     private LocationRepository locationRepository;
 
     @Autowired
-    private UserService userService;
+    private MeetingInvitationService invitationService;
 
     @Autowired
-    private MeetingInvitationService invitationService;
+    private RecommendationService recommendationService;
+
+    @Autowired
+    private CourseService courseService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
@@ -164,15 +170,38 @@ public class MeetupEndpoint {
     public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName) {
         List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         List<Meeting> matchingMeetings = new ArrayList<>();
-
+  
         for (Meeting m : meetings) {
             if (m.getCourseName().toLowerCase().contains((courseName.toLowerCase()))) {
                 matchingMeetings.add(m);
             }
         }
 
+        //for recommended meetings
+        User user = userRepository.findById(userId).orElse(null);
+        Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, course);
+        Set<Meeting> listToAdd = new HashSet<>();
+
+        for (Meeting m : recommendedMeetings) {
+            for (Meeting matchingM : matchingMeetings) {
+
+                //if the recommended meeting id isn't already in the list, add it
+                if (!Objects.equals(m.getId(), matchingM.getId())) {
+                    listToAdd.add(m);
+                }
+            }
+        }
+
+        matchingMeetings.addAll(listToAdd);
 
         return ResponseEntity.ok(matchingMeetings);
+    }
+
+    @GetMapping("/user-in-meeting")
+    public ResponseEntity<Boolean> isUserInMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) {
+        boolean isInMeeting = userMeetingRepository.userMeetingRelationshipExists(userId, meetingId);
+
+        return ResponseEntity.ok(isInMeeting);
     }
 
     @PostMapping("/join")
