@@ -8,8 +8,6 @@ import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipRepository;
-import studybuddy.api.meeting.Meeting;
-import studybuddy.api.meeting.MeetingUser;
 import studybuddy.api.reviewtutor.ReviewTutor;
 import studybuddy.api.reviewtutor.ReviewTutorRepository;
 
@@ -17,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
