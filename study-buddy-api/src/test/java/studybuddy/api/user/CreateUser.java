@@ -33,10 +33,10 @@ public class CreateUser {
         String userType = "Student";
         String password = "password";
 
-        User user1 = new User(testEmail,password, userType);
+/*        User user1 = new User(testEmail,password, userType);
 
 
-        user1.setFirstName(firstName);
+        user1.setFirstName(firstName);*/
 
 
     }
@@ -51,10 +51,12 @@ public class CreateUser {
         String userType = "Student";
         String password = "password";
 
+/*
         User user1 = new User(testEmail,password, userType);
 
 
         user1.setFirstName(firstName);
+*/
 
 
     }
