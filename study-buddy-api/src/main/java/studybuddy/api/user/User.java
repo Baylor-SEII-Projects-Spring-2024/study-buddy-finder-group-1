@@ -1,5 +1,6 @@
 package studybuddy.api.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -61,6 +62,7 @@ public class User {
     private Set<Course> courses = new HashSet<>();
 
     @ManyToMany(mappedBy = "users")
+    @JsonManagedReference
     private Set<Meeting> meetings = new HashSet<>();
 
     public User(String email, String password, String userType, Double initialRating) {
@@ -129,6 +131,19 @@ public class User {
         }
 
         return friendSet;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User other = (User) obj;
+        return id != null && id.equals(other.id);
     }
 
 

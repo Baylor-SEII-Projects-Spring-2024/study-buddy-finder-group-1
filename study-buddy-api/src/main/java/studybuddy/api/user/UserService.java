@@ -9,7 +9,6 @@ import studybuddy.api.course.CourseRepository;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipRepository;
 import studybuddy.api.meeting.Meeting;
-import studybuddy.api.meeting.MeetingUser;
 import studybuddy.api.reviewtutor.ReviewTutor;
 import studybuddy.api.reviewtutor.ReviewTutorRepository;
 

@@ -94,38 +94,17 @@ public class Location {
 
 
     @Override
-    public boolean equals(Object p){
-        if(p == this){
-            return true;
-        }
-
-        if (p == null || p.getClass() != this.getClass()){
-            return false;
-        }
-
-        Location other = (Location) p;
-
-        return (other.id == this.id) && (other.name == this.name) && ( other.address == this.address)
-                && (other.capacity == this.capacity) && (other.hoursAvailableStart == this.hoursAvailableStart)
-                && (other.hoursAvailableEnd == this.hoursAvailableEnd);
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 7;
-        int result =1;
-
-        long num = id.longValue();
-
-        result = prime * result + ((int) num);
-
-        result = (prime * result) + ((name == null) ? 0: name.hashCode());
-        result = (prime * result) + ((address == null) ? 0: address.hashCode());
-        result = prime * result + capacity;
-        result = (prime * result) + ((hoursAvailableStart == null) ? 0: hoursAvailableStart.hashCode());
-        result = (prime * result) + ((hoursAvailableEnd == null) ? 0: hoursAvailableEnd.hashCode());
-
-        return result;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Location other = (Location) obj;
+        return id != null && id.equals(other.id);
     }
+
 
 }
