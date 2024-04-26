@@ -25,7 +25,7 @@ const SearchMeetups = () => {
         setLoading(true);
 
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { course: searchTerm } });
+            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { courseName: searchTerm } });
 
             setSearchResults(response.data);
         } catch (error) {
@@ -56,15 +56,15 @@ const SearchMeetups = () => {
             const userId = requester.id;
 
             if (userId) {
-                const response = await axios.post(`http://localhost:8080/meetings/join`, null, {
-                    params: {
-                        userId: userId,
-                        meetingId: meetingId
-                    }
-                });
+                const payload = {
+                    userId: userId,
+                    meetingId: meetingId
+                };
+                const response = await axios.post(`http://localhost:8080/meetings/join`, payload);
 
-                if (response.status)
-                alert("Meeting joined!");
+                if (response.status === 200) {
+                    alert("Meeting joined!");
+                }
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {
