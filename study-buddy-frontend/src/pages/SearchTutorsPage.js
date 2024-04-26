@@ -108,9 +108,9 @@ const SearchMeetups = () => {
                                 <CardContent>
                                     <Typography variant="h5" component="h2">{data.firstName}</Typography>
                                     <Typography color="textSecondary">{data.lastName}</Typography>
-                                    <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
+                                    {/*      <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
                                         Create Meeting
-                                    </Button>
+                                    </Button> */}
                                 </CardContent>
                             </Card>
                         ))
