@@ -70,4 +70,10 @@ public class FriendshipService {
     public long getPendingRequestsCount(Long userId) {
         return friendshipRepository.countByUserIdAndStatusPending(userId);
     }
+
+    public void deleteAllFriendships(Long userId) {
+        List<Friendship> friendships = friendshipRepository.findAllByUserIdAndStatusAccepted(userId);
+
+        friendshipRepository.deleteAll(friendships);
+    }
 }

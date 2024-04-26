@@ -1,15 +1,19 @@
 package studybuddy.api.endpoint.friendships;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipService;
 import studybuddy.api.user.User;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/friendships")
 public class FriendshipEndpoint {
 
@@ -75,5 +79,4 @@ public class FriendshipEndpoint {
         List<User> friends = friendshipService.getAllFriends(userId);
         return ResponseEntity.ok(friends);
     }
-
 }

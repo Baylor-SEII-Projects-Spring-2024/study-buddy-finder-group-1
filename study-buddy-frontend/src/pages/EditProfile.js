@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
+import {router} from "next/client";
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -24,6 +25,20 @@ const EditProfile = () => {
     const [userType, setUserType] = useState('student'); // Default to student
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
+    //autofill the existing values for the current user
+    useEffect(async () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+
+        if (user) {
+            const response = await axios.get(`http://localhost:8080/users/${userId}`);
+            setFirstName(response.data.firstName || '');
+            setLastName(response.data.lastName || '');
+            setEmail(response.data.email || '');
+            setUserType(response.data.userType || 'student');
+        }
+    }, []);
 
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
@@ -47,6 +62,31 @@ const EditProfile = () => {
 
     const handleUserTypeChange = (event) => {
         setUserType(event.target.value);
+    };
+
+    const deleteAccount = async (e) => {
+        e.preventDefault();
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user.id;
+
+        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+
+        if (!confirmDelete) {
+            return; //if user cancels the confirmation, exit the function
+        }
+
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete/${userId}`);
+
+            localStorage.setItem('isLoggedIn', 'false');
+
+        } catch (error) {
+            console.error('Error deleting account:', error);
+        }
+
+        alert('Account deleted.');
+        router.push('/home');
     };
 
     const handleSubmit = async (event) => {
@@ -164,6 +204,10 @@ const EditProfile = () => {
                         )}
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Update Profile
+                        </Button>
+
+                        <Button type="button" variant="contained" color="primary" onClick={deleteAccount} fullWidth>
+                            Delete Profile
                         </Button>
                     </form>
                 </Container>
