@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { Grid } from '@mui/material';
+//import { useRouter } from "next/router";
+import { TextField, Button, Typography, Grid, Snackbar, Alert } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
+//import axios from "axios";
+//import RegisterForm from "@/components/RegisterForm";
 
-export const dynamic = 'force-dynamic' // defaults to auto
+/*export const dynamic = 'force-dynamic' // defaults to auto
 
 export async function GET(request) {
     return new Response('Hello, Next.js!', {
@@ -15,14 +17,14 @@ export async function GET(request) {
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         },
     })
-}
+}*/
  const Register = () =>  {
 /*    try {
         // Your code that may throw an error
 
     console.log('Here!!!!!!!!!!!!!',window.location);
 
-    //const router = useRouter();
+
 
     // Function to handle successful registration
     const handleRegistrationSuccess = () => {
@@ -37,19 +39,40 @@ export async function GET(request) {
             console.log('Debug message: window.location',window.location);
         }
     }, []);*/
-
+/*     const router = useRouter();
      const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
      const handleRegistrationSuccess = () => {
          setRegistrationSuccess(true); // Set registration success state to true
+     };*/
+     const [registrationSuccess, setRegistrationSuccess] = useState(false);
+     const handleRegistrationSuccess = () => {
+         setRegistrationSuccess(true); // Set registration success state to true
      };
-
+     useEffect(() => {
+         // Access window.location only if window object is available
+         if (typeof window !== 'undefined') {
+             console.log('Debug message: window.location', window.location);
+         }
+     }, [])
      return (
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+
+         <div>
+             <Navbar showLinks={false} />
+             <Grid container style={{ flex: 1 }}>
+                 <Grid item xs={12} style={{ height: '0.1vh' }}></Grid>
+             </Grid>
+
+
+             <RegisterForm registrationSuccess={handleRegistrationSuccess} />
+
+
+         </div>
+/*        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Navbar showLinks={false} />
             <Grid container style={{ flex: 1 }}>
                 <Grid item xs={12} style={{ height: '0.1vh' }}></Grid>
             </Grid>
-            {/* Conditional rendering for success message */}
+            {/!* Conditional rendering for success message *!/}
             {registrationSuccess ? (
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                     <h3>Registration Successful!</h3>
@@ -58,7 +81,7 @@ export async function GET(request) {
             ) : (
                 <RegisterForm onRegistrationSuccess={handleRegistrationSuccess} /> // Pass callback function to RegisterForm
             )}
-        </div>
+        </div>*/
     );
    /* } catch (error) {
         console.error("Error in register.js:", error);
