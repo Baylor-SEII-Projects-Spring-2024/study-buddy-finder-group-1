@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseService;
 import studybuddy.api.friendships.FriendshipService;
-import studybuddy.api.meeting.MeetingUserRepository;
-import studybuddy.api.meeting.MeetingUserService;
 import studybuddy.api.meeting.UserMeetingRepository;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;

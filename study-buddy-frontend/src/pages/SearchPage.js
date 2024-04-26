@@ -27,12 +27,18 @@ const SearchMeetups = () => {
         const requester = JSON.parse(localStorage.getItem('user'));
         setUserId(requester.id);
         console.log("User: " + requester.id);
+
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { courseName: searchTerm } });
+            const response = await axios.get(`http://localhost:8080/meetings/search`, {
+                params: {
+                    courseName: searchTerm,
+                    userId: requester.id
+                }
+            });
 
             setSearchResults(response.data);
             console.log(response.data);
-            console.log(localUserId);
+            console.log("Local User ID:", localUserId);
         } catch (error) {
             console.error("Error fetching search results:", error);
             setSearchResults([]);
@@ -40,6 +46,7 @@ const SearchMeetups = () => {
             setLoading(false);
         }
     };
+
 
     const handleSearchButtonClick = () => {
         if (searchTerm.trim()) {
