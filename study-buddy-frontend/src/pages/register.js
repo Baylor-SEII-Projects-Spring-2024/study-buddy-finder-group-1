@@ -63,7 +63,7 @@ export async function GET(request) {
              </Grid>
 
 
-             <RegisterForm registrationSuccess={handleRegistrationSuccess} /> // Pass callback function to RegisterForm
+             <RegisterForm registrationSuccess={handleRegistrationSuccess} />
 
 
          </div>
