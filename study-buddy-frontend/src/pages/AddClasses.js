@@ -106,7 +106,7 @@ const AddClasses = () => {
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
-                        Add Class(es)
+                        Add a Class
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <FormControl fullWidth margin="normal">

@@ -31,7 +31,7 @@ public class RecommendationEndpoint {
     private MeetingService meetingService;
 
     // endpoint for getting recommended meetings for a user
-    @GetMapping("/meetings")
+    /*@GetMapping("/meetings")
     public ResponseEntity<Set<Meeting>> getRecommendedMeetings(@RequestParam Long userId,
                                                                @RequestParam Long courseId,
                                                                @RequestParam String desiredTimeString) {
@@ -44,7 +44,7 @@ public class RecommendationEndpoint {
 
         Set<Meeting> recommendations = recommendationService.getRecommendedMeetings(user, allMeetings, course, desiredTimeString);
         return ResponseEntity.ok(recommendations);
-    }
+    }*/
 
     // endpoint for getting recommended friends for a user
     @GetMapping("/friends")

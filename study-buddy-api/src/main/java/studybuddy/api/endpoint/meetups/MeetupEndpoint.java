@@ -6,9 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import studybuddy.api.course.Course;
+import studybuddy.api.course.CourseService;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
 import studybuddy.api.meeting.*;
+import studybuddy.api.recommendation.RecommendationService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
 import studybuddy.api.user.UserService;
@@ -35,6 +38,12 @@ public class MeetupEndpoint {
 
     @Autowired
     private MeetingInvitationService invitationService;
+
+    @Autowired
+    private RecommendationService recommendationService;
+
+    @Autowired
+    private CourseService courseService;
 
     @PostMapping("/create")
     public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
@@ -148,36 +157,60 @@ public class MeetupEndpoint {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String course) {
-        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
+    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String course, @RequestParam(required = true) Long userId) {
         List<Meeting> matchingMeetings = new ArrayList<>();
+        Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
 
-        for (Meeting m : meetings) {
+        for (Meeting m : meetingSet) {
             if (m.getCourseName().toLowerCase().contains((course.toLowerCase()))) {
                 matchingMeetings.add(m);
             }
         }
 
+        //for recommended meetings
+        User user = userRepository.findById(userId).orElse(null);
+        Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, course);
+        Set<Meeting> listToAdd = new HashSet<>();
+
+        for (Meeting m : recommendedMeetings) {
+            for (Meeting matchingM : matchingMeetings) {
+
+                //if the recommended meeting id isn't already in the list, add it
+                if (!Objects.equals(m.getId(), matchingM.getId())) {
+                    listToAdd.add(m);
+                }
+            }
+        }
+
+        matchingMeetings.addAll(listToAdd);
 
         return ResponseEntity.ok(matchingMeetings);
     }
 
+    @GetMapping("/user-in-meeting")
+    public ResponseEntity<Boolean> isUserInMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) {
+        boolean isInMeeting = userMeetingRepository.userMeetingRelationshipExists(userId, meetingId);
+
+        return ResponseEntity.ok(isInMeeting);
+    }
+
     @PostMapping("/join")
     public ResponseEntity<?> joinMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) throws Exception {
-        MeetingUser meetingUser = new MeetingUser();
+        Meeting meeting = meetingService.getMeetingById(meetingId)
+                .orElseThrow(() -> new RuntimeException("Meeting not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        //get all users to check if they're already in the meeting
         if (userMeetingRepository.userMeetingRelationshipExists(userId, meetingId)) {
             return ResponseEntity.badRequest().body("User is already in the meeting.");
         }
 
-        //create a new meeting-user association
-        meetingUser.setUser(user);
-        meetingUser.setMeeting(meeting);
-        meetingUser.setRole("Student");
-        meetingUserService.saveMeetingUser(meetingUser);
+        //add user and save
+        meeting.getUsers().add(user);
+        meetingService.saveMeeting(meeting);
 
         return ResponseEntity.ok().body("Meeting joined successfully!");
-        return ResponseEntity.badRequest().body("Error joining meeting: " + e.getMessage());
     }
 
     // -------------- Added for Review Tutor --------------

@@ -32,7 +32,7 @@ public class MeetingInvitationService {
                 .orElseThrow(() -> new RuntimeException("Invitation not found"));
         invitation.setStatus("accepted");
 
-        // add the invitee to the meeting's users
+        //add the invitee to the meeting's users
         Meeting meeting = invitation.getMeeting();
         meeting.getUsers().add(invitation.getInvitee());
         meetingRepository.save(meeting); // ensure the meeting is updated with the new user
