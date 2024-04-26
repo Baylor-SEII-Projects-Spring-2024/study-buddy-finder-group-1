@@ -86,16 +86,19 @@ public class MeetingService {
         String endTime;
 
         for (Meeting m : allMeetings) {
-            int hyphenIndex = m.timeSlot.indexOf('-');
-            endTime = m.timeSlot.substring(hyphenIndex + 1).trim();
+            if (m.getTimeSlot() != null) {
+                int hyphenIndex = m.getTimeSlot().indexOf('-');
+                if (hyphenIndex > -1) {
+                    endTime = m.getTimeSlot().substring(hyphenIndex + 1).trim();
+                    LocalDateTime date = LocalDateTime.parse(m.getDate() + "T00:00:00");
+                    LocalTime time = LocalTime.parse(endTime, timeFormatter);
+                    LocalDateTime combined = date.with(time);
 
-            LocalDateTime date = LocalDateTime.parse(m.date + "T00:00:00");
-            LocalTime time = LocalTime.parse(endTime, timeFormatter);
-            LocalDateTime combined = date.with(time);
-
-            //if the current time is before meeting time, add it
-            if (currentDateTime.isBefore(combined)) {
-                meetings.add(m);
+                    // if the current time is before meeting time, add it
+                    if (currentDateTime.isBefore(combined)) {
+                        meetings.add(m);
+                    }
+                }
             }
         }
 

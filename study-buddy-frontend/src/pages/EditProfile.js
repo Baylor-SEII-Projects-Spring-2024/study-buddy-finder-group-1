@@ -37,18 +37,24 @@ const EditProfile = () => {
         }
     }, [router]);
     //autofill the existing values for the current user
-    useEffect(async () => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const userId = user.id;
-        //if(!isLoggedIn)
-
-        if (user) {
-            const response = await axios.get(`http://localhost:8080/users/${userId}`);
-            setFirstName(response.data.firstName || '');
-            setLastName(response.data.lastName || '');
-            setEmail(response.data.email || '');
-            setUserType(response.data.userType || 'student');
+    useEffect(() => {
+        async function fetchUserData() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.id) {
+                try {
+                    const response = await axios.get(`http://localhost:8080/users/${user.id}`);
+                    setFirstName(response.data.firstName || '');
+                    setLastName(response.data.lastName || '');
+                    setEmail(response.data.email || '');
+                    setUserType(response.data.userType || 'student');
+                } catch (error) {
+                    console.error('Failed to fetch user data:', error);
+                }
+            }
         }
+
+        fetchUserData();
+
     }, []);
 
     const handleFirstNameChange = (event) => {

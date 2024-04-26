@@ -28,13 +28,7 @@ const SearchMeetups = () => {
         setUserId(requester.id);
         console.log("User: " + requester.id);
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/search`,
-                {
-                    params: {
-                        course: searchTerm,
-                        userId: localUserId
-                    }
-                })
+            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { courseName: searchTerm } });
 
             setSearchResults(response.data);
             console.log(response.data);
@@ -63,16 +57,19 @@ const SearchMeetups = () => {
 
     const handleJoinMeeting = async (meetingId) => {
         try {
-            if (localUserId) {
-                const response = await axios.post(`http://localhost:8080/meetings/join`, null, {
-                    params: {
-                        userId: localUserId,
-                        meetingId: meetingId
-                    }
-                });
+            const requester = JSON.parse(localStorage.getItem('user'));
+            const userId = requester.id;
 
-                if (response.status)
-                alert("Meeting joined!");
+            if (userId) {
+                const payload = {
+                    userId: userId,
+                    meetingId: meetingId
+                };
+                const response = await axios.post(`http://localhost:8080/meetings/join`, payload);
+
+                if (response.status === 200) {
+                    alert("Meeting joined!");
+                }
             }
         } catch (error) {
             if (error.response && error.response.status === 400) {

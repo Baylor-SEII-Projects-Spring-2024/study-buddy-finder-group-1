@@ -10,6 +10,7 @@ import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseService;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
+import studybuddy.api.location.LocationService;
 import studybuddy.api.meeting.*;
 import studybuddy.api.recommendation.RecommendationService;
 import studybuddy.api.user.User;
@@ -32,6 +33,9 @@ public class MeetupEndpoint {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MeetingRepository meetingRepository;
 
     @Autowired
     private LocationRepository locationRepository;
@@ -156,13 +160,19 @@ public class MeetupEndpoint {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String course, @RequestParam(required = true) Long userId) {
-        List<Meeting> matchingMeetings = new ArrayList<>();
-        Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<Meeting>> upcomingMeetings() {
+        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
+        return ResponseEntity.ok(meetings);
+    }
 
-        for (Meeting m : meetingSet) {
-            if (m.getCourseName().toLowerCase().contains((course.toLowerCase()))) {
+    @GetMapping("/search")
+    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName) {
+        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
+        List<Meeting> matchingMeetings = new ArrayList<>();
+  
+        for (Meeting m : meetings) {
+            if (m.getCourseName().toLowerCase().contains((courseName.toLowerCase()))) {
                 matchingMeetings.add(m);
             }
         }
@@ -195,23 +205,28 @@ public class MeetupEndpoint {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<?> joinMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) throws Exception {
-        Meeting meeting = meetingService.getMeetingById(meetingId)
-                .orElseThrow(() -> new RuntimeException("Meeting not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> joinMeeting(@RequestBody Map<String, Object> payload) {
+        Long userId = Long.parseLong(payload.get("userId").toString());
+        Long meetingId = Long.parseLong(payload.get("meetingId").toString());
 
-        //get all users to check if they're already in the meeting
-        if (userMeetingRepository.userMeetingRelationshipExists(userId, meetingId)) {
+        // retrieve the user and the meeting using provided IDs
+        User userJoining = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + userId));
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Meeting not found: " + meetingId));
+
+        // check if the user is already a part of the meeting
+        if (meeting.getUsers().contains(userJoining)) {
             return ResponseEntity.badRequest().body("User is already in the meeting.");
         }
 
-        //add user and save
-        meeting.getUsers().add(user);
-        meetingService.saveMeeting(meeting);
+        // add user to the meeting
+        meeting.getUsers().add(userJoining);
+        meetingService.saveMeeting(meeting);  // assuming saveMeeting updates existing meetings correctly
 
         return ResponseEntity.ok().body("Meeting joined successfully!");
     }
+
 
     // -------------- Added for Review Tutor --------------
 //    @GetMapping("/user/{userId}") //Dont change

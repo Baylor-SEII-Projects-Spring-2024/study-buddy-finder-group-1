@@ -179,6 +179,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                             <Link href="/SearchPage" passHref>Search For Meetups</Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/SearchPage" passHref>Search Meetups</Link>
+                        </Button>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/AddFriends" passHref>Search For Users</Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
