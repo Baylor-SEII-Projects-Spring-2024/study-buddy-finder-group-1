@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import {
     Box,
     Container,
@@ -9,31 +9,71 @@ import {
     CardContent
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
+import {debounce} from "lodash";
 
-const SearchPage = () => {
+const SearchMeetups = () => {
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
     };
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [courses, setCourses] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const performSearch = () => {
-        // Simulated fetching from backend
-        const simulatedCourses = [
-            { id: 1, name: "Introduction to Programming", description: "Learn the basics of programming", credit: 4, department: "Computer Science" },
-            { id: 2, name: "Advanced Mathematics", description: "Dive deep into calculus and algebra", credit: 4, department: "Mathematics" },
-            { id: 3, name: "Calculus I", description: "Introduction to differential calculus", credit: 4, department: "Mathematics" },
+    const fetchSearchResults = async (searchTerm) => {
+        setLoading(true);
 
-        ];
+        try {
+            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { course: searchTerm } });
 
-        // Replace this with actual search logic based on searchQuery
-        setCourses(simulatedCourses);
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error("Error fetching search results:", error);
+            setSearchResults([]);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleJoinCourseStudyGroup = (courseId) => {
-        alert(`You have expressed interest in joining a study group for course ID: ${courseId}!`);
-        // Implement the logic to actually join a study group or session
+    const handleSearchButtonClick = () => {
+        if (searchTerm.trim()) {
+            fetchSearchResults(searchTerm);
+        }
+    };
+
+    const debouncedSearch = useCallback(debounce(fetchSearchResults, 500), []);
+
+    const handleSearchChange = (e) => {
+        const { value } = e.target;
+        setSearchTerm(value);
+        setSearchResults([]);
+    };
+
+    const handleJoinMeeting = async (meetingId) => {
+        try {
+            const requester = JSON.parse(localStorage.getItem('user'));
+            const userId = requester.id;
+
+            if (userId) {
+                const response = await axios.post(`http://localhost:8080/meetings/join`, null, {
+                    params: {
+                        userId: userId,
+                        meetingId: meetingId
+                    }
+                });
+
+                if (response.status)
+                alert("Meeting joined!");
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                alert(error.response.data);
+            } else {
+                console.error("Error joining meeting:", error);
+                alert("Failed to join meeting.");
+            }
+        }
     };
 
     return (
@@ -46,29 +86,33 @@ const SearchPage = () => {
                     </Typography>
 
                     <TextField
-                        label="Search courses by name, department, etc."
+                        label="Search meeups by course."
                         variant="outlined"
                         fullWidth
                         style={{ margin: "20px 0" }}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchTerm}
+                        onChange={handleSearchChange}
                     />
-                    <Button variant="contained" color="primary" onClick={performSearch}>
+                    <Button variant="contained" color="primary" onClick={handleSearchButtonClick}>
                         Search
                     </Button>
 
-                    {courses.map((course, index) => (
-                        <Card key={index} style={{ margin: "20px 0" }}>
+                    {searchResults ? (
+                        searchResults.map((data, index) => (
+                            <Card key={index} style={{ margin: "20px 0" }}>
                             <CardContent>
-                                <Typography variant="h5" component="h2">{course.name}</Typography>
-                                <Typography color="textSecondary">{course.description}</Typography>
-                                <Typography color="textSecondary">{`Credit: ${course.credit} | Department: ${course.department}`}</Typography>
-                                <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleJoinCourseStudyGroup(course.id)}>
+                                <Typography variant="h5" component="h2">{data.courseName}</Typography>
+                                <Typography color="textSecondary">{`${data.date} | ${data.timeSlot}`}</Typography>
+                                <Typography color="textSecondary">{`${data.location.name} | ${data.room}`}</Typography>
+                                <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleJoinMeeting(data.id)}>
                                     Join Study Group
                                 </Button>
                             </CardContent>
-                        </Card>
-                    ))}
+                            </Card>
+                        ))
+                    ) : (
+                        <p>Loading...</p>
+                    )}
                 </Container>
             </Box>
             <Box height={100} />
@@ -76,4 +120,4 @@ const SearchPage = () => {
     );
 };
 
-export default SearchPage;
+export default SearchMeetups;

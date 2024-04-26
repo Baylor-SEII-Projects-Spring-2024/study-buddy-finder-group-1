@@ -33,7 +33,7 @@ const mockClasses = [
 ];
 
 const MeetupCreationPage = () => {
-    const [classAndArea, setClassAndArea] = useState('');
+    const [subject, setSubject] = useState('');
     const [locations, setLocations] = useState([]);
     const [meetingType, setMeetingType] = useState('');
     const [availableRooms, setAvailableRooms] = useState([]);
@@ -57,8 +57,8 @@ const MeetupCreationPage = () => {
         "6:00 PM - 8:00 PM",
     ];
 
-    const handleClassAndAreaChange = (event) => {
-        setClassAndArea(event.target.value);
+    const handleSubjectChange = (event) => {
+        setSubject(event.target.value);
     };
 
     const handleLocationChange = (event) => {
@@ -166,6 +166,7 @@ const MeetupCreationPage = () => {
             timeSlot: timeSlot,
             userIds: selectedFriends.map(id => parseInt(id)), // Ensure IDs are integers
             userId: userId, // Make sure this matches the expected key in the backend
+            subject: subject
         };
 
         console.log(payload);
@@ -233,10 +234,10 @@ const MeetupCreationPage = () => {
                     <form onSubmit={handleSubmit}>
                         <TextField
                             select
-                            label="Class(es) or Area(s) of Study"
+                            label="Subject"
                             variant="outlined"
-                            value={classAndArea}
-                            onChange={handleClassAndAreaChange}
+                            value={subject}
+                            onChange={handleSubjectChange}
                             fullWidth
                             margin="normal"
                         >
