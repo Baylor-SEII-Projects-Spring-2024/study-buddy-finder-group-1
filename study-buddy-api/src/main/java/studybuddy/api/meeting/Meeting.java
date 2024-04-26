@@ -1,5 +1,6 @@
 package studybuddy.api.meeting;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,6 +67,7 @@ public class Meeting {
     String courseName;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JsonBackReference
     @JoinTable(
             name = "user_meetings",
             joinColumns = @JoinColumn(name = "meeting_id"),
@@ -130,6 +133,19 @@ public class Meeting {
                 ", timeSlot='" + timeSlot + '\'' +
                 ", users=" + users.stream().map(User::getId).toList() +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Meeting other = (Meeting) obj;
+        return id != null && id.equals(other.id);
     }
 
 
