@@ -25,16 +25,13 @@ public class MeetupEndpoint {
     private MeetingService meetingService;
 
     @Autowired
-    private MeetingUserService meetingUserService;
+    private UserMeetingRepository userMeetingRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private LocationRepository locationRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private MeetingInvitationService invitationService;
@@ -168,28 +165,19 @@ public class MeetupEndpoint {
     @PostMapping("/join")
     public ResponseEntity<?> joinMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) throws Exception {
         MeetingUser meetingUser = new MeetingUser();
-        try {
-            User user = userService.getUserById(userId).orElseThrow(() -> new Exception("User not found with id: " + userId));
-            Meeting meeting = meetingService.getMeetingById(meetingId).orElseThrow(() -> new Exception("Meeting not found with id: " + meetingId));
 
-            //look at all the meeting user associations. if this one exists, send warning message and dont create
-            List<MeetingUser> allMU = meetingUserService.findAllMeetingUsers();
-            for (MeetingUser u : allMU) {
-                if (u.getUser() == user && u.getMeeting() == meeting) {
-                    return ResponseEntity.badRequest().body("User is already in the meeting.");
-                }
-            }
-
-            //create a new meeting-user association
-            meetingUser.setUser(user);
-            meetingUser.setMeeting(meeting);
-            meetingUser.setRole("Student");
-            meetingUserService.saveMeetingUser(meetingUser);
-
-            return ResponseEntity.ok().body("Meeting joined successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error joining meeting: " + e.getMessage());
+        if (userMeetingRepository.userMeetingRelationshipExists(userId, meetingId)) {
+            return ResponseEntity.badRequest().body("User is already in the meeting.");
         }
+
+        //create a new meeting-user association
+        meetingUser.setUser(user);
+        meetingUser.setMeeting(meeting);
+        meetingUser.setRole("Student");
+        meetingUserService.saveMeetingUser(meetingUser);
+
+        return ResponseEntity.ok().body("Meeting joined successfully!");
+        return ResponseEntity.badRequest().body("Error joining meeting: " + e.getMessage());
     }
 
     // -------------- Added for Review Tutor --------------
