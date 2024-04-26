@@ -49,6 +49,7 @@ public class MeetupEndpoint {
     @Autowired
     private CourseService courseService;
 
+
     @PostMapping("/create")
     public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
         Long userId = Long.parseLong(payload.get("userId").toString());
@@ -167,19 +168,22 @@ public class MeetupEndpoint {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName) {
+    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName, @RequestParam(required = true) Long userId) {
         List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         List<Meeting> matchingMeetings = new ArrayList<>();
-  
-        for (Meeting m : meetings) {
+        Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
+
+
+        for (Meeting m : meetingSet) {
             if (m.getCourseName().toLowerCase().contains((courseName.toLowerCase()))) {
                 matchingMeetings.add(m);
+                System.out.println(matchingMeetings);
             }
         }
 
         //for recommended meetings
         User user = userRepository.findById(userId).orElse(null);
-        Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, course);
+        Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, courseName);
         Set<Meeting> listToAdd = new HashSet<>();
 
         for (Meeting m : recommendedMeetings) {
