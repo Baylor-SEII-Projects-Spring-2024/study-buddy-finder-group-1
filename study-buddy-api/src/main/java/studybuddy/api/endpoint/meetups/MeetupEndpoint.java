@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
+import studybuddy.api.location.LocationService;
 import studybuddy.api.meeting.*;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
@@ -29,6 +30,9 @@ public class MeetupEndpoint {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MeetingRepository meetingRepository;
 
     @Autowired
     private LocationRepository locationRepository;
@@ -150,13 +154,19 @@ public class MeetupEndpoint {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<Meeting>> upcomingMeetings() {
+        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
+        return ResponseEntity.ok(meetings);
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String course) {
+    public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName) {
         List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         List<Meeting> matchingMeetings = new ArrayList<>();
 
         for (Meeting m : meetings) {
-            if (m.getCourseName().toLowerCase().contains((course.toLowerCase()))) {
+            if (m.getCourseName().toLowerCase().contains((courseName.toLowerCase()))) {
                 matchingMeetings.add(m);
             }
         }
@@ -166,31 +176,28 @@ public class MeetupEndpoint {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<?> joinMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) throws Exception {
-        MeetingUser meetingUser = new MeetingUser();
-        try {
-            User user = userService.getUserById(userId).orElseThrow(() -> new Exception("User not found with id: " + userId));
-            Meeting meeting = meetingService.getMeetingById(meetingId).orElseThrow(() -> new Exception("Meeting not found with id: " + meetingId));
+    public ResponseEntity<?> joinMeeting(@RequestBody Map<String, Object> payload) {
+        Long userId = Long.parseLong(payload.get("userId").toString());
+        Long meetingId = Long.parseLong(payload.get("meetingId").toString());
 
-            //look at all the meeting user associations. if this one exists, send warning message and dont create
-            List<MeetingUser> allMU = meetingUserService.findAllMeetingUsers();
-            for (MeetingUser u : allMU) {
-                if (u.getUser() == user && u.getMeeting() == meeting) {
-                    return ResponseEntity.badRequest().body("User is already in the meeting.");
-                }
-            }
+        // retrieve the user and the meeting using provided IDs
+        User userJoining = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + userId));
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Meeting not found: " + meetingId));
 
-            //create a new meeting-user association
-            meetingUser.setUser(user);
-            meetingUser.setMeeting(meeting);
-            meetingUser.setRole("Student");
-            meetingUserService.saveMeetingUser(meetingUser);
-
-            return ResponseEntity.ok().body("Meeting joined successfully!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error joining meeting: " + e.getMessage());
+        // check if the user is already a part of the meeting
+        if (meeting.getUsers().contains(userJoining)) {
+            return ResponseEntity.badRequest().body("User is already in the meeting.");
         }
+
+        // add user to the meeting
+        meeting.getUsers().add(userJoining);
+        meetingService.saveMeeting(meeting);  // assuming saveMeeting updates existing meetings correctly
+
+        return ResponseEntity.ok().body("Meeting joined successfully!");
     }
+
 
     // -------------- Added for Review Tutor --------------
 //    @GetMapping("/user/{userId}") //Dont change
