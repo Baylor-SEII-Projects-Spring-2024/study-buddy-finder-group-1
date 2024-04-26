@@ -30,22 +30,22 @@ public class RecommendationService {
     static final double TUTOR_WEIGHT = 5.0;
     static final double SUBJECT_WEIGHT = 1;
 
-    public Set<Meeting> getRecommendedMeetings(User user, Set<Meeting> allMeetings, Course course, String desiredTimeString) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a");
-        LocalDateTime desiredTime = LocalDateTime.parse(desiredTimeString, dateTimeFormatter);
+    public Set<Meeting> getRecommendedMeetings(User user, Set<Meeting> allMeetings, String course) {
+        //DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a");
+        //LocalDateTime desiredTime = LocalDateTime.parse(desiredTimeString, dateTimeFormatter);
 
         Map<Double, Meeting> weightedMeetings = new TreeMap<>(Collections.reverseOrder());
 
         for (Meeting meeting : allMeetings) {
-            double weight = calculateMeetingWeight(user, course, dateTimeFormatter, desiredTime, meeting);
+            double weight = calculateMeetingWeight(user, course, meeting);
             weightedMeetings.put(weight, meeting);
         }
 
-        return weightedMeetings.values().stream().limit(3).collect(Collectors.toSet());
+        return weightedMeetings.values().stream().limit(10).collect(Collectors.toSet());
     }
 
 
-    private double calculateMeetingWeight(User user, Course course, DateTimeFormatter dateTimeFormatter, LocalDateTime desiredTime, Meeting meeting) {
+    private double calculateMeetingWeight(User user, String course, Meeting meeting) {
         double weight = 0.0;
 
         // check if any of the meeting's attendees are friends with the user
@@ -63,17 +63,17 @@ public class RecommendationService {
 
         weight += tutorRating / TUTOR_WEIGHT;
 
-        if (course.getName().equals(meeting.getCourseName())) {
+        if (course.equals(meeting.getCourseName())) {
             weight += SUBJECT_WEIGHT;
         }
 
-        String[] parts = meeting.getTimeSlot().split(" - ");
+        /*String[] parts = meeting.getTimeSlot().split(" - ");
         String startDateTimeString = meeting.getDate() + " " + parts[0];
         LocalDateTime meetingStartTime = LocalDateTime.parse(startDateTimeString, dateTimeFormatter);
 
         long hoursDifference = ChronoUnit.HOURS.between(desiredTime, meetingStartTime);
         double distanceFromTarget = Math.max(0.0, 1.0 - (double) Math.abs(hoursDifference) / (24.0 * 365));
-        weight += distanceFromTarget;
+        weight += distanceFromTarget;*/
 
         return weight;
     }

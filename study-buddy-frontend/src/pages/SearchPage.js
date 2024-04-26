@@ -20,14 +20,25 @@ const SearchMeetups = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [localUserId, setUserId] = useState('');
 
     const fetchSearchResults = async (searchTerm) => {
         setLoading(true);
-
+        const requester = JSON.parse(localStorage.getItem('user'));
+        setUserId(requester.id);
+        console.log("User: " + requester.id);
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/search`, { params: { course: searchTerm } });
+            const response = await axios.get(`http://localhost:8080/meetings/search`,
+                {
+                    params: {
+                        course: searchTerm,
+                        userId: localUserId
+                    }
+                })
 
             setSearchResults(response.data);
+            console.log(response.data);
+            console.log(localUserId);
         } catch (error) {
             console.error("Error fetching search results:", error);
             setSearchResults([]);
@@ -52,13 +63,10 @@ const SearchMeetups = () => {
 
     const handleJoinMeeting = async (meetingId) => {
         try {
-            const requester = JSON.parse(localStorage.getItem('user'));
-            const userId = requester.id;
-
-            if (userId) {
+            if (localUserId) {
                 const response = await axios.post(`http://localhost:8080/meetings/join`, null, {
                     params: {
-                        userId: userId,
+                        userId: localUserId,
                         meetingId: meetingId
                     }
                 });
@@ -104,9 +112,9 @@ const SearchMeetups = () => {
                                 <Typography variant="h5" component="h2">{data.courseName}</Typography>
                                 <Typography color="textSecondary">{`${data.date} | ${data.timeSlot}`}</Typography>
                                 <Typography color="textSecondary">{`${data.location.name} | ${data.room}`}</Typography>
-                                <Button variant="contained" color="primary" style={{marginTop: "10px"}} onClick={() => handleJoinMeeting(data.id)}>
-                                    Join Study Group
-                                </Button>
+                                    <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
+                                        Join Study Group
+                                    </Button>
                             </CardContent>
                             </Card>
                         ))
