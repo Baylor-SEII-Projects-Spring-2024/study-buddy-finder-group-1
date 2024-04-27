@@ -15,11 +15,12 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const [isLoggedOut, setIsLoggedOut] = useState(true);
     const [userId, setUserId] = useState(null);
     const router = useRouter();
-    console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [dashboardAnchorEl, setDashboardAnchorEl] = useState(null);
     const dashboardOpen = Boolean(dashboardAnchorEl);
+
+    console.log("isLoggedIn:", isLoggedIn);
 
 
     useEffect(() => {
@@ -137,14 +138,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
         router.push(`/ReviewTutor`);
     }
 
-    const handleSettingsClick = () => {
-        router.push(`/Settings`);
-    }
-
-    const handleHelpSupportClick = () => {
-        router.push(`/HelpSupport`);
-    }
-
     const handleHomeClick = () => {
         router.push(`/home`);
     }
@@ -214,7 +207,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                             open={dashboardOpen}
                             onClose={handleDashboardMenuClose}
                         >
-                            <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                             <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
                             <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
                             <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
@@ -231,6 +223,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                             <MenuItem onClick={handleRecommendationClick}>Recommendations</MenuItem>
                             <MenuItem onClick={() => router.push('/StudyLocationsPage')}>Study Locations</MenuItem>
                             <MenuItem onClick={() => router.push('/OurMissionPage')}>Our Mission</MenuItem>
+                            <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                             <MenuItem onClick={() => {
                                 handleLogout();
                                 handleClose();
