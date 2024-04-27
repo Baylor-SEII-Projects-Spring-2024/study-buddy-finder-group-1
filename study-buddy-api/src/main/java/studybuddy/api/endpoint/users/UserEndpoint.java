@@ -146,13 +146,42 @@ public class UserEndpoint {
 
     @GetMapping("/users/{userId}/courses/")
     public ResponseEntity<Set<Course>> findAllUserCourses(@PathVariable Long userId) {
+
         Set<Course> courses = userService.getAllUserCourses(userId);
         return ResponseEntity.ok(courses);
     }
 
     @GetMapping("/users/tutors")
     public ResponseEntity<List<User>> findAllTutors() {
+        System.out.println("I AM IN HERE");
         List<User> users = userService.findAllTutors();
         return ResponseEntity.ok(users);
     }
+
+
+    @GetMapping("/users/searchedTutors")
+    public ResponseEntity<List<User>> findSearchedTutors(@RequestParam(required = true) String tutorName) {
+        List<User> users = userService.findAllTutors();
+        List<User> searched = new ArrayList<>();
+       System.out.println("TUTOR NAME IS: " + tutorName);
+        if(tutorName.isEmpty() || tutorName.equals("")){
+            System.out.println("TUTOR NAME IS: EMPTY");
+            return ResponseEntity.ok(users);
+        }
+        else{
+
+            //algorithm to get specified tutors
+            for (User u : users) {
+                if (u.getFirstName().toLowerCase().contains(tutorName.toLowerCase()) ||
+                        u.getLastName().toLowerCase().contains(tutorName.toLowerCase())) {
+                    System.out.println("TUTOR NAME IS MATCHING SUSTRING: ");
+                    System.out.println("TUTOR NAME:  " + u.getFirstName()+ " AND "+ u.getLastName());
+                    System.out.println("SUBSTRING:" + tutorName );
+                    searched.add(u);
+                }
+            }
+        }
+        return ResponseEntity.ok(searched);
+    }
+
 }

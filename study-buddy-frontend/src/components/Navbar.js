@@ -173,7 +173,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                 {isLoggedIn ? (
                     <>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
-                            <Link href="/MeetupCreationPage" passHref>Search For Tutors (TODO)</Link>
+                            <Link href="/SearchTutorsPage" passHref>Search For Tutors (TODO)</Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/SearchPage" passHref>Search For Meetups</Link>
