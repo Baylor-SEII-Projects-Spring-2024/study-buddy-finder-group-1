@@ -184,13 +184,10 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                 {isLoggedIn ? (
                     <>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
-                            <Link href="/SearchTutorsPage" passHref>Search For Tutors (TODO)</Link>
+                            <Link href="/SearchTutorsPage" passHref>Search For Tutors</Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/SearchPage" passHref>Search For Meetups</Link>
-                        </Button>
-                        <Button className={styles.whiteButton} sx={buttonStyle}>
-                            <Link href="/SearchPage" passHref>Search Meetups</Link>
                         </Button>
                         <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/AddFriends" passHref>Search For Users</Link>
@@ -198,39 +195,26 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                         <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/AddClasses" passHref>Add a Class</Link>
                         </Button>
-                    </>
-                ) : (
-                    <>
-                        <Button className={styles.whiteButton} sx={buttonStyle}>
-                            <Link href="/login" passHref>Sign In</Link>
-                        </Button>
-                        <Button className={styles.whiteButton} sx={buttonStyle}>
-                            <Link href="/register" passHref>Create Account</Link>
-                        </Button>
-                    </>
-                )}
 
-                <Button className={styles.whiteButton} sx={buttonStyle} onClick={handleDashboardMenuOpen}>
-                    Dashboard
-                </Button>
-                <Menu
-                    id="dashboard-menu"
-                    anchorEl={dashboardAnchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={dashboardOpen}
-                    onClose={handleDashboardMenuClose}
-                >
-                    <MenuItem onClick={handleHomeClick}>Home</MenuItem>
-                    {isLoggedIn && (
-                        <>
+                        <Button className={styles.whiteButton} sx={buttonStyle} onClick={handleDashboardMenuOpen}>
+                            Dashboard
+                        </Button>
+                        <Menu
+                            id="dashboard-menu"
+                            anchorEl={dashboardAnchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={dashboardOpen}
+                            onClose={handleDashboardMenuClose}
+                        >
+                            <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                             <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
                             <MenuItem onClick={handleEditProfileClick}>Edit Profile</MenuItem>
                             <MenuItem onClick={handleEditMeetupClick}>Edit Meetup</MenuItem>
@@ -251,12 +235,20 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                                 handleLogout();
                                 handleClose();
                             }}>Logout</MenuItem>
-                        </>
-                    )}
-                </Menu>
+                        </Menu>
+                    </>
+                ) : (
+                    <>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/login" passHref>Sign In</Link>
+                        </Button>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/register" passHref>Create Account</Link>
+                        </Button>
+                    </>
+                )}
             </Toolbar>
         </AppBar>
+
     );
-
-
 }

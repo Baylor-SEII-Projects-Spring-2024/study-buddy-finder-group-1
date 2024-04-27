@@ -1,9 +1,12 @@
 import React from "react";
-import {Button, Container, Typography} from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
+import { useAuth } from "@/components/AuthContext";
 
-export default function HomePageText({mainFont, whiteText}) {
+export default function HomePageText({ mainFont, whiteText }) {
+    const { isLoggedIn } = useAuth();  // Using the useAuth hook to determine login status
+
     return (
         <Container component="main" sx={{ flexGrow: 1, mt: '64px' }}>
             <Typography variant="h2" align="center" color="textPrimary" gutterBottom sx={{ fontFamily: mainFont, color: whiteText }}>
@@ -12,7 +15,7 @@ export default function HomePageText({mainFont, whiteText}) {
             <Typography variant="h5" align="center" color="textSecondary" component="p" sx={{ fontFamily: mainFont, color: whiteText }}>
                 Embark on a personalized learning experience where your goals are our priority.
             </Typography>
-            <Link href="/SearchPage" passHref>
+            <Link href={isLoggedIn ? "/SearchPage" : "/register"} passHref>
                 <Button
                     variant="contained"
                     color="primary"
@@ -30,7 +33,7 @@ export default function HomePageText({mainFont, whiteText}) {
                         }
                     }}
                 >
-                    Start Searching for Study Meetups!
+                    {isLoggedIn ? "Start Searching for Study Meetups!" : "Get Started Today"}
                 </Button>
             </Link>
         </Container>
