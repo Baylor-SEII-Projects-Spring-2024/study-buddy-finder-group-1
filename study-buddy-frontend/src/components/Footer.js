@@ -22,9 +22,6 @@ export default function Footer({mainFont, whiteText}) {
                                 FAQ
                             </MuiLink>
                             <br />
-                            <MuiLink href="/ContactUs" className={styles.yourClassName} style={{ textDecoration: 'none', color: 'white' }}>
-                                Contact Us
-                            </MuiLink>
                         </Box>
                     </Grid>
 
