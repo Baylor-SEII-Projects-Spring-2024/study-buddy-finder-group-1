@@ -18,6 +18,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     console.log("isLoggedIn:", isLoggedIn);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const [dashboardAnchorEl, setDashboardAnchorEl] = useState(null);
+    const dashboardOpen = Boolean(dashboardAnchorEl);
+
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
@@ -67,6 +70,14 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
             behavior: 'smooth'
         });
     }
+
+    const handleDashboardMenuOpen = (event) => {
+        setDashboardAnchorEl(event.currentTarget);
+    };
+
+    const handleDashboardMenuClose = () => {
+        setDashboardAnchorEl(null);
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
@@ -199,17 +210,12 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                     </>
                 )}
 
-                <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="profile"
-                    onClick={handleMenu}
-                >
-                    <Avatar src='/Images/Profile%20Pic.webp' alt="Profile" />
-                </IconButton>
+                <Button className={styles.whiteButton} sx={buttonStyle} onClick={handleDashboardMenuOpen}>
+                    Dashboard
+                </Button>
                 <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
+                    id="dashboard-menu"
+                    anchorEl={dashboardAnchorEl}
                     anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'right',
@@ -219,8 +225,8 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                         vertical: 'top',
                         horizontal: 'right',
                     }}
-                    open={open}
-                    onClose={handleClose}
+                    open={dashboardOpen}
+                    onClose={handleDashboardMenuClose}
                 >
                     <MenuItem onClick={handleHomeClick}>Home</MenuItem>
                     {isLoggedIn && (
