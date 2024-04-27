@@ -74,6 +74,15 @@ public class User {
         }
     }
 
+    public User(String firstName, String lastName, String email_address, String password, String userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email_address = email_address;
+        this.password = password;
+        this.userType = userType;
+        rating=0.0;
+    }
+
     public User() {
     }
     public void setRating(Double rating) {

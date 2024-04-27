@@ -12,7 +12,7 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {debounce} from "lodash";
 
-const SearchMeetups = () => {
+const SearchTutorsPage = () => {
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
     };
@@ -28,23 +28,29 @@ const SearchMeetups = () => {
         setUserId(requester.id);
         console.log("User: " + requester.id);
         try {
-            const response = await axios.get(`http://localhost:8080/users/tutors`);
+            const response = await axios.get(`http://localhost:8080/users/searchedTutors`,{
+                params: {
+                tutorName: searchTerm
+            }
+        });
 
             setSearchResults(response.data);
             console.log(response.data);
             console.log(localUserId);
-        } catch (error) {
+        }
+        catch (error) {
             console.error("Error fetching search results:", error);
             setSearchResults([]);
-        } finally {
+        }
+        finally {
             setLoading(false);
         }
     };
 
     const handleSearchButtonClick = () => {
-        if (searchTerm.trim()) {
-            fetchSearchResults(searchTerm);
-        }
+
+        searchTerm.trim();
+        fetchSearchResults(searchTerm);
     };
 
     const debouncedSearch = useCallback(debounce(fetchSearchResults, 500), []);
@@ -99,15 +105,15 @@ const SearchMeetups = () => {
                         onChange={handleSearchChange}
                     />
                     <Button variant="contained" color="primary" onClick={handleSearchButtonClick}>
-                        Search
+                        Search Tutors
                     </Button>
 
                     {searchResults ? (
                         searchResults.map((data, index) => (
                             <Card key={index} style={{ margin: "20px 0" }}>
                                 <CardContent>
-                                    <Typography variant="h5" component="h2">{data.firstName}</Typography>
-                                    <Typography color="textSecondary">{data.lastName}</Typography>
+                                    <Typography variant="h5" component="h2">{data.firstName}  {data.lastName}</Typography>
+                                    <Typography color="textSecondary">Rating: {data.rating}</Typography>
                                     {/*      <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
                                         Create Meeting
                                     </Button> */}
@@ -123,5 +129,48 @@ const SearchMeetups = () => {
         </div>
     );
 };
+{/*
+ FIX: WILL make functional later. Plan is to replace card layout with <Link> so Specified Tutors navigate to createMeetupPage with Tutor AUto inputted
+ Maybe even remove tutor name on create meetup page since its already known with this working.
 
-export default SearchMeetups;
+    return (
+        <div>
+            <Navbar showLinks={false} />
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
+                <Container maxWidth="md" style={textStyle}>
+                    <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center' }}>
+                        Find Tutors
+                    </Typography>
+
+                    <TextField
+                        label="Search tutors."
+                        variant="outlined"
+                        fullWidth
+                        style={{ margin: "20px 0" }}
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                    <Button variant="contained" color="primary" onClick={handleSearchButtonClick}>
+                        Search Tutors
+                    </Button>
+
+                    {searchResults ? (
+                        searchResults.map((data, index) => (
+                            <Link key={index} to={`/tutor/${data.id}`} style={{ textDecoration: 'none' }}>
+                                <div key={index} style={{ margin: "20px 0", cursor: 'pointer' }}>
+                                    <Typography variant="h5" component="h2">{data.firstName} {data.lastName}</Typography>
+                                    <Typography color="textSecondary">Rating: {data.rating}</Typography>
+                                </div>
+                            </Link>
+                        ))
+                    ) : (
+                        <p>Loading...</p>
+                    )}
+                </Container>
+            </Box>
+            <Box height={100} />
+        </div>
+    );
+};
+*/}
+export default SearchTutorsPage;
