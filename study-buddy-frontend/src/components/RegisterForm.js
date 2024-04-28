@@ -109,7 +109,6 @@ export default function RegisterForm() {
                 }
             });
 
-            console.log(data);
             if (response.status === 200) {
                 await router.push('/login');
             } else {
