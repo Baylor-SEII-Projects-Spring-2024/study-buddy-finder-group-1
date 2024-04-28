@@ -62,7 +62,7 @@ public class User {
     private Set<Course> courses = new HashSet<>();
 
     @ManyToMany(mappedBy = "users")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Meeting> meetings = new HashSet<>();
 
     public User(String email, String password, String userType, Double initialRating) {
