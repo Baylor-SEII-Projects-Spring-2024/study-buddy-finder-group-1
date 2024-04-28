@@ -79,6 +79,30 @@ public class MeetingService {
         return meetings;
     }
 
+    public Boolean isMeetingOver(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String endTime;
+
+        if (meeting.getTimeSlot() != null) {
+            int hyphenIndex = meeting.getTimeSlot().indexOf('-');
+            if (hyphenIndex > -1) {
+                endTime = meeting.getTimeSlot().substring(hyphenIndex + 1).trim();
+                LocalDateTime date = LocalDateTime.parse(meeting.getDate() + "T00:00:00");
+                LocalTime time = LocalTime.parse(endTime, timeFormatter);
+                LocalDateTime combined = date.with(time);
+
+                // if the current time is before meeting time, add it
+                if (currentDateTime.isBefore(combined)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public List<Meeting> getAllUpcomingMeetings() {
         List<Meeting> allMeetings = meetingRepository.findAll();
         List<Meeting> meetings = new ArrayList<>();

@@ -99,7 +99,7 @@ const MeetupCreationPage = () => {
                 const response = await axios.get(`${basePath}/tutors/${tutorid}`);
                 setTutor(response.data); // Assuming response.data is an array of location objects
             } catch (error) {
-                console.error("Error fetching locations:", error);
+                console.error("Error fetching tutor:", error);
             }
         };
         fetchTutor();

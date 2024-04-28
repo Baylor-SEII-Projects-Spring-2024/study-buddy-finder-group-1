@@ -128,7 +128,7 @@ public class UserService {
     }
 
     @Transactional
-    public User rateTutor(Long userId, Double newRating) {
+    public User rateTutor(Long userId, Double newRating, Long meetingId, Long studentId) {
         if (newRating < 0) {
             throw new IllegalArgumentException("Rating must not be negative.");
         }
@@ -140,8 +140,12 @@ public class UserService {
             throw new IllegalArgumentException("Rating can only be set for users of type Tutor.");
         }
 
+        //make a new review object
+        ReviewTutor newReview = new ReviewTutor(tutor, newRating, meetingId, studentId);
+
         // Fetch all reviews for the tutor and calculate the new average rating
-        List<ReviewTutor> reviews = reviewTutorRepository.findByTutor(tutor);
+        List<ReviewTutor> reviews = reviewTutorRepository.findByTutorId(tutor.id);
+
         double averageRating = reviews.stream()
                 .mapToDouble(ReviewTutor::getRating)
                 .average()
@@ -149,7 +153,9 @@ public class UserService {
 
         double updatedAverageRating = (averageRating * reviews.size() + newRating) / (reviews.size() + 1);
 
+        //save new review and tutor rating
         tutor.setRating(updatedAverageRating);
+        reviewTutorRepository.save(newReview);
         userRepository.save(tutor);
 
         return tutor;

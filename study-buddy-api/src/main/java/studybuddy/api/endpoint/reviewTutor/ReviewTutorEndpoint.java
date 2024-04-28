@@ -1,6 +1,7 @@
 package studybuddy.api.endpoint.reviewTutor;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,10 @@ import studybuddy.api.reviewtutor.ReviewTutorService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 
+@Log4j2
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/review")
 public class ReviewTutorEndpoint {
 
     @Autowired
@@ -25,17 +27,12 @@ public class ReviewTutorEndpoint {
         this.userService = userService;
     }
 
-    @PostMapping("/rate-tutor")
-    public ResponseEntity<?> rateTutor(@RequestParam Long userId, @RequestParam Double rating) {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> rateTutor(@PathVariable Long id, @RequestParam Double rating, @RequestParam Long meetingId, @RequestParam Long studentId) {
         try {
-
-            //User tutor = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("Tutor not found"));
-            //ReviewTutor review = reviewTutorService.addReview(tutor, rating.intValue());
-            //return ResponseEntity.ok(review);
-
             // Call the rateTutor method in UserService which returns the updated tutor
             // Using the User's rating instead of the reviewTutor rating
-            User updatedTutor = userService.rateTutor(userId, rating);
+            User updatedTutor = userService.rateTutor(id, rating, meetingId, studentId);
             return ResponseEntity.ok(updatedTutor);
 
         } catch (IllegalArgumentException | IllegalStateException e) {

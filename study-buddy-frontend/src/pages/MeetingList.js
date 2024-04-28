@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
     Avatar,
-    Box,
+    Box, Button,
     Container,
     Divider,
     List,
@@ -13,11 +13,15 @@ import {
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
+import {useRouter} from "next/router";
+import {debounce} from "lodash";
+import {router} from "next/client";
+
 
 const MeetingList = () => {
     const [meetingList, setMeetingList] = useState([]);
     const [tutorNames, setTutorNames] = useState({});
-
+    const [meetingOver, setMeetingOver] = useState(false);
     useEffect(() => {
         const getMeetingList = async () => {
             try {
@@ -26,11 +30,11 @@ const MeetingList = () => {
                 console.log(userId);
 
                 if (userId) {
-                    const response = await axios.get(`http://localhost:8080/meetings/user/${userId}/upcoming`);
+                    const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
                     setMeetingList(response.data);
                     console.log(response.data);
                     fetchTutorNames(response.data);
-
+                    fetchMeetingOver(response.data);
                 }
 
             } catch (error) {
@@ -48,6 +52,16 @@ const MeetingList = () => {
             setTutorNames(names);
         };
 
+        const fetchMeetingOver = async (meetingListPop) => {
+            const over = {};
+
+            for (const meeting of meetingListPop) {
+                over[meeting.id] = await isMeetingOver(meeting.id);
+                console.log(over[meeting.id]);
+            }
+            setMeetingOver(over);
+        };
+
         getMeetingList();
     }, []);
 
@@ -63,6 +77,24 @@ const MeetingList = () => {
             }
         }
         return "Mock Name";
+    };
+
+    const isMeetingOver = async (meetingId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/meetings/over/${meetingId}`);
+            console.log(response.data);
+            return response.data;
+
+        } catch (error) {
+            console.log("Error getting is meeting over", error)
+        }
+    }
+
+    const handleReviewTutor = (meeting) => {
+        //store meeting id for review page
+        localStorage.setItem('meetingId', JSON.stringify(meeting.id));
+
+        router.push(`/MeetingList/${meeting.tutorID}`);
     };
 
     return (
@@ -100,6 +132,11 @@ const MeetingList = () => {
                                                     <Typography variant="body1">
                                                         Time: {meeting.timeSlot}
                                                     </Typography>
+                                                    {meetingOver[meeting.id] && (
+                                                        <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleReviewTutor(meeting)}>
+                                                            Review this Tutor
+                                                        </Button>
+                                                    )}
                                                 </>
                                             }
                                         />
