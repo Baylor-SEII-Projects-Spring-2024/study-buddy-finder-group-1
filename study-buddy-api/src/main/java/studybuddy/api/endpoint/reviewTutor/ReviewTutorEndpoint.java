@@ -28,9 +28,16 @@ public class ReviewTutorEndpoint {
     @PostMapping("/rate-tutor")
     public ResponseEntity<?> rateTutor(@RequestParam Long userId, @RequestParam Double rating) {
         try {
-            User tutor = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("Tutor not found"));
-            ReviewTutor review = reviewTutorService.addReview(tutor, rating.intValue());
-            return ResponseEntity.ok(review);
+
+            //User tutor = userService.findUser(userId).orElseThrow(() -> new EntityNotFoundException("Tutor not found"));
+            //ReviewTutor review = reviewTutorService.addReview(tutor, rating.intValue());
+            //return ResponseEntity.ok(review);
+
+            // Call the rateTutor method in UserService which returns the updated tutor
+            // Using the User's rating instead of the reviewTutor rating
+            User updatedTutor = userService.rateTutor(userId, rating);
+            return ResponseEntity.ok(updatedTutor);
+
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (EntityNotFoundException e) {

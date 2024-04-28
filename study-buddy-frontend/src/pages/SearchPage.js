@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     Box,
     Container,
@@ -19,14 +19,10 @@ const SearchMeetups = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [localUserId, setUserId] = useState('');
+    const [joinedMeetings, setJoinedMeetings] = useState([]);
 
     const fetchSearchResults = async (searchTerm) => {
-        setLoading(true);
         const requester = JSON.parse(localStorage.getItem('user'));
-        setUserId(requester.id);
-        console.log("User: " + requester.id);
 
         try {
             const response = await axios.get(`http://localhost:8080/meetings/search`, {
@@ -38,14 +34,27 @@ const SearchMeetups = () => {
 
             setSearchResults(response.data);
             console.log(response.data);
-            console.log("Local User ID:", localUserId);
         } catch (error) {
             console.error("Error fetching search results:", error);
             setSearchResults([]);
-        } finally {
-            setLoading(false);
         }
     };
+
+
+    useEffect(() => {
+        const requester = JSON.parse(localStorage.getItem('user'));
+        console.log("User: " + requester.id);
+        const fetchJoinedMeetings = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/meetings/user/${requester.id}/upcoming`);
+                setJoinedMeetings(response.data);
+
+            } catch (error) {
+                console.error("Error fetching joined meetings:", error);
+            }
+        };
+        fetchJoinedMeetings();
+    }, []);
 
 
     const handleSearchButtonClick = () => {
@@ -62,6 +71,20 @@ const SearchMeetups = () => {
         setSearchResults([]);
     };
 
+    const isAlreadyJoined = (meetingId) => {
+        console.log(meetingId);
+
+        //loop over all joined meetings and if the passed one is found return true
+        for (const meet of joinedMeetings) {
+            console.log("Comparing: " + meet.id + " with " + meetingId);
+            if (meet.id === meetingId) {
+                return true
+            }
+        }
+
+        return false;
+    };
+
     const handleJoinMeeting = async (meetingId) => {
         try {
             const requester = JSON.parse(localStorage.getItem('user'));
@@ -76,6 +99,7 @@ const SearchMeetups = () => {
 
                 if (response.status === 200) {
                     alert("Meeting joined!");
+                    window.location.reload();
                 }
             }
         } catch (error) {
@@ -116,9 +140,15 @@ const SearchMeetups = () => {
                                 <Typography variant="h5" component="h2">{data.courseName}</Typography>
                                 <Typography color="textSecondary">{`${data.date} | ${data.timeSlot}`}</Typography>
                                 <Typography color="textSecondary">{`${data.location.name} | ${data.room}`}</Typography>
+                                {isAlreadyJoined(data.id) ? (
+                                    <Button variant="contained" color="secondary" disabled style={{marginTop: "10px"}}>
+                                        Already Joined
+                                    </Button>
+                                ) : (
                                     <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
                                         Join Study Group
                                     </Button>
+                                )}
                             </CardContent>
                             </Card>
                         ))

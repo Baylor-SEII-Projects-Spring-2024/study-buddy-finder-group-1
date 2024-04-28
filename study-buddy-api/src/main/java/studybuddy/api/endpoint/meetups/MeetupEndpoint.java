@@ -68,6 +68,7 @@ public class MeetupEndpoint {
         newMeeting.setDate(String.valueOf(payload.get("date")));
         newMeeting.setTimeSlot(String.valueOf(payload.get("timeSlot")));
         newMeeting.setCourseName(String.valueOf(payload.get("subject")));
+        newMeeting.setTutorID(Long.parseLong((String) payload.get("tutorID")));
 
         Set<User> users = new HashSet<>();
         users.add(userCreatingMeeting);
@@ -169,7 +170,6 @@ public class MeetupEndpoint {
 
     @GetMapping("/search")
     public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName, @RequestParam(required = true) Long userId) {
-        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         List<Meeting> matchingMeetings = new ArrayList<>();
         Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
 
@@ -185,15 +185,21 @@ public class MeetupEndpoint {
         User user = userRepository.findById(userId).orElse(null);
         Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, courseName);
         Set<Meeting> listToAdd = new HashSet<>();
+        Boolean inList = false;
 
-        for (Meeting m : recommendedMeetings) {
+        for (Meeting recommendedM : recommendedMeetings) {
             for (Meeting matchingM : matchingMeetings) {
 
-                //if the recommended meeting id isn't already in the list, add it
-                if (!Objects.equals(m.getId(), matchingM.getId())) {
-                    listToAdd.add(m);
+                //if the recommended meeting is in the matched meetings list set to true
+                if (Objects.equals(matchingM.getId(), recommendedM.getId())) {
+                    inList = true;
                 }
             }
+            //if the recommended meeting wasn't in the list, add it
+            if (!inList) {
+                listToAdd.add(recommendedM);
+            }
+            inList = false;
         }
 
         matchingMeetings.addAll(listToAdd);

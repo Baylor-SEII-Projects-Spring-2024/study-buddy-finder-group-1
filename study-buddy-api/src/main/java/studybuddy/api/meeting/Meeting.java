@@ -66,6 +66,10 @@ public class Meeting {
     @Column(name = "COURSE_NAME")
     String courseName;
 
+    @Getter
+    @Column(name = "TUTOR_ID")
+    Long tutorID;
+
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonBackReference
     @JoinTable(
@@ -78,11 +82,12 @@ public class Meeting {
     public Meeting() {
     }
 
-    public Meeting(Location location, String timeSlot, String date, String room) {
+    public Meeting(Location location, String timeSlot, String date, String room, Long tutorID) {
         this.location = location;
         this.timeSlot = timeSlot;
         this.date = date;
         this.room = room;
+        this.tutorID = tutorID;
     }
 
     public void setRoom(String room) {
