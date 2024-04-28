@@ -34,7 +34,7 @@ const SearchTutorsPage = () => {
         try {
             const response = await axios.get(`http://localhost:8080/users/searchedTutors`,{
                 params: {
-                tutorName: searchTerm
+                subjectName: searchTerm
             }
         });
 
@@ -52,7 +52,6 @@ const SearchTutorsPage = () => {
     };
 
     const handleTutorSelected = (tutorid) => {
-        alert("WORK");
         router.push(`/MeetupCreationPage/${tutorid}`);
     };
     const handleSearchButtonClick = () => {
@@ -69,31 +68,27 @@ const SearchTutorsPage = () => {
         setSearchResults([]);
     };
 
-    const handleJoinMeeting = async (meetingId) => {
-        try {
-            const requester = JSON.parse(localStorage.getItem('user'));
-            const userId = requester.id;
-
-            if (userId) {
-                const payload = {
-                    userId: userId,
-                    meetingId: meetingId
-                };
-                const response = await axios.post(`http://localhost:8080/meetings/join`, payload);
-
-                if (response.status === 200) {
-                    alert("Meeting joined!");
-                }
+    const handleSubjectName = (userSubjects) => {
+        //loop through subjects of the found user and find the subject that corresponds to what they searched
+        for (const subject of userSubjects) {
+            if (subject.name.includes(searchTerm.toLowerCase())) {
+                return subject.name;
             }
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                alert(error.response.data);
-            } else {
-                console.error("Error joining meeting:", error);
-                alert("Failed to join meeting.");
+            else {
+                return searchTerm;
             }
         }
+        return searchTerm;
     };
+
+    const handleRating = (rating) => {
+        if (rating == 0) {
+            return "Tutor has not yet been rated"
+        }
+        else {
+            return rating;
+        }
+    }
 
     return (
         <div>
@@ -105,7 +100,7 @@ const SearchTutorsPage = () => {
                     </Typography>
 
                     <TextField
-                        label="Search tutors."
+                        label="Search tutors by subject..."
                         variant="outlined"
                         fullWidth
                         style={{ margin: "20px 0" }}
@@ -120,10 +115,12 @@ const SearchTutorsPage = () => {
                         searchResults.map((data, index) => (
                             <Card key={index} style={{ margin: "20px 0" }}>
                                 <CardContent>
-                                          <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleTutorSelected(data.id)}>
-                                        {data.firstName}  {data.lastName}
+                                    <Typography variant="h5" component="h2">{data.firstName} {data.lastName}</Typography>
+                                    <Typography color="textSecondary">{`Subject: ${handleSubjectName(data.courses)}`}</Typography>
+                                    <Typography color="textSecondary">{`Rating: ${handleRating(data.rating)}`}</Typography>
+                                    <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleTutorSelected(data.id)}>
+                                        Create Meeting with {data.firstName} {data.lastName}
                                     </Button>
-                                    <Typography color="textSecondary">Rating: {data.rating}</Typography>
                                 </CardContent>
                             </Card>
                         ))

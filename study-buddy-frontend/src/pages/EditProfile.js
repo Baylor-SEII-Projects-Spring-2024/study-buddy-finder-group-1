@@ -10,12 +10,14 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
-    Alert
+    Alert, ListItem, ListItemIcon, ListItemText, List
 } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 //import {router} from "next/client";
 import {useRouter} from "next/router";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
@@ -26,6 +28,10 @@ const EditProfile = () => {
     const [userType, setUserType] = useState('student'); // Default to student
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [passwordCriteria, setPasswordCriteria] = useState({
+        minLength: false,
+    });
+
     //redirect if no one is logged in
     const router = useRouter();
 
@@ -71,6 +77,13 @@ const EditProfile = () => {
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
+        updatePasswordCriteria(event.target.value);
+    };
+
+    const updatePasswordCriteria = (password) => {
+        setPasswordCriteria({
+            minLength: password.length >= 5
+        });
     };
 
     const handleConfirmPasswordChange = (event) => {
@@ -103,6 +116,7 @@ const EditProfile = () => {
         }
 
         alert('Account deleted.');
+        location.reload();
         router.push('/home');
     };
 
@@ -133,6 +147,7 @@ const EditProfile = () => {
                 profileData
             );
 
+            console.log("HERE");
             if (response.status === 200) {
                 setSuccessMessage('User profile updated successfully!');
                 // Consider resetting form fields here if needed
@@ -196,6 +211,14 @@ const EditProfile = () => {
                             fullWidth
                             margin="normal"
                         />
+                        <List sx={{ mb: 2 }}>
+                            <ListItem>
+                                <ListItemIcon>
+                                    {passwordCriteria.minLength ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
+                                </ListItemIcon>
+                                <ListItemText primary="At least 5 characters" />
+                            </ListItem>
+                        </List>
                         <FormControl component="fieldset" margin="normal">
                             <FormLabel component="legend">User Type</FormLabel>
                             <RadioGroup
