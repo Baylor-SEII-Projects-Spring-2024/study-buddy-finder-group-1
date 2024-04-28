@@ -11,6 +11,7 @@ import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Log4j2
@@ -26,7 +27,9 @@ public class AuthEndpoint {
         boolean userExists = userService.findUserByEmail(user.getEmail_address()).isPresent();
 
         //initialize user rating
-        user.setRating(0.0);
+        if (Objects.equals(user.getUserType(), "Tutor")) {
+            user.setRating(0.0);
+        }
 
         // user with email already exists
         if (userExists) {
@@ -34,7 +37,9 @@ public class AuthEndpoint {
         }
         // unique email, successfully registers
         else {
+            System.out.println("HERE");
             userService.saveUser(user);
+            System.out.println("HERE");
             return ResponseEntity.ok("Registered user successfully!");
         }
     }

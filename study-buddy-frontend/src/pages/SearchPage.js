@@ -99,6 +99,7 @@ const SearchMeetups = () => {
 
                 if (response.status === 200) {
                     alert("Meeting joined!");
+                    window.location.reload();
                 }
             }
         } catch (error) {
