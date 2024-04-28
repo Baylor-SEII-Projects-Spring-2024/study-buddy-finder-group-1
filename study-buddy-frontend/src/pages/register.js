@@ -4,7 +4,6 @@ import { TextField, Button, Typography, Grid, Snackbar, Alert } from '@mui/mater
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
 //import axios from "axios";
-//import RegisterForm from "@/components/RegisterForm";
 
 /*export const dynamic = 'force-dynamic' // defaults to auto
 
