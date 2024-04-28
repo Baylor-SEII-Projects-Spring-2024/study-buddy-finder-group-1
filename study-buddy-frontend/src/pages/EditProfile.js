@@ -123,6 +123,11 @@ const EditProfile = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        if (password.length < 5) {
+            setErrorMessage('Passwords must be 5 characters in length.');
+            return;
+        }
+
         if (password !== confirmPassword) {
             setErrorMessage('Passwords do not match.');
             return;
