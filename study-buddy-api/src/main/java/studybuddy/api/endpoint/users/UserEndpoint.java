@@ -184,4 +184,13 @@ public class UserEndpoint {
         return ResponseEntity.ok(searched);
     }
 
+
+    @GetMapping("/tutors/{id}")
+    public ResponseEntity<User> findTutorById(@PathVariable Long id) {
+        System.out.println("GRABBING TUTOR WITH ID OF : "+ id);
+        User user = userService.findTutor(id);
+
+        return ResponseEntity.ok(user);
+    }
+
 }

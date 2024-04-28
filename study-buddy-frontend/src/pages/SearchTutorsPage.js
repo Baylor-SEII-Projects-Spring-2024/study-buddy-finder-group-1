@@ -11,6 +11,9 @@ import {
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {debounce} from "lodash";
+import {useRouter} from "next/router";
+
+
 
 const SearchTutorsPage = () => {
     const textStyle = {
@@ -21,6 +24,7 @@ const SearchTutorsPage = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [localUserId, setUserId] = useState('');
+    const router = useRouter();
 
     const fetchSearchResults = async (searchTerm) => {
         setLoading(true);
@@ -47,6 +51,10 @@ const SearchTutorsPage = () => {
         }
     };
 
+    const handleTutorSelected = (tutorid) => {
+        alert("WORK");
+        router.push(`/MeetupCreationPage/${tutorid}`);
+    };
     const handleSearchButtonClick = () => {
 
         searchTerm.trim();
@@ -112,11 +120,10 @@ const SearchTutorsPage = () => {
                         searchResults.map((data, index) => (
                             <Card key={index} style={{ margin: "20px 0" }}>
                                 <CardContent>
-                                    <Typography variant="h5" component="h2">{data.firstName}  {data.lastName}</Typography>
+                                          <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleTutorSelected(data.id)}>
+                                        {data.firstName}  {data.lastName}
+                                    </Button>
                                     <Typography color="textSecondary">Rating: {data.rating}</Typography>
-                                    {/*      <Button variant="contained" color="primary" style={{ marginTop: "10px" }} onClick={() => handleJoinMeeting(data.id)}>
-                                        Create Meeting
-                                    </Button> */}
                                 </CardContent>
                             </Card>
                         ))
@@ -129,48 +136,5 @@ const SearchTutorsPage = () => {
         </div>
     );
 };
-{/*
- FIX: WILL make functional later. Plan is to replace card layout with <Link> so Specified Tutors navigate to createMeetupPage with Tutor AUto inputted
- Maybe even remove tutor name on create meetup page since its already known with this working.
 
-    return (
-        <div>
-            <Navbar showLinks={false} />
-            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
-                <Container maxWidth="md" style={textStyle}>
-                    <Typography variant="h3" component="h1" gutterBottom style={{ ...textStyle, fontWeight: 'bold', textAlign: 'center' }}>
-                        Find Tutors
-                    </Typography>
-
-                    <TextField
-                        label="Search tutors."
-                        variant="outlined"
-                        fullWidth
-                        style={{ margin: "20px 0" }}
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                    />
-                    <Button variant="contained" color="primary" onClick={handleSearchButtonClick}>
-                        Search Tutors
-                    </Button>
-
-                    {searchResults ? (
-                        searchResults.map((data, index) => (
-                            <Link key={index} to={`/tutor/${data.id}`} style={{ textDecoration: 'none' }}>
-                                <div key={index} style={{ margin: "20px 0", cursor: 'pointer' }}>
-                                    <Typography variant="h5" component="h2">{data.firstName} {data.lastName}</Typography>
-                                    <Typography color="textSecondary">Rating: {data.rating}</Typography>
-                                </div>
-                            </Link>
-                        ))
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </Container>
-            </Box>
-            <Box height={100} />
-        </div>
-    );
-};
-*/}
 export default SearchTutorsPage;

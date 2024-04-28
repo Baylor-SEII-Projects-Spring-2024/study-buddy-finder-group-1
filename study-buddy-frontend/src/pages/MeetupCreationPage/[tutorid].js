@@ -42,11 +42,14 @@ const MeetupCreationPage = () => {
     const [date, setDate] = useState('');
     const [timeSlot, setTimeSlot] = useState('');
     const [userEmail, setUserEmail] = useState('');
-    const [friendsList, setFriendsList] = useState([]);
-    const [selectedFriends, setSelectedFriends] = useState([]);
+    const [selectedUsers, setselectedUsers] = useState([]);
     const [location, setLocation] = useState('');
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [tutor,setTutor] = useState(null);
+    const [automatic,setAutomatic] = useState(true);
+    const router = useRouter();
+    const { tutorid } = router.query;
 
 
     const timeSlots = [
@@ -71,9 +74,9 @@ const MeetupCreationPage = () => {
         setAvailableRooms(rooms);
     };
 
-    const handleMeetingTypeChange = (event) => {
+    /*const handleMeetingTypeChange = (event) => {
         setMeetingType(event.target.value);
-    };
+    };*/
 
     const handleDateChange = (event) => {
         setDate(event.target.value);
@@ -87,14 +90,36 @@ const MeetupCreationPage = () => {
         setRoom(event.target.value);
     };
 
-    const handleSelectChange = (event) => {
-        const value = event.target.value;
-        setSelectedFriends(
-            // on autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
 
+    /*to automatically parse tutor information*/
+    useEffect(() => {
+        const fetchTutor = async () => {
+            const basePath = 'http://localhost:8080';
+            try {
+                const response = await axios.get(`${basePath}/tutors/${tutorid}`);
+                setTutor(response.data); // Assuming response.data is an array of location objects
+            } catch (error) {
+                console.error("Error fetching locations:", error);
+            }
+        };
+        fetchTutor();
+    }, []);
+
+    /*gets user for meetup creation*/
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.email) {
+            setUserEmail(user.email);
+        }
+    }, []);
+
+    /*FIXME: no longer needed but keep just incase*/
+    useEffect(() => {
+        setAutomatic(true);
+    }, []);
+
+
+    /*USED FOR FETCHING LOCATIONS automatically as page is made*/
     useEffect(() => {
         const fetchLocations = async () => {
             const basePath = 'http://localhost:8080';
@@ -107,47 +132,6 @@ const MeetupCreationPage = () => {
         };
 
         fetchLocations();
-    }, []);
-
-
-        //     //Kyle added this
-        //     console.log("User email that is being used for create meetup: " + userEmail);
-        //
-        //     if (userEmail) {
-        //         const basePath = 'http://localhost:8080';
-        //         const response = await axios.get(`${basePath}/ProfilePage/${userEmail}`);
-        //         setUserEmail(response.data.email_address);
-        //     } else {
-        //         console.error('No email found in localStorage');
-        //     }
-        // } catch (error) {
-        //     console.error('Error fetching login info:', error);
-        // }
-
-    useEffect(() => {
-        const getFriendsList = async () => {
-            try {
-                const user = JSON.parse(localStorage.getItem('user'));
-                const userId = user.id;
-
-                if (userId) {
-                    const basePath = 'http://localhost:8080';
-                    const response = await axios.get(`${basePath}/friendships/${userId}/friends`);
-                    setFriendsList(response.data);
-                    console.log(response.data);
-                }
-            } catch (error) {
-                console.log("Error", error)
-            }
-        }
-        getFriendsList();
-    }, []);
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user && user.email) {
-            setUserEmail(user.email);
-        }
     }, []);
 
     const handleSubmit = async (event) => {
@@ -165,7 +149,7 @@ const MeetupCreationPage = () => {
             room: room,
             date: date,
             timeSlot: timeSlot,
-            userIds: selectedFriends.map(id => parseInt(id)), // Ensure IDs are integers
+            userIds: selectedUsers.map(id => parseInt(id)), // Ensure IDs are integers
             userId: userId, // Make sure this matches the expected key in the backend
             subject: subject
         };
@@ -226,12 +210,18 @@ const MeetupCreationPage = () => {
 
     return (
         <div>
+
             <Navbar showLinks={false} />
             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
                 <Container maxWidth="md">
-                    <Typography variant="h3" component="h1" gutterBottom style={{textAlign: 'center'}}>
-                        Create a Meetup
-                    </Typography>
+                    {tutor && (
+                        <Typography variant="h3" component="h1" gutterBottom style={{ textAlign: 'center' }}>
+                            Create a Meetup!
+                            <div style={{ fontSize: 20 }}>
+                                Tutor: {tutor.firstName} {tutor.lastName}
+                            </div>
+                        </Typography>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <TextField
                             select
@@ -311,58 +301,7 @@ const MeetupCreationPage = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <FormControl fullWidth margin="normal">
-                            <InputLabel id="friends-select-label">Select Friends</InputLabel>
-                            <Select
-                                labelId="friends-select-label"
-                                id="friends-select"
-                                multiple
-                                value={selectedFriends}
-                                onChange={handleSelectChange}
-                                input={<OutlinedInput id="select-multiple-chip" label="Select Friends" />}
-                                renderValue={(selected) => (
-                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                        {selected.map((value) => {
-                                            const friend = friendsList.find(friend => friend.id === value);
-                                            if (!friend) return null;
 
-                                            const initials = `${friend.firstName[0]}${friend.lastName[0]}`;
-
-                                            const chipStyle = {
-                                                backgroundColor: friend.userType === 'Tutor' ? 'yellow' : 'blue',
-                                                color: 'black',
-                                            };
-
-                                            return (
-                                                <Chip
-                                                    key={value}
-                                                    label={initials.toUpperCase()}
-                                                    style={chipStyle}
-                                                />
-                                            );
-                                        })}
-                                    </Box>
-                                )}
-                                MenuProps={{
-                                    PaperProps: {
-                                        style: {
-                                            maxHeight: 224,
-                                            width: 250,
-                                        },
-                                    },
-                                }}
-                            >
-                                {friendsList.map((friend) => (
-                                    <MenuItem
-                                        key={friend.id}
-                                        value={friend.id}
-                                    >
-                                        {friend.firstName} {friend.lastName} with a role of: {friend.userType}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-
-                        </FormControl>
 
                         <Snackbar
                             open={openSnackbar}

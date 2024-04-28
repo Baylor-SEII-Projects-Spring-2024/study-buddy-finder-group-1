@@ -31,6 +31,15 @@ public class UserService {
     private ReviewTutorRepository reviewTutorRepository;
 
     public Optional<User> findUser(Long userId) { return userRepository.findById(userId); }
+    public User findTutor(Long userId) {
+        Optional<User> t = userRepository.findById(userId);
+
+        if (t.isPresent()) {
+            return t.get();
+        } else {
+            return null;
+        }
+    }
 
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
