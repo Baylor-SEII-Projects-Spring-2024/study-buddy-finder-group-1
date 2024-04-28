@@ -188,6 +188,9 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                         <Button className={styles.whiteButton} sx={buttonStyle}>
                             <Link href="/AddClasses" passHref>Add a Class</Link>
                         </Button>
+                        <Button className={styles.whiteButton} sx={buttonStyle}>
+                            <Link href="/MeetingList" passHref>Your Meetups</Link>
+                        </Button>
 
                         <Button className={styles.whiteButton} sx={buttonStyle} onClick={handleDashboardMenuOpen}>
                             Dashboard

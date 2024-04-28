@@ -52,29 +52,31 @@ public class MeetingService {
     }
 
     public List<Meeting> getUpcomingMeetingsByUserId(Long userId) {
-        List<Meeting> allUserMeetings = meetingRepository.findMeetingsByUserId(userId);
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime oneDayAhead = now.plusDays(1);
+        List<Meeting> allMeetings = meetingRepository.findMeetingsByUserId(userId);
+        List<Meeting> meetings = new ArrayList<>();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String endTime;
 
+        for (Meeting m : allMeetings) {
+            if (m.getTimeSlot() != null) {
+                int hyphenIndex = m.getTimeSlot().indexOf('-');
+                if (hyphenIndex > -1) {
+                    endTime = m.getTimeSlot().substring(hyphenIndex + 1).trim();
+                    LocalDateTime date = LocalDateTime.parse(m.getDate() + "T00:00:00");
+                    LocalTime time = LocalTime.parse(endTime, timeFormatter);
+                    LocalDateTime combined = date.with(time);
 
-        return allUserMeetings.stream()
-                .filter(meeting -> {
-                    try {
-                        LocalDate meetingDate = LocalDate.parse(meeting.getDate(), dateFormatter);
-                        LocalTime meetingStartTime = meeting.getStartTime();
-
-                        if (meetingDate == null || meetingStartTime == null) {
-                            return false;
-                        }
-
-                        LocalDateTime meetingDateTime = LocalDateTime.of(meetingDate, meetingStartTime);
-                        return meetingDateTime.isAfter(now) && meetingDateTime.isBefore(oneDayAhead);
-                    } catch (Exception e) {
-                        return false;
+                    // if the current time is before meeting time, add it
+                    if (currentDateTime.isBefore(combined)) {
+                        meetings.add(m);
                     }
-                })
-                .collect(Collectors.toList());
+                }
+            }
+        }
+
+        return meetings;
     }
 
     public List<Meeting> getAllUpcomingMeetings() {
