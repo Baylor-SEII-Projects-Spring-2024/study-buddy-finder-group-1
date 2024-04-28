@@ -146,13 +146,52 @@ public class UserEndpoint {
 
     @GetMapping("/users/{userId}/courses/")
     public ResponseEntity<Set<Course>> findAllUserCourses(@PathVariable Long userId) {
+
         Set<Course> courses = userService.getAllUserCourses(userId);
         return ResponseEntity.ok(courses);
     }
 
     @GetMapping("/users/tutors")
     public ResponseEntity<List<User>> findAllTutors() {
+        System.out.println("I AM IN HERE");
         List<User> users = userService.findAllTutors();
         return ResponseEntity.ok(users);
     }
+
+
+    @GetMapping("/users/searchedTutors")
+    public ResponseEntity<List<User>> findSearchedTutors(@RequestParam(required = true) String subjectName) {
+        List<User> users = userService.findAllTutors();
+        List<User> searched = new ArrayList<>();
+
+        System.out.println("TUTOR SUBJECT IS: " + subjectName);
+
+        if(subjectName.isEmpty()){
+            System.out.println("TUTOR NAME IS: EMPTY");
+            return ResponseEntity.ok(users);
+        }
+        else{
+
+            //algorithm to get specified tutors
+            for (User u : users) {
+                Set<Course> userCourses = u.getCourses();
+                for (Course c : userCourses) {
+                    if (c.getName().toLowerCase().contains(subjectName.toLowerCase())) {
+                        searched.add(u);
+                    }
+                }
+            }
+        }
+        return ResponseEntity.ok(searched);
+    }
+
+
+    @GetMapping("/tutors/{id}")
+    public ResponseEntity<User> findTutorById(@PathVariable Long id) {
+        System.out.println("GRABBING TUTOR WITH ID OF : "+ id);
+        User user = userService.findTutor(id);
+
+        return ResponseEntity.ok(user);
+    }
+
 }

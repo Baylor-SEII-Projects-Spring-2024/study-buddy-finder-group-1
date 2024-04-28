@@ -31,6 +31,15 @@ public class UserService {
     private ReviewTutorRepository reviewTutorRepository;
 
     public Optional<User> findUser(Long userId) { return userRepository.findById(userId); }
+    public User findTutor(Long userId) {
+        Optional<User> t = userRepository.findById(userId);
+
+        if (t.isPresent()) {
+            return t.get();
+        } else {
+            return null;
+        }
+    }
 
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
@@ -145,14 +154,4 @@ public class UserService {
 
         return tutor;
     }
-
-    // ---------------- Added for Review Tutor ----------------
-//    public Set<Meeting> getAllUserMeetings(Long userId) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-//        return user.getMeetings().stream()
-//                .map(MeetingUser::getMeeting)
-//                .collect(Collectors.toSet());
-//    }
-    // ---------------- Added for Review Tutor ----------------
 }

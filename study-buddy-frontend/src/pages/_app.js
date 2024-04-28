@@ -2,19 +2,12 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { Provider as ReduxProvider } from 'react-redux';
 import { NotificationProvider } from '../contexts/NotificationContext';
-
-
 import { AppCacheProvider } from '@mui/material-nextjs/v14-pagesRouter';
 import { CssBaseline } from '@mui/material';
-
 import { StudyBuddyThemeProvider } from '@/utils/theme';
 import { buildStore } from '@/utils/redux';
 import Layout from '@/components/Layout';
-
-import { AuthProvider } from '../components/AuthContext';
-
-
-
+import {AuthProvider, useAuth} from '../components/AuthContext';
 import '@/styles/globals.css'
 import '../styles/globals.css';
 
@@ -25,6 +18,7 @@ let reduxStore = buildStore(initialState);
 export default function App({ Component, pageProps }) {
 
     useEffect(() => {
+
         const adjustForScrollbar = () => {
             const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
             document.documentElement.style.setProperty('--scrollbar-margin', `${scrollbarWidth}px`);

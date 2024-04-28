@@ -3,19 +3,19 @@ import { Box, Container, Typography, Button } from '@mui/material';
 import Navbar from "@/components/Navbar";
 
 const AboutUs = () => {
-    // Our custom style for the text
+    // Custom style for the text
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
         fontSize: '3rem', // Increase font size
-        textAlign: 'center',
+        textAlign: 'center', // Center the title text
         padding: '20px 0', // Add padding top and bottom
     };
 
     return (
         <div>
             <Navbar showLinks={false} />
-            <Container maxWidth="md" style={{ marginTop: '150px' }}>
-                <Box mt={5} pb={10}>
+            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" style={{ minHeight: '80vh', paddingTop: '15vh' }}>
+                <Container maxWidth="md">
                     <Typography variant="h4" gutterBottom style={textStyle}>
                         About Us
                     </Typography>
@@ -28,8 +28,9 @@ const AboutUs = () => {
                     <Typography variant="body1" gutterBottom style={{ textAlign: 'left', paddingTop: '20px', fontSize: '1.6rem' }}>
                         Our user-friendly web app allows users to register under the appropriate classification, input their class(es) and/or area(s) of study, and find other students or tutors with similar profiles. Additionally, our team continuously enhances the application with new features to meet the evolving needs of our users.
                     </Typography>
-                </Box>
-            </Container>
+                </Container>
+            </Box>
+            <Box height={100} />
         </div>
     );
 };
