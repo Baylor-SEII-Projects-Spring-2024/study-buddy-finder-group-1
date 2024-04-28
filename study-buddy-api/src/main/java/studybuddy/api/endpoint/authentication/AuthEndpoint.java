@@ -25,6 +25,9 @@ public class AuthEndpoint {
     public ResponseEntity<String> saveUser(@RequestBody User user) {
         boolean userExists = userService.findUserByEmail(user.getEmail_address()).isPresent();
 
+        //initialize user rating
+        user.setRating(0.0);
+
         // user with email already exists
         if (userExists) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User with email: " + user.getEmail_address() + " already exists.");

@@ -109,15 +109,15 @@ const EditProfile = () => {
         try {
             const response = await axios.delete(`http://localhost:8080/delete/${userId}`);
 
+            //log them out
             localStorage.setItem('isLoggedIn', 'false');
+
+            //redirect to /home
+            window.location.href = '/home';
 
         } catch (error) {
             console.error('Error deleting account:', error);
         }
-
-        alert('Account deleted.');
-        location.reload();
-        router.push('/home');
     };
 
     const handleSubmit = async (event) => {

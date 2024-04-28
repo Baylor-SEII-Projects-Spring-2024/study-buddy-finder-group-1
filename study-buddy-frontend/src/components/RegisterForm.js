@@ -108,7 +108,7 @@ export default function RegisterForm() {
                     'Content-Type': 'application/json'
                 }
             });
-            const data = response.data;
+
             console.log(data);
             if (response.status === 200) {
                 await router.push('/login');
