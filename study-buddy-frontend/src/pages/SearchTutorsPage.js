@@ -74,9 +74,6 @@ const SearchTutorsPage = () => {
             if (subject.name.includes(searchTerm.toLowerCase())) {
                 return subject.name;
             }
-            else {
-                return searchTerm;
-            }
         }
         return searchTerm;
     };

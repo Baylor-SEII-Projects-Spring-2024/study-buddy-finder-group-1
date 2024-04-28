@@ -185,15 +185,21 @@ public class MeetupEndpoint {
         User user = userRepository.findById(userId).orElse(null);
         Set<Meeting> recommendedMeetings = recommendationService.getRecommendedMeetings(user, meetingSet, courseName);
         Set<Meeting> listToAdd = new HashSet<>();
+        Boolean inList = false;
 
-        for (Meeting m : recommendedMeetings) {
+        for (Meeting recommendedM : recommendedMeetings) {
             for (Meeting matchingM : matchingMeetings) {
 
-                //if the recommended meeting id isn't already in the list, add it
-                if (!Objects.equals(m.getId(), matchingM.getId())) {
-                    listToAdd.add(m);
+                //if the recommended meeting is in the matched meetings list set to true
+                if (Objects.equals(matchingM.getId(), recommendedM.getId())) {
+                    inList = true;
                 }
             }
+            //if the recommended meeting wasn't in the list, add it
+            if (!inList) {
+                listToAdd.add(recommendedM);
+            }
+            inList = false;
         }
 
         matchingMeetings.addAll(listToAdd);
