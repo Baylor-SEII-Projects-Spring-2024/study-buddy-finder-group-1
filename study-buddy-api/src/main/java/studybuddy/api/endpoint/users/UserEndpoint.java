@@ -160,11 +160,13 @@ public class UserEndpoint {
 
 
     @GetMapping("/users/searchedTutors")
-    public ResponseEntity<List<User>> findSearchedTutors(@RequestParam(required = true) String tutorName) {
+    public ResponseEntity<List<User>> findSearchedTutors(@RequestParam(required = true) String subjectName) {
         List<User> users = userService.findAllTutors();
         List<User> searched = new ArrayList<>();
-       System.out.println("TUTOR NAME IS: " + tutorName);
-        if(tutorName.isEmpty() || tutorName.equals("")){
+
+        System.out.println("TUTOR SUBJECT IS: " + subjectName);
+
+        if(subjectName.isEmpty()){
             System.out.println("TUTOR NAME IS: EMPTY");
             return ResponseEntity.ok(users);
         }
@@ -172,12 +174,11 @@ public class UserEndpoint {
 
             //algorithm to get specified tutors
             for (User u : users) {
-                if (u.getFirstName().toLowerCase().contains(tutorName.toLowerCase()) ||
-                        u.getLastName().toLowerCase().contains(tutorName.toLowerCase())) {
-                    System.out.println("TUTOR NAME IS MATCHING SUSTRING: ");
-                    System.out.println("TUTOR NAME:  " + u.getFirstName()+ " AND "+ u.getLastName());
-                    System.out.println("SUBSTRING:" + tutorName );
-                    searched.add(u);
+                Set<Course> userCourses = u.getCourses();
+                for (Course c : userCourses) {
+                    if (c.getName().toLowerCase().contains(subjectName.toLowerCase())) {
+                        searched.add(u);
+                    }
                 }
             }
         }

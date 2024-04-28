@@ -36,9 +36,6 @@ export default function RegisterForm() {
 
     const [passwordCriteria, setPasswordCriteria] = useState({
         minLength: false,
-        uppercase: false,
-        specialChar: false,
-        number: false
     });
 
     const handleChange = (event) => {
@@ -75,14 +72,11 @@ export default function RegisterForm() {
 
     const updatePasswordCriteria = (password) => {
         setPasswordCriteria({
-            minLength: password.length >= 8,
-            uppercase: /[A-Z]/.test(password),
-            specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-            number: /\d/.test(password)
+            minLength: password.length >= 5
         });
     };
     const isPasswordValid = () => {
-        return passwordCriteria.minLength && passwordCriteria.uppercase && passwordCriteria.specialChar && passwordCriteria.number;
+        return passwordCriteria.minLength;
     };
 
     const canSubmit = () => {
@@ -103,14 +97,17 @@ export default function RegisterForm() {
         }
 
         try {
-            const response = await axios.post(
-                "http://localhost:8080/register", {
+            const response = await axios.post("http://localhost:8080/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email_address: formData.email,
                 password: formData.password,
                 userType: formData.userType
-            })
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             const data = response.data;
             console.log(data);
             if (response.status === 200) {
@@ -191,25 +188,7 @@ export default function RegisterForm() {
                         <ListItemIcon>
                             {passwordCriteria.minLength ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
                         </ListItemIcon>
-                        <ListItemText primary="At least 8 characters" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            {passwordCriteria.uppercase ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
-                        </ListItemIcon>
-                        <ListItemText primary="At least one uppercase letter" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            {passwordCriteria.specialChar ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
-                        </ListItemIcon>
-                        <ListItemText primary="At least one special character" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            {passwordCriteria.number ? <CheckCircleOutlineIcon color="success" /> : <HighlightOffIcon color="error" />}
-                        </ListItemIcon>
-                        <ListItemText primary="At least one number" />
+                        <ListItemText primary="At least 5 characters" />
                     </ListItem>
                 </List>
                 <TextField
