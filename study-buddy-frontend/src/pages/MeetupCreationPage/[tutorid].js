@@ -151,7 +151,8 @@ const MeetupCreationPage = () => {
             timeSlot: timeSlot,
             userIds: selectedUsers.map(id => parseInt(id)), // Ensure IDs are integers
             userId: userId, // Make sure this matches the expected key in the backend
-            subject: subject
+            subject: subject,
+            tutorID: tutorid
         };
 
         console.log(payload);

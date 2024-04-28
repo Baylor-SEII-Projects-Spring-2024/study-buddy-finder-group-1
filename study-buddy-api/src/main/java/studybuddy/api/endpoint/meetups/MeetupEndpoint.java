@@ -68,6 +68,7 @@ public class MeetupEndpoint {
         newMeeting.setDate(String.valueOf(payload.get("date")));
         newMeeting.setTimeSlot(String.valueOf(payload.get("timeSlot")));
         newMeeting.setCourseName(String.valueOf(payload.get("subject")));
+        newMeeting.setTutorID(Long.parseLong((String) payload.get("tutorID")));
 
         Set<User> users = new HashSet<>();
         users.add(userCreatingMeeting);
@@ -169,7 +170,6 @@ public class MeetupEndpoint {
 
     @GetMapping("/search")
     public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName, @RequestParam(required = true) Long userId) {
-        List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         List<Meeting> matchingMeetings = new ArrayList<>();
         Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
 
