@@ -11,7 +11,7 @@ import { useNotification } from '../contexts/NotificationContext'; // Correctly 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
 
     const { isLoggedIn, logout } = useAuth();
-    const { notificationCount } = useNotification();
+    const { notificationCount, setNotificationCount } = useNotification();
     const [isLoggedOut, setIsLoggedOut] = useState(true);
     const [userId, setUserId] = useState(null);
     const router = useRouter();
@@ -217,7 +217,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
                             <MenuItem onClick={handleNotificationsClick} sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                 <Typography variant="inherit">Notifications</Typography>
                                 <Box sx={{ flexGrow: 1 }} />
-                                {notificationCount > 0 && (
+                                {notificationCount >= 0 && (
                                     <Badge badgeContent={notificationCount} color="primary" sx={{ marginRight: 2 }} />
                                 )}
                             </MenuItem>

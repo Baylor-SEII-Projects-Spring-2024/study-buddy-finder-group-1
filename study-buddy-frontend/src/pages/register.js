@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-//import { useRouter } from "next/router";
 import { TextField, Button, Typography, Grid, Snackbar, Alert } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
-//import axios from "axios";
-//import RegisterForm from "@/components/RegisterForm";
+
 
 /*export const dynamic = 'force-dynamic' // defaults to auto
 
@@ -19,31 +17,7 @@ export async function GET(request) {
     })
 }*/
  const Register = () =>  {
-/*    try {
-        // Your code that may throw an error
 
-    console.log('Here!!!!!!!!!!!!!',window.location);
-
-
-
-    // Function to handle successful registration
-    const handleRegistrationSuccess = () => {
-        setRegistrationSuccess(true); // Set registration success state to true
-    };
-    console.log('Debug message: Register component is rendering.');
-    // Use useEffect to run code only on the client-side
-    useEffect(() => {
-        // Check if window object is defined
-        if (typeof window !== 'undefined') {
-            // Access window.location only if window object is available
-            console.log('Debug message: window.location',window.location);
-        }
-    }, []);*/
-/*     const router = useRouter();
-     const [registrationSuccess, setRegistrationSuccess] = useState(false); // State to track registration success
-     const handleRegistrationSuccess = () => {
-         setRegistrationSuccess(true); // Set registration success state to true
-     };*/
      const [registrationSuccess, setRegistrationSuccess] = useState(false);
      const handleRegistrationSuccess = () => {
          setRegistrationSuccess(true); // Set registration success state to true
@@ -74,6 +48,7 @@ export async function GET(request) {
             </Grid>
             {/!* Conditional rendering for success message *!/}
             {registrationSuccess ? (
+
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                     <h3>Registration Successful!</h3>
                     <p>You can now login with your credentials.</p>

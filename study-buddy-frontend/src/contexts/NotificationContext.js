@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-const NotificationContext = createContext();
+const NotificationContext = createContext(undefined);
 
 export function useNotification() {
     return useContext(NotificationContext);
