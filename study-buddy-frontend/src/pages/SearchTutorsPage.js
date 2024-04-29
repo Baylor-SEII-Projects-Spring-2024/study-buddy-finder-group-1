@@ -39,6 +39,8 @@ const SearchTutorsPage = () => {
         });
 
             setSearchResults(response.data);
+
+
             console.log(response.data);
             console.log(localUserId);
         }
@@ -69,17 +71,21 @@ const SearchTutorsPage = () => {
     };
 
     const handleSubjectName = (userSubjects) => {
-        //loop through subjects of the found user and find the subject that corresponds to what they searched
+        const searchRegex = new RegExp(searchTerm, 'i');
+        const matchingSubjects = [];
+
+        // Loop through subjects of the found user and find the subjects that match the search term
         for (const subject of userSubjects) {
-            if (subject.name.includes(searchTerm.toLowerCase())) {
-                return subject.name;
+            if (searchRegex.test(subject.name)) {
+                matchingSubjects.push(subject.name);
             }
         }
-        return searchTerm;
+
+        return matchingSubjects.length > 0 ? matchingSubjects : [searchTerm];
     };
 
     const handleRating = (rating) => {
-        if (rating == 0) {
+        if (rating === 0) {
             return "Tutor has not yet been rated"
         }
         else {
