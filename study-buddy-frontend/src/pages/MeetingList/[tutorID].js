@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Typography, Rating, Button, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
-import {router} from "next/client";
+import { useRouter } from 'next/router';
 
 const ReviewTutor = () => {
     const [rating, setRating] = useState(0);
     const [tutor, setTutor] = useState('');
-    const {tutorID} = router.query;
+    const router = useRouter();
+    const { tutorID } = router.query;
 
     //fetches tutor when the component mounts
     useEffect(() => {

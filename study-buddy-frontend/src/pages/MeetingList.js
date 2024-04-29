@@ -14,14 +14,13 @@ import {
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {useRouter} from "next/router";
-import {debounce} from "lodash";
-import {router} from "next/client";
-
 
 const MeetingList = () => {
     const [meetingList, setMeetingList] = useState([]);
     const [tutorNames, setTutorNames] = useState({});
     const [meetingOver, setMeetingOver] = useState(false);
+    const router = useRouter();
+
     useEffect(() => {
         const getMeetingList = async () => {
             try {
