@@ -34,9 +34,9 @@ const SearchTutorsPage = () => {
         try {
             const response = await axios.get(`http://localhost:8080/users/searchedTutors`,{
                 params: {
-                subjectName: searchTerm
-            }
-        });
+                    subjectName: searchTerm
+                }
+            });
 
             setSearchResults(response.data);
 
