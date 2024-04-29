@@ -23,8 +23,8 @@ public class ReviewTutorService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
-    public ReviewTutor addReview(User tutor, int rating) {
+    /*@Transactional
+    public ReviewTutor addReview(User tutor, Double rating) {
         ReviewTutor review = new ReviewTutor(tutor, rating);
         reviewTutorRepository.save(review);
 
@@ -34,12 +34,12 @@ public class ReviewTutorService {
         userRepository.save(tutor); // Assuming userRepository is correctly autowired and set up
 
         return review;
-    }
+    }*/
 
     public double calculateAverageRating(User tutor) {
         List<ReviewTutor> reviews = reviewTutorRepository.findByTutor(tutor);
         OptionalDouble average = reviews.stream()
-                .mapToInt(ReviewTutor::getRating)
+                .mapToDouble(ReviewTutor::getRating)
                 .average();
         return average.isPresent() ? average.getAsDouble() : 0.0;
     }

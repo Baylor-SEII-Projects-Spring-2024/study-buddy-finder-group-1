@@ -2,7 +2,9 @@ package studybuddy.api.reviewtutor;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
 
 import java.util.Date;
@@ -22,11 +24,22 @@ public class ReviewTutor {
     private User tutor;
 
     @Column(nullable = false)
-    private int rating;
+    private Double rating;
 
-    public ReviewTutor(User tutor, int rating) {
+    @Getter
+    @Column(name = "MEETING_ID")
+    private Long meetingId;
+
+    @Getter
+    @Column(name = "STUDENT_ID")
+    private Long studentId;
+
+
+    public ReviewTutor(User tutor, Double rating, Long meetingId, Long studentId) {
         this.tutor = tutor;
         this.rating = rating;
+        this.meetingId = meetingId;
+        this.studentId = studentId;
     }
 
     public ReviewTutor(User tutor, int rating, Date reviewDate) {

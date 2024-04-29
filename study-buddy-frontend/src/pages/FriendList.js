@@ -4,14 +4,6 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 
 const FriendList = () => {
-    // Sample friend list data
-    const friends = [
-        { id: 1, name: 'John Doe', userType: 'Student', major: 'Computer Science', bio: 'I am a software engineer passionate about coding and exploring new technologies.' },
-        { id: 2, name: 'Jane Smith', userType: 'Tutor', major: 'Graphic Design', bio: 'I work as a graphic designer and love creating visually appealing designs.' },
-        { id: 3, name: 'Alice Johnson', userType: 'Student', major: 'Education', bio: 'I am a teacher and enjoy helping students learn and grow academically.' },
-        // Add more friends as needed
-    ];
-
     const [friendsList, setFriendsList] = useState([]);
 
     useEffect(() => {
