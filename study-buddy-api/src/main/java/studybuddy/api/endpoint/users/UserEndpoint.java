@@ -171,12 +171,13 @@ public class UserEndpoint {
             return ResponseEntity.ok(users);
         }
         else{
-
+            boolean userExists;
             //algorithm to get specified tutors
             for (User u : users) {
                 Set<Course> userCourses = u.getCourses();
                 for (Course c : userCourses) {
-                    if (c.getName().toLowerCase().contains(subjectName.toLowerCase())) {
+                    userExists = searched.stream().anyMatch(user -> user.getId().equals(u.getId()));
+                    if (c.getName().toLowerCase().contains(subjectName.toLowerCase()) && !userExists) {
                         searched.add(u);
                     }
                 }
