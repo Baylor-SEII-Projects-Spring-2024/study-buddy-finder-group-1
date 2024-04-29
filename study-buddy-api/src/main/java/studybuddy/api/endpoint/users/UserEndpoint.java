@@ -194,5 +194,12 @@ public class UserEndpoint {
 
         return ResponseEntity.ok(user);
     }
+    @GetMapping("/register/{email}")
+    public ResponseEntity<Optional<User>> findTutorByEmail(@PathVariable String email) {
+        System.out.println("GRABBING TUTOR WITH email OF : "+ email);
+        Optional<User> user = userService.findUserByEmail(email);
+
+        return ResponseEntity.ok(user);
+    }
 
 }
