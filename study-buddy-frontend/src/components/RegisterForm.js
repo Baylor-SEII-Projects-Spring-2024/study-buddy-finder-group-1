@@ -9,16 +9,16 @@ import { useRouter } from "next/router";
 export const dynamic = 'force-dynamic' // defaults to auto
 
 
-export async function GET(request) {
-    return new Response('Hello, Next.js!', {
-        status: 200,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-    })
-}
+// Create an Axios instance with a base URL
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
+
 export default function RegisterForm() {
     const [emailError, setEmailError] = useState(false);
     const [passwordMatchError, setPasswordMatchError] = useState(false);
@@ -38,7 +38,7 @@ export default function RegisterForm() {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/courses`);
+                const response = await axiosInstance.get('/courses');
                 setClassesList(response.data);
             } catch (error) {
                 console.log("No courses found", error);
@@ -121,7 +121,7 @@ export default function RegisterForm() {
 
         try {
             // Register the user
-            const response = await axios.post("http://localhost:8080/register", {
+            const response = await axiosInstance.post("/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email_address: formData.email,
@@ -140,7 +140,7 @@ export default function RegisterForm() {
                 console.log("this is a tutor")
 
                 // Fetch the tutor user by email
-                const tutorUser = await axios.get(`http://localhost:8080/register/${formData.email}`);
+                const tutorUser = await axiosInstance.get(`/register/${formData.email}`);
 
                 // Get the ID of the current user
                 const requester = JSON.parse(localStorage.getItem('user'));
@@ -158,8 +158,8 @@ export default function RegisterForm() {
 
 
                         // Add subject to the tutor user
-                        const addSubjectResponse = await axios.put
-                        (`http://localhost:8080/users/${tutorUser.data.id}/courses/${subjectId}`);
+                        const addSubjectResponse = await axiosInstance.put
+                        (`/users/${tutorUser.data.id}/courses/${subjectId}`);
                         console.log('Subject added to user successfully');
                     } catch (error) {
                         console.error('Error adding subject to user:', error.response.data);

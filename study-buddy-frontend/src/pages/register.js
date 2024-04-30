@@ -58,7 +58,7 @@ export async function GET(request) {
             )}
         </div>*/
     );
-   /* } catch (error) {
+   /* } catch (error    ) {
         console.error("Error in register.js:", error);
         // Optionally, you can also log the stack trace
         console.error(error.stack);
