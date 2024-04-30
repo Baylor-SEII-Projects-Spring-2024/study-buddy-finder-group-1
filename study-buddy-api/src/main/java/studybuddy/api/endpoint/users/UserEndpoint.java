@@ -114,6 +114,7 @@ public class UserEndpoint {
 
             // Extract value of "courseName" field
             parsedName = jsonNode.get("courseName").asText();
+            System.out.println(parsedName);
         } catch (Exception e) {
             // Handle exception
             e.printStackTrace();
@@ -196,6 +197,17 @@ public class UserEndpoint {
     public ResponseEntity<User> findTutorById(@PathVariable Long id) {
         System.out.println("GRABBING TUTOR WITH ID OF : "+ id);
         User user = userService.findTutor(id);
+
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/register/{email}")
+    public ResponseEntity<Optional<User>> findTutorByEmail(@PathVariable String email) {
+        System.out.println("GRABBING TUTOR WITH email OF : "+ email);
+        Optional<User> user = userService.findUserByEmail(email);
+        System.out.println("User: "+ user.get().getId() + " " + user.get().getEmail()
+        + user.get().getFirstName())
+        ;
+
 
         return ResponseEntity.ok(user);
     }
