@@ -24,6 +24,7 @@ export default function RegisterForm() {
     const [passwordMatchError, setPasswordMatchError] = useState(false);
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [classesList, setClassesList] = useState([]);
+    const [userSelection, setUserSelection] = useState(false);
 
     const router = useRouter(); // Corrected usage of useRouter()
 
@@ -73,6 +74,10 @@ export default function RegisterForm() {
         if (name === "email") {
             validateEmail(value);
         }
+
+        if (name === "userType") {
+            setUserSelection(true);
+        }
     };
 
     const checkPasswordMatch = (password, confirmPassword) => {
@@ -96,15 +101,18 @@ export default function RegisterForm() {
     };
 
     const canSubmit = () => {
-        const isTutor = formData.userType === 'Tutor';
-        const hasSelectedSubjects = isTutor && selectedSubjects.length > 0;
         return (
             !emailError &&
             isPasswordValid() &&
-            !passwordMatchError &&
-            (!isTutor || hasSelectedSubjects) // Tutor must have selected subjects
+            !passwordMatchError
         );
     };
+
+    const selectedSubject = () => {
+        const isTutor = formData.userType === 'Tutor';
+        const hasSelectedSubjects = isTutor && selectedSubjects.length > 0;
+        return !isTutor || hasSelectedSubjects;
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -315,7 +323,7 @@ export default function RegisterForm() {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={!isPasswordValid() || formData.confirmPassword !== formData.password}
+                    disabled={!isPasswordValid() || formData.confirmPassword !== formData.password || !selectedSubject() || !userSelection}
                     sx={{ mt: 3, mb: 2 }}
                 >
                     Register
