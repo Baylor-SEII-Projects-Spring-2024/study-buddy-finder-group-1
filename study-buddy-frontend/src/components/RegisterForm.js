@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Container, TextField, Typography, MenuItem, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -22,6 +22,8 @@ export async function GET(request) {
 export default function RegisterForm() {
     const [emailError, setEmailError] = useState(false);
     const [passwordMatchError, setPasswordMatchError] = useState(false);
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
+    const [classesList, setClassesList] = useState([]);
 
     const router = useRouter(); // Corrected usage of useRouter()
 
@@ -33,11 +35,25 @@ export default function RegisterForm() {
         confirmPassword: '',
         userType: '',
     });
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/courses`);
+                setClassesList(response.data);
+            } catch (error) {
+                console.log("No courses found", error);
+            }
+        };
+        fetchCourses();
+    }, []);
 
     const [passwordCriteria, setPasswordCriteria] = useState({
         minLength: false,
     });
-
+    const handleSubjectSelection = (event) => {
+        const { value } = event.target;
+        setSelectedSubjects(value); // Update selected subjects with their IDs
+    };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData(prev => ({
@@ -80,7 +96,14 @@ export default function RegisterForm() {
     };
 
     const canSubmit = () => {
-        return !emailError && isPasswordValid() && !passwordMatchError;
+        const isTutor = formData.userType === 'Tutor';
+        const hasSelectedSubjects = isTutor && selectedSubjects.length > 0;
+        return (
+            !emailError &&
+            isPasswordValid() &&
+            !passwordMatchError &&
+            (!isTutor || hasSelectedSubjects) // Tutor must have selected subjects
+        );
     };
 
     const handleSubmit = async (event) => {
@@ -97,6 +120,7 @@ export default function RegisterForm() {
         }
 
         try {
+            // Register the user
             const response = await axios.post("http://localhost:8080/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -108,17 +132,51 @@ export default function RegisterForm() {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("the user has been registered")
+            console.log("User type:", formData.userType);
 
+            // If user is a tutor, add subjects to the tutor user
+            if (formData.userType === "Tutor") {
+                console.log("this is a tutor")
+
+                // Fetch the tutor user by email
+                const tutorUser = await axios.get(`http://localhost:8080/register/${formData.email}`);
+
+                // Get the ID of the current user
+                const requester = JSON.parse(localStorage.getItem('user'));
+                const requesterId = requester.id;
+
+                console.log("the id is ", requesterId);
+
+                console.log("the class id is ", selectedSubjects);
+
+                // Add selected subjects to the tutor user
+                for (const subjectId of selectedSubjects) {
+                    try {
+                        console.log(subjectId);
+                        // Construct the payload
+
+
+                        // Add subject to the tutor user
+                        const addSubjectResponse = await axios.put
+                        (`http://localhost:8080/users/${tutorUser.data.id}/courses/${subjectId}`);
+                        console.log('Subject added to user successfully');
+                    } catch (error) {
+                        console.error('Error adding subject to user:', error.response.data);
+                    }
+                }
+            }
+
+            // Redirect to login page after successful registration
             if (response.status === 200) {
                 await router.push('/login');
             } else {
                 console.log("Registration was successful but the status code is not 200.");
             }
         } catch (error) {
-            console.log("Error: ", error)
+            console.error("Error registering user:", error);
         }
     };
-
     return (
         <Container component="main" maxWidth="sm" sx={{ mt: 20, mb: 4 }}>
             <Typography component="h1" variant="h5" align="center" sx={{ mb: 3 }}>
@@ -221,6 +279,37 @@ export default function RegisterForm() {
                     <MenuItem value="Student">Student</MenuItem>
                     <MenuItem value="Tutor">Tutor</MenuItem>
                 </TextField>
+                {/* Add subject selection for tutor */}
+                {formData.userType === 'Tutor' && (
+                    <TextField
+                        select
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="subjects"
+                        label="Select Subjects"
+                        id="subjects"
+                        value={selectedSubjects}
+                        onChange={handleSubjectSelection}
+                        SelectProps={{
+                            multiple: true,
+                            renderValue: (selected) => {
+                                return selected.map(subjectId => {
+                                    const selectedSubject = classesList.find(subject => subject.id === subjectId);
+                                    return selectedSubject ? selectedSubject.name : '';
+                                }).join(', ');
+                            },
+                        }}
+                        sx={{ mb: 2 }}
+                    >
+                        {/* Populate options with courses */}
+                        {classesList.map((course) => (
+                            <MenuItem key={course.id} value={course.id}>
+                                {course.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                )}
                 <Button
                     type="submit"
                     fullWidth
