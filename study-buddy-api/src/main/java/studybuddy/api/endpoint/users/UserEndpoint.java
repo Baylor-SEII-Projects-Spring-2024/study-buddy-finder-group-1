@@ -94,7 +94,7 @@ public class UserEndpoint {
         return ResponseEntity.ok(loginInfo);
     }
 
-        @PutMapping("/users/{userId}/courses/{courseId}")
+    @PutMapping("/users/{userId}/courses/{courseId}")
     public ResponseEntity<?> addCourseToUser(@PathVariable Long userId, @PathVariable Long courseId) {
         User updatedUser = userService.addCourseToUser(userId, courseId);
         return ResponseEntity.ok(updatedUser);
