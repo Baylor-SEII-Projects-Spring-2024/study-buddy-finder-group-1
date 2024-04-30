@@ -99,6 +99,11 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(meetings);
     }
 
+    @GetMapping("/over/{id}")
+    public ResponseEntity<?> isMeetingOver(@PathVariable Long id) {
+        return ResponseEntity.ok(meetingService.isMeetingOver(id));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Meeting> getMeetingById(@PathVariable Long id) {
         return meetingService.getMeetingById(id)

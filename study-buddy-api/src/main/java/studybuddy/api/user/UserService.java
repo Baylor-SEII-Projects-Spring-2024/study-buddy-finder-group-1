@@ -2,24 +2,27 @@ package studybuddy.api.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import studybuddy.api.encryption.PasswordHash;
 import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseRepository;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipRepository;
-import studybuddy.api.meeting.Meeting;
 import studybuddy.api.reviewtutor.ReviewTutor;
 import studybuddy.api.reviewtutor.ReviewTutorRepository;
-
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -48,18 +51,35 @@ public class UserService {
     }
 
     public boolean attemptLogin(String email, String password) {
-        Optional<User> userOptional = userRepository.findByEmail_AddressAndPassword(email, password);
+        Optional<User> userOptional = userRepository.findByEmail_Address(email);
         if (userOptional.isPresent()) {
-            // Update last login timestamp
             User user = userOptional.get();
-            user.setLastLogin(new Date());
-            userRepository.save(user);
+            try {
+                String hashedPassword = PasswordHash.hashPassword(password);
+                if (hashedPassword.equals(user.getPassword())) {
+                    // Update last login timestamp
+                    user.setLastLogin(new Date());
+                    userRepository.save(user);
+                    return true;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                log.error("Password hashing failed during login", e);
+                throw new RuntimeException("Password hashing failed during login", e);
+            }
         }
-        return userOptional.isPresent();
+        return false;
     }
 
     public User saveUser(User user) {
-        return userRepository.save(user);
+        try {
+            String hashedPassword = PasswordHash.hashPassword(user.getPassword());
+            user.setPassword(hashedPassword);
+            return userRepository.save(user);
+        } catch (NoSuchAlgorithmException e) {
+            log.error("Password hashing failed", e);
+            // Handle the exception, rethrow as a runtime exception
+            throw new RuntimeException("Password hashing failed", e);
+        }
     }
 
     public List<User> findAllUsers() {
@@ -68,12 +88,18 @@ public class UserService {
 
     public void changePassword(Long userId, String newPassword) {
         Optional<User> optionalUser = findUser(userId);
-
         optionalUser.ifPresent(user -> {
-            user.setPassword(newPassword);
-            userRepository.save(user);
+            try {
+                String hashedPassword = PasswordHash.hashPassword(newPassword);
+                user.setPassword(hashedPassword);
+                userRepository.save(user);
+            } catch (NoSuchAlgorithmException e) {
+                log.error("Password hashing failed during password change", e);
+                throw new RuntimeException("Password hashing failed during password change", e);
+            }
         });
     }
+
     public void deleteUser(Long userId) { userRepository.deleteById(userId); }
 
     public Optional<User> getUserById(Long userId) {
@@ -128,7 +154,7 @@ public class UserService {
     }
 
     @Transactional
-    public User rateTutor(Long userId, Double newRating) {
+    public User rateTutor(Long userId, Double newRating, Long meetingId, Long studentId) {
         if (newRating < 0) {
             throw new IllegalArgumentException("Rating must not be negative.");
         }
@@ -140,8 +166,12 @@ public class UserService {
             throw new IllegalArgumentException("Rating can only be set for users of type Tutor.");
         }
 
+        //make a new review object
+        ReviewTutor newReview = new ReviewTutor(tutor, newRating, meetingId, studentId);
+
         // Fetch all reviews for the tutor and calculate the new average rating
-        List<ReviewTutor> reviews = reviewTutorRepository.findByTutor(tutor);
+        List<ReviewTutor> reviews = reviewTutorRepository.findByTutorId(tutor.id);
+
         double averageRating = reviews.stream()
                 .mapToDouble(ReviewTutor::getRating)
                 .average()
@@ -149,7 +179,9 @@ public class UserService {
 
         double updatedAverageRating = (averageRating * reviews.size() + newRating) / (reviews.size() + 1);
 
+        //save new review and tutor rating
         tutor.setRating(updatedAverageRating);
+        reviewTutorRepository.save(newReview);
         userRepository.save(tutor);
 
         return tutor;

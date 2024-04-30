@@ -156,6 +156,7 @@ public class UserEndpoint {
     public ResponseEntity<List<User>> findAllTutors() {
         System.out.println("I AM IN HERE");
         List<User> users = userService.findAllTutors();
+        Collections.sort(users,Comparator.comparingDouble(User::getRating).reversed());
         return ResponseEntity.ok(users);
     }
 
@@ -165,8 +166,10 @@ public class UserEndpoint {
         List<User> users = userService.findAllTutors();
         List<User> searched = new ArrayList<>();
 
-        System.out.println("TUTOR SUBJECT IS: " + subjectName);
+        System.err.println(users.toString());
 
+        System.out.println("TUTOR SUBJECT IS: " + subjectName);
+        Collections.sort(users,Comparator.comparingDouble(User::getRating).reversed());
         if(subjectName.isEmpty()){
             System.out.println("TUTOR NAME IS: EMPTY");
             return ResponseEntity.ok(users);
@@ -184,6 +187,8 @@ public class UserEndpoint {
                 }
             }
         }
+
+
         return ResponseEntity.ok(searched);
     }
 
