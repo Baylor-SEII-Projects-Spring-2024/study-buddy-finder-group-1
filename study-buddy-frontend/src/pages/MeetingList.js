@@ -30,7 +30,10 @@ const MeetingList = () => {
 
                 if (userId) {
                     const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
-
+                    const updatedMeetingList = await Promise.all(meetingList.map(async (meeting) => {
+                        const users = await getUsersByMeetingId(meeting.id);
+                        return { ...meeting, users };
+                    }));
                     setMeetingList(response.data);
 
                     console.log(response.data);
@@ -43,23 +46,16 @@ const MeetingList = () => {
             }
         }
 
-            const getUserList = async () => {
-                try {
-
-                    if (userId) {
-                        const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
-
-                        setMeetingList(response.data);
-
-                        console.log(response.data);
-                        fetchTutorNames(response.data);
-                        fetchMeetingOver(response.data);
-                    }
-
-                } catch (error) {
-                    console.log("Error getting meetings", error)
-                }
+        // Function to fetch users by meeting ID
+        const getUsersByMeetingId = async (meetingId) => {
+            try {
+                const response = await axios.get(`/user/${meetingId}`);
+                return response.data; // Assuming the response is a list of Optional<User>
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                return []; // Return an empty array if there's an error
             }
+        };
 
         const fetchTutorNames = async (meetingListPop) => {
             const names = {};
