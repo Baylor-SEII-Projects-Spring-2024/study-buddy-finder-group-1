@@ -42,4 +42,10 @@ public class ReviewTutorEndpoint {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
     }
+
+    @GetMapping("/check-review")
+    public ResponseEntity<?> checkReviewExists(@RequestParam Long tutorId, @RequestParam Long meetingId, @RequestParam Long studentId) {
+        boolean reviewExists = reviewTutorService.checkReviewExists(tutorId, meetingId, studentId);
+        return ResponseEntity.ok(reviewExists);
+    }
 }

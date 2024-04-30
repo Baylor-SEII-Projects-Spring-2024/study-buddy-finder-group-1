@@ -43,4 +43,8 @@ public class ReviewTutorService {
                 .average();
         return average.isPresent() ? average.getAsDouble() : 0.0;
     }
+
+    public boolean checkReviewExists(Long tutorId, Long meetingId, Long studentId) {
+        return reviewTutorRepository.existsByTutorIdAndMeetingIdAndStudentId(tutorId, meetingId, studentId);
+    }
 }
