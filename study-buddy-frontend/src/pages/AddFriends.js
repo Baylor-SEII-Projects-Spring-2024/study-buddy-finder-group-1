@@ -41,7 +41,7 @@ const AddFriends = () => {
     useEffect(() => {
         const fetchPendingRequests = async () => {
             try {
-                const response = await axiosInstance.get(`h/friendships/pending`);
+                const response = await axiosInstance.get(`/friendships/pending`);
                 setPendingRequests(response.data);
             } catch (error) {
                 console.error("Error fetching pending friend requests:", error);
