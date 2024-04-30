@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 const ReviewTutor = () => {
     const [rating, setRating] = useState(0);
     const [tutor, setTutor] = useState('');
+    const [canReview, setCanReview] = useState(true);
     const router = useRouter();
     const { tutorID } = router.query;
 
@@ -14,16 +15,26 @@ const ReviewTutor = () => {
     useEffect(() => {
         const fetchTutor = async () => {
             const basePath = 'http://localhost:8080';
+            const meetingId = JSON.parse(localStorage.getItem('meetingId'));
+            const user = JSON.parse(localStorage.getItem('user'));
             try {
-                const response = await axios.get(`${basePath}/tutors/${tutorID}`);
-                setTutor(response.data);
-                console.log(response.data);
+                const tutorResponse = await axios.get(`${basePath}/tutors/${tutorID}`);
+                setTutor(tutorResponse.data);
+                console.log(tutorResponse.data);
+                const reviewCheckResponse = await axios.get(`${basePath}/review/check-review`, {
+                    params: {
+                        tutorId: tutorID,
+                        meetingId: meetingId,
+                        studentId: user.id
+                    }
+                });
+                setCanReview(!reviewCheckResponse.data);
             } catch (error) {
                 console.error("Error fetching tutor:", error);
             }
         };
         fetchTutor();
-    }, []);
+    }, [router.query.tutorId]);
 
     useEffect(() => {
         console.log("Updated tutor:", tutor);
@@ -72,8 +83,8 @@ const ReviewTutor = () => {
                             precision={0.5}
                             sx={{ marginBottom: 2 }}
                         />
-                        <Button onClick={handleSubmitReview} variant="contained" color="primary">
-                            Submit Review
+                        <Button onClick={handleSubmitReview} variant="contained" color="primary" disabled={!canReview}>
+                            {canReview ? "Submit Review" : "Already Submitted Review"}
                         </Button>
                     </Box>
                 </Box>
