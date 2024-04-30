@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Grid, Snackbar, Alert } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import RegisterForm from "@/components/RegisterForm";
+import axios from "axios";
 
 
 /*export const dynamic = 'force-dynamic' // defaults to auto
@@ -16,6 +17,14 @@ export async function GET(request) {
         },
     })
 }*/
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
  const Register = () =>  {
 
      const [registrationSuccess, setRegistrationSuccess] = useState(false);

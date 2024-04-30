@@ -4,6 +4,14 @@ import Navbar from "@/components/Navbar";
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const ReviewTutor = () => {
     const [rating, setRating] = useState(0);
     const [tutor, setTutor] = useState('');
@@ -18,10 +26,10 @@ const ReviewTutor = () => {
             const meetingId = JSON.parse(localStorage.getItem('meetingId'));
             const user = JSON.parse(localStorage.getItem('user'));
             try {
-                const tutorResponse = await axios.get(`${basePath}/tutors/${tutorID}`);
+                const tutorResponse = await axiosInstance.get(`/tutors/${tutorID}`);
                 setTutor(tutorResponse.data);
                 console.log(tutorResponse.data);
-                const reviewCheckResponse = await axios.get(`${basePath}/review/check-review`, {
+                const reviewCheckResponse = await axiosInstance.get(`/review/check-review`, {
                     params: {
                         tutorId: tutorID,
                         meetingId: meetingId,
@@ -48,7 +56,7 @@ const ReviewTutor = () => {
         const user = JSON.parse(localStorage.getItem('user'));
 
         try {
-            const response = await axios.post(`http://localhost:8080/review/${tutorID}`, null, {
+            const response = await axiosInstance.post(`/review/${tutorID}`, null, {
                 params: {
                     rating: rating,
                     meetingId: meetingId,

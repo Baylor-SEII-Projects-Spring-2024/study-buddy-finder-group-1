@@ -3,6 +3,15 @@ import { Box, Container, Typography, Avatar, Grid, Divider } from '@mui/material
 import Navbar from "@/components/Navbar";
 import axios from 'axios'; // Import Axios for making API requests
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const ProfilePage = () => {
 
     const [loginInfo, setLoginInfo] = useState({
@@ -21,7 +30,7 @@ const ProfilePage = () => {
 
                 if (userId) {
                     const basePath = 'http://localhost:8080';
-                    const response = await axios.get(`${basePath}/ProfilePage/${userId}`);
+                    const response = await axiosInstance.get(`/ProfilePage/${userId}`);
                     setLoginInfo(response.data);
                 } else {
                     console.error('No user ID found in localStorage');

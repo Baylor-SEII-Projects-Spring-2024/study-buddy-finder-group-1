@@ -4,6 +4,15 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const EditClasses = () => {
 
     const [className, setClassName] = useState('');
@@ -22,7 +31,7 @@ const EditClasses = () => {
                 const userId = user.id;
 
                 if (userId) {
-                    const response = await axios.get(`http://localhost:8080/users/${userId}/courses/`);
+                    const response = await axiosInstance.get(`users/${userId}/courses/`);
                     setClasses(response.data)
                 }
             }
@@ -67,7 +76,7 @@ const EditClasses = () => {
             courseName: className, // Using the state variable that holds the course text
         };
 
-        axios.delete(`http://localhost:8080/users/${userId}/deleteCourse`, payload)
+        axiosInstance.delete(`/users/${userId}/deleteCourse`, payload)
             .then(response => {
                 console.log('Course deleted from user successfully');
                 // Handle success
@@ -85,7 +94,7 @@ const EditClasses = () => {
         const courseId = selectedClass.id;
         console.log(courseId);
 
-        axios.delete(`http://localhost:8080/users/${userId}/courses/${courseId}`)
+        axiosInstance.delete(`/users/${userId}/courses/${courseId}`)
             .then(response => {
                 console.log('Course deleted from user successfully');
                 setClassName('');
@@ -113,7 +122,7 @@ const EditClasses = () => {
         const userId = user.id;
         const courseId = selectedClass.id;
 
-        axios.delete(`http://localhost:8080/users/${userId}/courses/${courseId}`)
+        axiosInstance.delete(`/users/${userId}/courses/${courseId}`)
             .then(response => {
                 console.log('Course deleted from user successfully');
                 const updatedClasses = classes.filter(item => item.id !== courseId);

@@ -7,6 +7,13 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useNotification } from '../contexts/NotificationContext'; // Correctly placed at the top
 
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
 
@@ -35,7 +42,7 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
-                const response = await axios.get(`http://localhost:8080/friendships/pending/count/${userId}`);
+                const response = await axiosInstance.get(`/friendships/pending/count/${userId}`);
                 setNotificationCount(response.data);
                 console.log(response.data);
             } catch (error) {

@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import { Box, Container, Typography, List, ListItem, ListItemText, TextField, Button, Divider } from '@mui/material';
 import Navbar from "@/components/Navbar";
+import axios from "axios";
+
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 
 const MessagingPage = () => {
     const [selectedConversation, setSelectedConversation] = useState(null);
