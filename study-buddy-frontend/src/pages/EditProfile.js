@@ -156,7 +156,7 @@ const EditProfile = () => {
         console.log(profileData);
 
         try {
-            const response = await axios.axiosInstance(
+            const response = await axiosInstance.put(
                 `/editProfile/${userId}`, // Corrected endpoint URL
                 profileData
             );
