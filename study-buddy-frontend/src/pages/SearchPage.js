@@ -12,6 +12,15 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {debounce} from "lodash";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const SearchMeetups = () => {
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
@@ -25,7 +34,7 @@ const SearchMeetups = () => {
         const requester = JSON.parse(localStorage.getItem('user'));
 
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/search`, {
+            const response = await axiosInstance.get(`/meetings/search`, {
                 params: {
                     courseName: searchTerm,
                     userId: requester.id
@@ -46,7 +55,7 @@ const SearchMeetups = () => {
         console.log("User: " + requester.id);
         const fetchJoinedMeetings = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/meetings/user/${requester.id}/upcoming`);
+                const response = await axiosInstance.get(`/meetings/user/${requester.id}/upcoming`);
                 setJoinedMeetings(response.data);
 
             } catch (error) {
@@ -95,7 +104,7 @@ const SearchMeetups = () => {
                     userId: userId,
                     meetingId: meetingId
                 };
-                const response = await axios.post(`http://localhost:8080/meetings/join`, payload);
+                const response = await axiosInstance.post(`/meetings/join`, payload);
 
                 if (response.status === 200) {
                     alert("Meeting joined!");

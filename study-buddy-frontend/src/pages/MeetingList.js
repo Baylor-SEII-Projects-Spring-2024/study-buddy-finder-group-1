@@ -15,6 +15,15 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {useRouter} from "next/router";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const MeetingList = () => {
     const [meetingList, setMeetingList] = useState([]);
     const [tutorNames, setTutorNames] = useState({});
@@ -29,7 +38,7 @@ const MeetingList = () => {
                 console.log(userId);
 
                 if (userId) {
-                    const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
+                    const response = await axiosInstance.get(`/meetings/user/${userId}`);
                     const updatedMeetingList = await Promise.all(meetingList.map(async (meeting) => {
                         const users = await getUsersByMeetingId(meeting.id);
                         return { ...meeting, users };
@@ -49,7 +58,7 @@ const MeetingList = () => {
         // Function to fetch users by meeting ID
         const getUsersByMeetingId = async (meetingId) => {
             try {
-                const response = await axios.get(`/user/${meetingId}`);
+                const response = await axiosInstance.get(`/user/${meetingId}`);
                 return response.data; // Assuming the response is a list of Optional<User>
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -83,7 +92,7 @@ const MeetingList = () => {
     const handleTutorName = async (tutorID) => {
         if (tutorID != null) {
             try {
-                const response = await axios.get(`http://localhost:8080/users/${tutorID}`);
+                const response = await axiosInstance.get(`/users/${tutorID}`);
                 console.log(response.data);
                 return response.data.firstName + " " + response.data.lastName;
 
@@ -96,7 +105,7 @@ const MeetingList = () => {
 
     const isMeetingOver = async (meetingId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/meetings/over/${meetingId}`);
+            const response = await axiosInstance.get(`/meetings/over/${meetingId}`);
             console.log(response.data);
             return response.data;
 

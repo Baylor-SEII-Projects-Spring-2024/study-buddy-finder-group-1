@@ -5,6 +5,16 @@ import axios from "axios";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/components/AuthContext";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
+
 const Login = () => {
 
     const router = useRouter();
@@ -22,8 +32,8 @@ const Login = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post(
-                "http://localhost:8080/login",
+            const response = await axiosInstance.post(
+                "/login",
                 null,
                 {
                     params: {

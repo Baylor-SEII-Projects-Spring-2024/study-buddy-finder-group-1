@@ -9,7 +9,8 @@ import studybuddy.api.user.UserService;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.125.65.178:3000")
 public class ProfileEndpoint {
 
     @Autowired
