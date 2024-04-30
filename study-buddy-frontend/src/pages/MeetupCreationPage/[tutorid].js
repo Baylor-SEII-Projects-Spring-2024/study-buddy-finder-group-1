@@ -48,6 +48,7 @@ const MeetupCreationPage = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [tutor,setTutor] = useState(null);
     const [automatic,setAutomatic] = useState(true);
+    const [tutorCourses, setTutorCourses] = useState([]);
     const router = useRouter();
     const { tutorid } = router.query;
 
@@ -98,11 +99,27 @@ const MeetupCreationPage = () => {
             try {
                 const response = await axios.get(`${basePath}/tutors/${tutorid}`);
                 setTutor(response.data); // Assuming response.data is an array of location objects
+                console.log(" test: "  + tutorid);
             } catch (error) {
                 console.error("Error fetching tutor:", error);
             }
         };
         fetchTutor();
+    }, []);
+
+    useEffect(() => {
+        const fetchTutorCourses = async () => {
+            const basePath = 'http://localhost:8080';
+            try {
+                console.log(`${basePath}/tutors/${tutorid}/courses`)
+                const response = await axios.get(`${basePath}/tutors/${tutorid}/courses`);
+                setTutorCourses(response.data);
+
+            } catch (error) {
+                console.log("Error fetching tutor courses:", error);
+            }
+        }
+        fetchTutorCourses();
     }, []);
 
     /*gets user for meetup creation*/
@@ -133,6 +150,8 @@ const MeetupCreationPage = () => {
 
         fetchLocations();
     }, []);
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -232,12 +251,19 @@ const MeetupCreationPage = () => {
                             onChange={handleSubjectChange}
                             fullWidth
                             margin="normal"
+                            disabled={tutorCourses.length === 0} // Disable if no courses available
                         >
-                            {mockClasses.map((classItem) => (
-                                <MenuItem key={classItem} value={classItem}>
-                                    {classItem}
+                            {tutorCourses.length > 0 ? (
+                                tutorCourses.map((course) => (
+                                    <MenuItem key={course.id} value={course.id}>
+                                        {course.name}
+                                    </MenuItem>
+                                ))
+                            ) : (
+                                <MenuItem disabled value="">
+                                    Tutor currently has no subjects to tutor
                                 </MenuItem>
-                            ))}
+                            )}
                         </TextField>
                         <TextField
                             select

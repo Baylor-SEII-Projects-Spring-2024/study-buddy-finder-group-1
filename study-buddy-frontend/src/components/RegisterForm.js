@@ -11,8 +11,8 @@ export const dynamic = 'force-dynamic' // defaults to auto
 
 // Create an Axios instance with a base URL
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
 
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
     // Other default configuration options can be added here
@@ -141,12 +141,14 @@ export default function RegisterForm() {
 
                 // Fetch the tutor user by email
                 const tutorUser = await axiosInstance.get(`/register/${formData.email}`);
-
+                console.log("tutuorUser: " + tutorUser);
                 // Get the ID of the current user
-                const requester = JSON.parse(localStorage.getItem('user'));
-                const requesterId = requester.id;
+                // const requester = JSON.parse(localStorage.getItem('user'));
+                // console.log("requester: " + requester);
+                // console.log('id: ' + requester.id);
+                // const requesterId = requester.id;
 
-                console.log("the id is ", requesterId);
+                // console.log("the id is ", requesterId);
 
                 console.log("the class id is ", selectedSubjects);
 
