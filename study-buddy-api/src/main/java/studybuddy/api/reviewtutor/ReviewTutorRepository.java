@@ -14,4 +14,7 @@ public interface ReviewTutorRepository extends JpaRepository<ReviewTutor, Long> 
 
     @Query("SELECT r FROM ReviewTutor r WHERE r.tutor.id = :id")
     List<ReviewTutor> findByTutorId(Long id);
+
+    boolean existsByTutorIdAndMeetingIdAndStudentId(Long tutorId, Long meetingId, Long studentId);
+
 }
