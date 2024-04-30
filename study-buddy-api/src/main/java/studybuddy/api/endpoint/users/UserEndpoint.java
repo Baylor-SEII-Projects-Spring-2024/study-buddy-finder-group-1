@@ -201,8 +201,9 @@ public class UserEndpoint {
 
         return ResponseEntity.ok(user);
     }
-    @GetMapping("/register/{email}")
+    @GetMapping("/tutors/email/{email}")
     public ResponseEntity<Optional<User>> findTutorByEmail(@PathVariable String email) {
+
         System.out.println("GRABBING TUTOR WITH email OF : "+ email);
         Optional<User> user = userService.findUserByEmail(email);
         System.out.println("User: "+ user.get().getId() + " " + user.get().getEmail()
