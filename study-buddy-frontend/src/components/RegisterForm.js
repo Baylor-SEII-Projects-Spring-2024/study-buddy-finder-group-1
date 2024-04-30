@@ -129,7 +129,8 @@ export default function RegisterForm() {
 
         try {
             // Register the user
-            const response = await axiosInstance.post("/register", {
+            const response = await
+                axiosInstance.post("/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email_address: formData.email,
@@ -148,13 +149,14 @@ export default function RegisterForm() {
                 console.log("this is a tutor")
 
                 // Fetch the tutor user by email
-                const tutorUser = await axiosInstance.get(`/register/${formData.email}`);
+                const tutorUser = await
+                    axiosInstance.get(`/tutors/email/${formData.email}`);
 
                 // Get the ID of the current user
-                const requester = JSON.parse(localStorage.getItem('user'));
+/*                const requester = JSON.parse(localStorage.getItem('user'));
                 const requesterId = requester.id;
 
-                console.log("the id is ", requesterId);
+                console.log("the id is ", requesterId);*/
 
                 console.log("the class id is ", selectedSubjects);
 
