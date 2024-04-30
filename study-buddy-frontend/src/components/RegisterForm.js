@@ -132,9 +132,13 @@ export default function RegisterForm() {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log("the user has been registered")
+            console.log("User type:", formData.userType);
 
             // If user is a tutor, add subjects to the tutor user
-            if (formData.userType === "tutor") {
+            if (formData.userType === "Tutor") {
+                console.log("this is a tutor")
+
                 // Fetch the tutor user by email
                 const tutorUser = await axios.get(`http://localhost:8080/register/${formData.email}`);
 
@@ -142,19 +146,20 @@ export default function RegisterForm() {
                 const requester = JSON.parse(localStorage.getItem('user'));
                 const requesterId = requester.id;
 
+                console.log("the id is ", requesterId);
 
+                console.log("the class id is ", selectedSubjects);
 
                 // Add selected subjects to the tutor user
                 for (const subjectId of selectedSubjects) {
                     try {
+                        console.log(subjectId);
                         // Construct the payload
-                        const payload = {
-                            userId: tutorUser.data.id,
-                            courseName: subjectId.name
-                        };
+
 
                         // Add subject to the tutor user
-                        const addSubjectResponse = await axios.post(`http://localhost:8080/users/${tutorUser.data.id}/addSubject`, payload);
+                        const addSubjectResponse = await axios.put
+                        (`http://localhost:8080/users/${tutorUser.data.id}/courses/${subjectId}`);
                         console.log('Subject added to user successfully');
                     } catch (error) {
                         console.error('Error adding subject to user:', error.response.data);
