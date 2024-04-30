@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.125.65.178:3000")
+@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class ProfileEndpoint {
 
     @Autowired
