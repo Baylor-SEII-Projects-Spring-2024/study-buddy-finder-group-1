@@ -30,7 +30,9 @@ const MeetingList = () => {
 
                 if (userId) {
                     const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
+
                     setMeetingList(response.data);
+
                     console.log(response.data);
                     fetchTutorNames(response.data);
                     fetchMeetingOver(response.data);
@@ -40,6 +42,24 @@ const MeetingList = () => {
                 console.log("Error getting meetings", error)
             }
         }
+
+            const getUserList = async () => {
+                try {
+
+                    if (userId) {
+                        const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
+
+                        setMeetingList(response.data);
+
+                        console.log(response.data);
+                        fetchTutorNames(response.data);
+                        fetchMeetingOver(response.data);
+                    }
+
+                } catch (error) {
+                    console.log("Error getting meetings", error)
+                }
+            }
 
         const fetchTutorNames = async (meetingListPop) => {
             const names = {};

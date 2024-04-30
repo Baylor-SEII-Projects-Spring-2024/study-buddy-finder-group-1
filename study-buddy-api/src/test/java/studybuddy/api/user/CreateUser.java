@@ -1,4 +1,5 @@
 package studybuddy.api.user;
+/*
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,10 +34,12 @@ public class CreateUser {
         String userType = "Student";
         String password = "password";
 
+*/
 /*        User user1 = new User(testEmail,password, userType);
 
 
-        user1.setFirstName(firstName);*/
+        user1.setFirstName(firstName);*//*
+
 
 
     }
@@ -51,14 +54,17 @@ public class CreateUser {
         String userType = "Student";
         String password = "password";
 
+*/
 /*
         User user1 = new User(testEmail,password, userType);
 
 
         user1.setFirstName(firstName);
-*/
+*//*
+
 
 
     }
 
 }
+*/

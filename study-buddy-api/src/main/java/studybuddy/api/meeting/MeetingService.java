@@ -7,6 +7,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
+import studybuddy.api.meeting.UserMeetingRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +24,8 @@ public class MeetingService {
 
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    public UserMeetingRepository userMeetingRepository;
 
     public List<Meeting> getAllMeetings() {
         return meetingRepository.findAll();
@@ -49,6 +52,9 @@ public class MeetingService {
 
     public List<Meeting> getMeetingsByUserId(Long userId) {
         return meetingRepository.findMeetingsByUserId(userId);
+    }
+    public List<Long> getUserIdByMeetingId(Long meeting) {
+        return userMeetingRepository.getUsersInMeeting(meeting);
     }
 
     public List<Meeting> getUpcomingMeetingsByUserId(Long userId) {

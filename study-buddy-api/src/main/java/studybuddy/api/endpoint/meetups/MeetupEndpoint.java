@@ -18,6 +18,7 @@ import studybuddy.api.user.UserRepository;
 import studybuddy.api.user.UserService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
@@ -48,6 +49,8 @@ public class MeetupEndpoint {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping("/create")
@@ -118,6 +121,20 @@ public class MeetupEndpoint {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(meetings);
+    }
+    @GetMapping("/user/{meetingId}")
+    public ResponseEntity<List<Optional<User>>> getUsersByMeetingId(@PathVariable Long meetingId) {
+        List<Long> userIds = meetingService.getUserIdByMeetingId(meetingId);
+
+        List<Optional<User>> users = userIds.stream()
+                .map(userService::findUser) // Maps each userId to a User object
+                .filter(user -> user != null) // Filters out null User objects
+                .collect(Collectors.toList()); // Collects the User objects into a List
+
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/{id}")
