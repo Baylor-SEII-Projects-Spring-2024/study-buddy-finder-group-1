@@ -18,7 +18,7 @@ import {useRouter} from "next/router";
 
 const axiosInstance = axios.create({
     //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080/', // Replace this with your backend server URL
 
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
     // Other default configuration options can be added here
@@ -38,7 +38,7 @@ const MeetingList = () => {
                 console.log(userId);
 
                 if (userId) {
-                    const response = await axiosInstance.get(`/meetings/user/${userId}`);
+                    const response = await axiosInstance.get(`user/${userId}`);
                     const updatedMeetingList = await Promise.all(meetingList.map(async (meeting) => {
                         const users = await getUsersByMeetingId(meeting.id);
                         return { ...meeting, users };
