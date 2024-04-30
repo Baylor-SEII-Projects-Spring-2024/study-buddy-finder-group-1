@@ -44,6 +44,7 @@ public class UserService {
         }
     }
 
+
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
     public List<User> findUsersByName(String name) {

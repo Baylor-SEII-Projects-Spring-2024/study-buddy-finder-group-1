@@ -166,28 +166,27 @@ public class UserEndpoint {
         List<User> users = userService.findAllTutors();
         List<User> searched = new ArrayList<>();
 
-        System.err.println(users.toString());
+        Comparator<User> safeRatingComparator = Comparator.comparingDouble(
+                (User user) -> Optional.ofNullable(user.getRating()).orElse(0.0)
+        ).reversed();
 
         System.out.println("TUTOR SUBJECT IS: " + subjectName);
-        Collections.sort(users,Comparator.comparingDouble(User::getRating).reversed());
-        if(subjectName.isEmpty()){
+        users.sort(safeRatingComparator);
+        if (subjectName.isEmpty()) {
             System.out.println("TUTOR NAME IS: EMPTY");
             return ResponseEntity.ok(users);
-        }
-        else{
-            boolean userExists;
+        } else {
             //algorithm to get specified tutors
             for (User u : users) {
                 Set<Course> userCourses = u.getCourses();
                 for (Course c : userCourses) {
-                    userExists = searched.stream().anyMatch(user -> user.getId().equals(u.getId()));
+                    boolean userExists = searched.stream().anyMatch(user -> user.getId().equals(u.getId()));
                     if (c.getName().toLowerCase().contains(subjectName.toLowerCase()) && !userExists) {
                         searched.add(u);
                     }
                 }
             }
         }
-
 
         return ResponseEntity.ok(searched);
     }
@@ -210,6 +209,15 @@ public class UserEndpoint {
 
 
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/tutors/{id}/courses")
+    public ResponseEntity<Set<Course>> getAllCoursesTutor(@PathVariable Long id) {
+        User user = userService.findTutor(id);
+
+        Set<Course> courses = user.getCourses();
+
+        return ResponseEntity.ok(courses);
     }
 
 }
