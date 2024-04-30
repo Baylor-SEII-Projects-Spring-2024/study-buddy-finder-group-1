@@ -121,7 +121,7 @@ const MeetingList = () => {
                                             secondary={
                                                 <>
                                                     <Typography variant="body1" component="span">
-                                                        Location: {meeting.location.name}
+                                                        Location: {meeting.location.name} | {meeting.room}
                                                     </Typography>
                                                     <br />
                                                     <Typography variant="body1" component="span">

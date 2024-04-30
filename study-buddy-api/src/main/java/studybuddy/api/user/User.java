@@ -86,7 +86,7 @@ public class User {
     public User() {
     }
     public void setRating(Double rating) {
-        if ("Tutor".equals(this.userType)) {
+        if ("Tutor".equalsIgnoreCase(this.userType)) {
             this.rating = rating;
         } else {
             throw new IllegalStateException("Rating can only be set for users of type Tutor.");
@@ -94,7 +94,7 @@ public class User {
     }
 
     public Double getRating() {
-        if ("Tutor".equals(this.userType)) {
+        if ("Tutor".equalsIgnoreCase(this.userType)) {
             return this.rating;
         }
         return null;

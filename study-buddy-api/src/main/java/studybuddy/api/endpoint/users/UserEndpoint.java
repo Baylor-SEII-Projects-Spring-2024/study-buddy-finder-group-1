@@ -165,6 +165,8 @@ public class UserEndpoint {
         List<User> users = userService.findAllTutors();
         List<User> searched = new ArrayList<>();
 
+        System.err.println(users.toString());
+
         System.out.println("TUTOR SUBJECT IS: " + subjectName);
         Collections.sort(users,Comparator.comparingDouble(User::getRating).reversed());
         if(subjectName.isEmpty()){

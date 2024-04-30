@@ -35,12 +35,31 @@ public class EditProfileEndpoint {
                 return ResponseEntity.notFound().build();
             }
 
+            //if they switched to a tutor set their rating to 0
+            if (updatedUser.getUserType().equalsIgnoreCase("tutor")) {
+                //set to uppercase tutor
+                updatedUser.setUserType("Tutor");
+                updatedUser.setRating(0.0);
+            }
+
+            if (updatedUser.getUserType().equalsIgnoreCase("student")) {
+                updatedUser.setUserType("Student");
+            }
+
             User existingUser = existingUserOptional.get();
+            //initialize if switching
+            if (updatedUser.getUserType().equalsIgnoreCase("tutor") && existingUser.getUserType().equalsIgnoreCase("student")) {
+                existingUser.setUserType(updatedUser.getUserType());
+                existingUser.setRating(0.0);
+            }
+            else {
+                existingUser.setUserType(updatedUser.getUserType());
+            }
+
             existingUser.setFirstName(updatedUser.getFirstName());
             existingUser.setLastName(updatedUser.getLastName());
             existingUser.setEmail_address(updatedUser.getEmail());
             existingUser.setPassword(updatedUser.getPassword());
-            existingUser.setUserType(updatedUser.getUserType());
 
             userService.saveUser(existingUser);
 
