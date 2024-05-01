@@ -11,8 +11,10 @@ export const dynamic = 'force-dynamic' // defaults to auto
 
 // Create an Axios instance with a base URL
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    //baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
 
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
     // Other default configuration options can be added here
@@ -24,6 +26,7 @@ export default function RegisterForm() {
     const [passwordMatchError, setPasswordMatchError] = useState(false);
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [classesList, setClassesList] = useState([]);
+    const [userSelection, setUserSelection] = useState(false);
 
     const router = useRouter(); // Corrected usage of useRouter()
 
@@ -73,6 +76,10 @@ export default function RegisterForm() {
         if (name === "email") {
             validateEmail(value);
         }
+
+        if (name === "userType") {
+            setUserSelection(true);
+        }
     };
 
     const checkPasswordMatch = (password, confirmPassword) => {
@@ -96,15 +103,18 @@ export default function RegisterForm() {
     };
 
     const canSubmit = () => {
-        const isTutor = formData.userType === 'Tutor';
-        const hasSelectedSubjects = isTutor && selectedSubjects.length > 0;
         return (
             !emailError &&
             isPasswordValid() &&
-            !passwordMatchError &&
-            (!isTutor || hasSelectedSubjects) // Tutor must have selected subjects
+            !passwordMatchError
         );
     };
+
+    const selectedSubject = () => {
+        const isTutor = formData.userType === 'Tutor';
+        const hasSelectedSubjects = isTutor && selectedSubjects.length > 0;
+        return !isTutor || hasSelectedSubjects;
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -121,7 +131,8 @@ export default function RegisterForm() {
 
         try {
             // Register the user
-            const response = await axiosInstance.post("/register", {
+            const response = await
+                axiosInstance.post("/register", {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email_address: formData.email,
@@ -140,6 +151,7 @@ export default function RegisterForm() {
                 console.log("this is a tutor")
 
                 // Fetch the tutor user by email
+
                 const tutorUser = await axiosInstance.get(`/register/${formData.email}`);
                 console.log("tutuorUser: " + tutorUser);
                 // Get the ID of the current user
@@ -149,6 +161,7 @@ export default function RegisterForm() {
                 // const requesterId = requester.id;
 
                 // console.log("the id is ", requesterId);
+
 
                 console.log("the class id is ", selectedSubjects);
 
@@ -317,7 +330,7 @@ export default function RegisterForm() {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={!isPasswordValid() || formData.confirmPassword !== formData.password}
+                    disabled={!isPasswordValid() || formData.confirmPassword !== formData.password || !selectedSubject() || !userSelection}
                     sx={{ mt: 3, mb: 2 }}
                 >
                     Register

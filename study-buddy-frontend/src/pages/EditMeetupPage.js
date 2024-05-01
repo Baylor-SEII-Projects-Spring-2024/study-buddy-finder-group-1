@@ -19,6 +19,14 @@ const mockClasses = [
     // Can add more mock classes as needed
 ];
 
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const EditMeetupPage = () => {
     const [userRooms, setUserRooms] = useState([]);
     const [selectedMeetupId, setSelectedMeetupId] = useState('');
@@ -77,7 +85,7 @@ const EditMeetupPage = () => {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
 
-                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`)
+                const response = await axiosInstance.get(`/meetings/user/${userId}`)
                 setUserRooms(response.data);
                 console.log(response.data)
             } catch (error) {
@@ -102,7 +110,7 @@ const EditMeetupPage = () => {
 
         try {
 
-            const response = await axios.put(`http://localhost:8080/meetings/${selectedMeetupId}`, payload);
+            const response = await axiosInstance.put(`/meetings/${selectedMeetupId}`, payload);
             console.log('Meeting updated successfully:', response.data);
 
         } catch (error) {

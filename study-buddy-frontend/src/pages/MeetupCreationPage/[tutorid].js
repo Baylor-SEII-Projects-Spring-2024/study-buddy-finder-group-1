@@ -32,6 +32,13 @@ const mockClasses = [
     "Literature",
     // Can add more mock classes as needed
 ];
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
 
 const MeetupCreationPage = () => {
     const [subject, setSubject] = useState('');
@@ -97,7 +104,7 @@ const MeetupCreationPage = () => {
         const fetchTutor = async () => {
             const basePath = 'http://localhost:8080';
             try {
-                const response = await axios.get(`${basePath}/tutors/${tutorid}`);
+                const response = await axiosInstance.get(`/tutors/${tutorid}`);
                 setTutor(response.data); // Assuming response.data is an array of location objects
                 console.log(" test: "  + tutorid);
             } catch (error) {
@@ -141,7 +148,7 @@ const MeetupCreationPage = () => {
         const fetchLocations = async () => {
             const basePath = 'http://localhost:8080';
             try {
-                const response = await axios.get(`${basePath}/locations`);
+                const response = await axiosInstance.get(`/locations`);
                 setLocations(response.data); // Assuming response.data is an array of location objects
             } catch (error) {
                 console.error("Error fetching locations:", error);
@@ -177,7 +184,7 @@ const MeetupCreationPage = () => {
         console.log(payload);
 
         try {
-            const response = await axios.post(`${basePath}/meetings/create`, payload);
+            const response = await axiosInstance.post(`/meetings/create`, payload);
 
             if (response.status === 200) {
                 console.log("Meeting created successfully", response.data);

@@ -3,6 +3,15 @@ import axios from 'axios';
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 function UserProfile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);

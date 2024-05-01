@@ -9,6 +9,15 @@ import Alert from '@mui/material/Alert';
 import moment from "moment";
 import {useNotification} from "@/contexts/NotificationContext"; // Corrected import
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 // Custom hook defined outside the Notifications component
 function useCustomNotification() {
     const [open, setOpen] = useState(false);
@@ -52,7 +61,7 @@ const Notifications = () => {
 
         const fetchFriendRequests = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/friendships/pending`)
+                const response = await axiosInstance.get(`/friendships/pending`)
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
                 const filteredResults = response.data.filter(friendship => friendship.requested.id === userId);
@@ -65,7 +74,7 @@ const Notifications = () => {
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
-                const response = await axios.get(`http://localhost:8080/meeting-invitations/pending/${userId}`);
+                const response = await axiosInstance.get(`/meeting-invitations/pending/${userId}`);
                 setMeetingInvitations(response.data);
                 console.log("meeting invitations: " + meetingInvitations);
             }  catch (error) {
@@ -77,7 +86,7 @@ const Notifications = () => {
             try {
                 const user = JSON.parse(localStorage.getItem('user'));
                 const userId = user.id;
-                const response = await axios.get(`http://localhost:8080/meetings/user/${userId}`);
+                const response = await axiosInstance.get(`/meetings/user/${userId}`);
                 const currentMoment = moment();
                 const upcomingMeetings = response.data.filter(meeting => {
                     const startTime = moment(meeting.date + " " + meeting.timeSlot.split(" - ")[0], "YYYY-MM-DD hh:mm A");
@@ -112,7 +121,7 @@ const Notifications = () => {
 
     const handleAccept = async (friendshipId) => {
         try {
-            await axios.post(`http://localhost:8080/friendships/${friendshipId}/accept`);
+            await axiosInstance.post(`/friendships/${friendshipId}/accept`);
             // update UI to remove the accepted friend request
             setFriendRequests(friendRequests.filter(friendship => friendship.id !== friendshipId));
             showNotification("Friend request accepted!", "success");
@@ -124,7 +133,7 @@ const Notifications = () => {
 
     const handleDecline = async (friendshipId) => {
         try {
-            await axios.delete(`http://localhost:8080/friendships/${friendshipId}/decline`);
+            await axiosInstance.delete(`/friendships/${friendshipId}/decline`);
             setFriendRequests(friendRequests.filter(friendship => friendship.id !== friendshipId));
             showNotification("Friend request declined.", "info"); // Show success notification for decline
         } catch (error) {
@@ -140,7 +149,7 @@ const Notifications = () => {
 
     const handleAcceptMeetingInvitation = async (invitationId) => {
         try {
-            await axios.post(`http://localhost:8080/meeting-invitations/accept/${invitationId}`);
+            await axiosInstance.post(`/meeting-invitations/accept/${invitationId}`);
             // Remove the accepted invitation from state
             setMeetingInvitations(meetingInvitations.filter(invitation => invitation.id !== invitationId));
             showNotification("Meeting invitation accepted!", "success");
@@ -152,7 +161,7 @@ const Notifications = () => {
 
     const handleDeclineMeetingInvitation = async (invitationId) => {
         try {
-            await axios.post(`http://localhost:8080/meeting-invitations/reject/${invitationId}`);
+            await axiosInstance.post('meeting-invitations/reject/${invitationId}');
             // Remove the declined invitation from state
             setMeetingInvitations(meetingInvitations.filter(invitation => invitation.id !== invitationId));
             showNotification("Meeting invitation declined.", "info");

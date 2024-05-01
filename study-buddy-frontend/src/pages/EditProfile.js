@@ -19,6 +19,15 @@ import {useRouter} from "next/router";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const EditProfile = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -48,7 +57,7 @@ const EditProfile = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             if (user && user.id) {
                 try {
-                    const response = await axios.get(`http://localhost:8080/users/${user.id}`);
+                    const response = await axiosInstance.get(`/users/${user.id}`);
                     setFirstName(response.data.firstName || '');
                     setLastName(response.data.lastName || '');
                     setEmail(response.data.email || '');
@@ -107,7 +116,7 @@ const EditProfile = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:8080/delete/${userId}`);
+            const response = await axiosInstance.delete(`/delete/${userId}`);
 
             //log them out
             localStorage.setItem('isLoggedIn', 'false');
@@ -147,8 +156,8 @@ const EditProfile = () => {
         console.log(profileData);
 
         try {
-            const response = await axios.put(
-                `http://localhost:8080/editProfile/${userId}`, // Corrected endpoint URL
+            const response = await axiosInstance.put(
+                `/editProfile/${userId}`, // Corrected endpoint URL
                 profileData
             );
 

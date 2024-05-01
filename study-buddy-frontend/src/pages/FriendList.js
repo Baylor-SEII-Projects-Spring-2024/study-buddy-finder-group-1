@@ -3,6 +3,16 @@ import { Box, Container, Typography, List, ListItem, ListItemAvatar, Avatar, Lis
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
+
 const FriendList = () => {
     const [friendsList, setFriendsList] = useState([]);
 
@@ -14,7 +24,7 @@ const FriendList = () => {
 
                 if (userId) {
                     const basePath = 'http://localhost:8080';
-                    const response = await axios.get(`${basePath}/friendships/${userId}/friends`);
+                    const response = await axiosInstance.get(`/friendships/${userId}/friends`);
                     setFriendsList(response.data);
                     console.log(response.data);
                 }

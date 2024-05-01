@@ -4,6 +4,14 @@ import axios from 'axios';
 import { Container, Box, TextField, Button, Card, CardContent, Typography, CircularProgress, Grid } from "@mui/material";
 import { debounce } from 'lodash';
 
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const AddFriends = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -16,7 +24,7 @@ const AddFriends = () => {
     const fetchSearchResults = async (searchTerm) => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:8080/users/search`, { params: { name: searchTerm } });
+            const response = await axiosInstance.get(`/users/search`, { params: { name: searchTerm } });
             const requester = JSON.parse(localStorage.getItem('user'));
             const requesterId = requester.id;
             setCurrentId(requesterId)
@@ -33,7 +41,7 @@ const AddFriends = () => {
     useEffect(() => {
         const fetchPendingRequests = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/friendships/pending`);
+                const response = await axiosInstance.get(`/friendships/pending`);
                 setPendingRequests(response.data);
             } catch (error) {
                 console.error("Error fetching pending friend requests:", error);
@@ -45,7 +53,7 @@ const AddFriends = () => {
     useEffect(() => {
         const fetchAcceptedRequests = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/friendships/accepted`);
+                const response = await axiosInstance.get(`/friendships/accepted`);
                 setAcceptedRequests(response.data);
             } catch (error) {
                 console.error("Error fetching accepted friend requests:", error);
@@ -89,7 +97,7 @@ const AddFriends = () => {
             const requesterId = requester.id;
             if (requesterId) {
 
-                const response = await axios.post(`http://localhost:8080/friendships/request`, null, {
+                const response = await axiosInstance.post(`/friendships/request`, null, {
                     params: { requesterId, requestedId }
                 });
 

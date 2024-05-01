@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.16.179.242:3000")
 @RequestMapping("/friendships")
 public class FriendshipEndpoint {
 

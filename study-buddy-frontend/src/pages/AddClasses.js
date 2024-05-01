@@ -3,6 +3,15 @@ import { Box, Container, Typography, Button, Select, MenuItem, FormControl, Inpu
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
 
+
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 const AddClasses = () => {
 
     const [className, setClassName] = useState('');
@@ -15,7 +24,7 @@ const AddClasses = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/courses`)
+                const response = await axiosInstance.get(`/courses`)
                 setClassesList(response.data);
             }
             catch (error) {
@@ -45,8 +54,8 @@ const AddClasses = () => {
 
                 if (userId) {
                     const basePath = 'http://localhost:8080';
-                    const response = await axios.get(`${basePath}/ProfilePage/${userId}`);
-                    const userClassesResponse = await axios.get(`${basePath}/users/${userId}/courses/`);
+                    const response = await axiosInstance.get(`/ProfilePage/${userId}`);
+                    const userClassesResponse = await axiosInstance.get(`/users/${userId}/courses/`);
                     setUserClasses(userClassesResponse.data);
                     setLoginInfo(response.data);
                 } else {
@@ -84,7 +93,7 @@ const AddClasses = () => {
             courseName: className.name, // Using the state variable that holds the course text
         };
 
-        axios.post(`http://localhost:8080/users/${userId}/addCourse`, payload)
+        axiosInstance.post(`/users/${userId}/addCourse`, payload)
             .then(response => {
                 console.log('Course added to user successfully');
                 setClassName('');
