@@ -18,7 +18,6 @@ jobs:
         #
         # You will need to point this command to the correct Docker Compose file.
         run: |
-          #docker system prune -f
           docker compose -f docker/ci.docker-compose.yml build
 
       - name: Deploy

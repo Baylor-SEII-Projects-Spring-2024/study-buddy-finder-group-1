@@ -14,6 +14,14 @@ import {debounce} from "lodash";
 import {useRouter} from "next/router";
 
 
+const axiosInstance = axios.create({
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+
+    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
+    // Other default configuration options can be added here
+});
+
 
 const SearchTutorsPage = () => {
     const textStyle = {
@@ -32,7 +40,7 @@ const SearchTutorsPage = () => {
         setUserId(requester.id);
         console.log("User: " + requester.id);
         try {
-            const response = await axios.get(`http://localhost:8080/users/searchedTutors`,{
+            const response = await axiosInstance.get(`/users/searchedTutors`,{
                 params: {
                     subjectName: searchTerm
                 }

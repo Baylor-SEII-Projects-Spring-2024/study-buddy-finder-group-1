@@ -11,7 +11,8 @@ import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 
 @Log4j2
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.16.179.242:3000")
 @RestController
 @RequestMapping("/review")
 public class ReviewTutorEndpoint {
