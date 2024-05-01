@@ -119,7 +119,7 @@ const MeetupCreationPage = () => {
             const basePath = 'http://localhost:8080';
             try {
                 console.log(`${basePath}/tutors/${tutorid}/courses`)
-                const response = await axios.get(`${basePath}/tutors/${tutorid}/courses`);
+                const response = await axiosInstance.get(`/tutors/${tutorid}/courses`);
                 setTutorCourses(response.data);
 
             } catch (error) {
