@@ -9,8 +9,8 @@ import studybuddy.api.user.User;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-//@CrossOrigin(origins = "http://34.16.179.242:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.125.60.1:3000")
 @RequestMapping("/friendships")
 public class FriendshipEndpoint {
 

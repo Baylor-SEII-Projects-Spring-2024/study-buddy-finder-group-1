@@ -25,8 +25,8 @@ const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.60.1:8080', // Replace this with backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
 });
 

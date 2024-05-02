@@ -11,8 +11,8 @@ export const dynamic = 'force-dynamic' // defaults to auto
 // Create an Axios instance with a base URL
 const axiosInstance = axios.create({
 
-    baseURL: 'http://localhost:8080', // Replace this with backend server URL
-    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    //baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    baseURL: 'http://34.125.60.1:8080', // Replace this with backend server URL
     timeout: 5000, //Set a timeout for requests (in milliseconds)
 });
 
