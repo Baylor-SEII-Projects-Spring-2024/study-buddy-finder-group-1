@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Log4j2
 @RestController
 //@RequestMapping("/meetings") // Added a base path for meeting-related endpoints
-@CrossOrigin(origins = "http://localhost:3000")
-//@CrossOrigin(origins = "http://34.16.179.242:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.125.60.1:3000")
 public class MeetupEndpoint {
 
     @Autowired

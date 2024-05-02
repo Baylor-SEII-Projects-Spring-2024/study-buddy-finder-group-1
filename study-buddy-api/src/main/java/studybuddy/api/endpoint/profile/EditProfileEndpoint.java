@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Log4j2
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-//@CrossOrigin(origins = "http://34.16.179.242:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://34.125.60.1:3000")
 public class EditProfileEndpoint {
 
     @Autowired

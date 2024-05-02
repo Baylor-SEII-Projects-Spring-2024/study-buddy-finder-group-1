@@ -5,8 +5,9 @@ import { Container, Box, TextField, Button, Card, CardContent, Typography, Circu
 import { debounce } from 'lodash';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080', // Replace this with backend server URL
-    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    //baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    baseURL: 'http://34.125.60.1:8080', // Replace this with backend server URL
+
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
     // Other default configuration options can be added here
 });

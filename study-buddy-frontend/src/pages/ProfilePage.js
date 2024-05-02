@@ -4,8 +4,8 @@ import Navbar from "@/components/Navbar";
 import axios from 'axios'; // Import Axios for making API requests
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
+    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    baseURL: 'http://34.125.60.1:8080', // Replace this with backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
 });
 
