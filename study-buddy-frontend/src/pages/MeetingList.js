@@ -38,7 +38,7 @@ const MeetingList = () => {
                 console.log(userId);
 
                 if (userId) {
-                    const response = await axiosInstance.get('/meetings/user/${userId}');
+                    const response = await axiosInstance.get('/meetings/user/302');
                     const updatedMeetingList = await Promise.all(meetingList.map(async (meeting) => {
                         const users = await getUsersByMeetingId(meeting.id);
                         return { ...meeting, users };

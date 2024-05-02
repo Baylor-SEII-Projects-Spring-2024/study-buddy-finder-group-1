@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
-@RequestMapping("/meetings") // Added a base path for meeting-related endpoints
+//@RequestMapping("/meetings") // Added a base path for meeting-related endpoints
 //@CrossOrigin(origins = "http://localhost:3000")
 @CrossOrigin(origins = "http://34.16.179.242:3000")
 public class MeetupEndpoint {
@@ -54,7 +54,7 @@ public class MeetupEndpoint {
     private UserService userService;
 
 
-    @PostMapping("/create")
+    @PostMapping("/meetings/create")
     public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
         Long userId = Long.parseLong(payload.get("userId").toString());
         Long locationId = Long.parseLong(payload.get("locationId").toString());
@@ -97,25 +97,25 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(createdMeeting);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/meetings/all")
     public ResponseEntity<List<Meeting>> getAllMeetings() {
         List<Meeting> meetings = meetingService.getAllMeetings();
         return ResponseEntity.ok(meetings);
     }
 
-    @GetMapping("/over/{id}")
+    @GetMapping("/meetings/over/{id}")
     public ResponseEntity<?> isMeetingOver(@PathVariable Long id) {
         return ResponseEntity.ok(meetingService.isMeetingOver(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/meetings/{id}")
     public ResponseEntity<Meeting> getMeetingById(@PathVariable Long id) {
         return meetingService.getMeetingById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/meetings/user/{userId}")
     public ResponseEntity<List<Meeting>> getMeetingsByUserId(@PathVariable Long userId) {
         List<Meeting> meetings = meetingService.getMeetingsByUserId(userId);
         if (meetings.isEmpty()) {
@@ -138,7 +138,7 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/meetings/{id}")
     public ResponseEntity<?> updateMeeting(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         Optional<Meeting> meetingOptional = meetingService.getMeetingById(id);
         if (!meetingOptional.isPresent()) {
@@ -169,7 +169,7 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(updatedMeeting);
     }
 
-    @GetMapping("/user/{userId}/upcoming")
+    @GetMapping("/meetings/user/{userId}/upcoming")
     public ResponseEntity<List<Meeting>> getUpcomingMeetingsByUserId(@PathVariable Long userId) {
         try {
             List<Meeting> upcomingMeetings = meetingService.getUpcomingMeetingsByUserId(userId);
@@ -179,19 +179,19 @@ public class MeetupEndpoint {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/meetings/{id}")
     public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
         meetingService.deleteMeeting(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/upcoming")
+    @GetMapping("/meetings/upcoming")
     public ResponseEntity<List<Meeting>> upcomingMeetings() {
         List<Meeting> meetings = meetingService.getAllUpcomingMeetings();
         return ResponseEntity.ok(meetings);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/meetings/search")
     public ResponseEntity<List<Meeting>> searchMeetings(@RequestParam(required = true) String courseName, @RequestParam(required = true) Long userId) {
         List<Meeting> matchingMeetings = new ArrayList<>();
         Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
@@ -230,14 +230,14 @@ public class MeetupEndpoint {
         return ResponseEntity.ok(matchingMeetings);
     }
 
-    @GetMapping("/user-in-meeting")
+    @GetMapping("/meetings/user-in-meeting")
     public ResponseEntity<Boolean> isUserInMeeting(@RequestParam(required = true) Long userId, @RequestParam(required = true) Long meetingId) {
         boolean isInMeeting = userMeetingRepository.userMeetingRelationshipExists(userId, meetingId);
 
         return ResponseEntity.ok(isInMeeting);
     }
 
-    @PostMapping("/join")
+    @PostMapping("/meetings/join")
     public ResponseEntity<?> joinMeeting(@RequestBody Map<String, Object> payload) {
         Long userId = Long.parseLong(payload.get("userId").toString());
         Long meetingId = Long.parseLong(payload.get("meetingId").toString());
