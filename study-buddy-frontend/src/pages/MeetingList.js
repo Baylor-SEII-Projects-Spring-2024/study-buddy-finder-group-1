@@ -58,7 +58,7 @@ const MeetingList = () => {
         // Function to fetch users by meeting ID
         const getUsersByMeetingId = async (meetingId) => {
             try {
-                const response = await axiosInstance.get(`/user/${meetingId}`);
+                const response = await axiosInstance.get(`/meeting/${meetingId}`);
                 return response.data; // Assuming the response is a list of Optional<User>
             } catch (error) {
                 console.error('Error fetching users:', error);
