@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import studybuddy.api.reviewtutor.ReviewTutor;
-import studybuddy.api.reviewtutor.ReviewTutorService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
 import java.util.HashMap;
@@ -18,10 +16,8 @@ import java.util.Optional;
 
 @Log4j2
 @RestController
-
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
-
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 
 public class AuthEndpoint {
 
@@ -32,7 +28,7 @@ public class AuthEndpoint {
     public ResponseEntity<String> saveUser(@RequestBody User user) {
         boolean userExists = userService.findUserByEmail(user.getEmail_address()).isPresent();
 
-        //initialize user rating
+        // initialize user rating
         if (Objects.equals(user.getUserType(), "Tutor")) {
             user.setRating(0.0);
         }
@@ -52,8 +48,9 @@ public class AuthEndpoint {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
-        // Your login logic here
+
         if (userService.attemptLogin(email, password)) {
+
             // Good login
             Optional<User> userOptional = userService.findUserByEmail(email);
             if (userOptional.isPresent()) {

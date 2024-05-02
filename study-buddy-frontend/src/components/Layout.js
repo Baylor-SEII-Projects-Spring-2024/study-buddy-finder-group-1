@@ -1,4 +1,3 @@
-// components/Layout.js
 import React from 'react';
 import Footer from "./Footer";
 import { Box, Container, CssBaseline } from '@mui/material';

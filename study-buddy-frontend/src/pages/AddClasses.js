@@ -3,13 +3,10 @@ import { Box, Container, Typography, Button, Select, MenuItem, FormControl, Inpu
 import Navbar from "@/components/Navbar";
 import axios from 'axios';
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
-    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    timeout: 5000, //Set a timeout for requests (in milliseconds)
 });
 
 const AddClasses = () => {
@@ -45,7 +42,6 @@ const AddClasses = () => {
         setOpenSnackbar(false);
     };
 
-    // ------------- New way of identifying logged in user by id -------------
     useEffect(() => {
         const fetchLoginInfo = async () => {
             try {
@@ -80,13 +76,8 @@ const AddClasses = () => {
             return;
         }
 
-        //const userId = localStorage.getItem('userId'); -------------- original (BAD) --------------
-
-        // ----------- Must do it this way for it to work -----------
-        //Both below are from profile page ------ (GOOD)-----------
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user.id;
-        // ----------- Must do it this way for it to work -----------
 
         // Construct the payload with the new course name
         const payload = {

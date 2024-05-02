@@ -15,13 +15,10 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 import {useRouter} from "next/router";
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
 
 const MeetingList = () => {
@@ -59,7 +56,7 @@ const MeetingList = () => {
         const getUsersByMeetingId = async (meetingId) => {
             try {
                 const response = await axiosInstance.get(`/meetings/meeting/${meetingId}`);
-                return response.data; // Assuming the response is a list of Optional<User>
+                return response.data;
             } catch (error) {
                 console.error('Error fetching users:', error);
                 return []; // Return an empty array if there's an error

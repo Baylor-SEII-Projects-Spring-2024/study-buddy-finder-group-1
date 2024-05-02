@@ -4,19 +4,17 @@ import Navbar from "@/components/Navbar";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
 
 const OurMissionPage = () => {
 
     // Custom styles for the text to match the StudyBuddies title font and to fill up more of the page
     const textStyle = {
-        fontFamily: "'Roboto', sans-serif", // Assuming 'Roboto' is the font. Replace with the correct font if different.
-        padding: '40px 0', // Increase padding to give more space. Adjust as needed.
+        fontFamily: "'Roboto', sans-serif",
+        padding: '40px 0', // Increase padding to give more space.
     };
 
     return (
@@ -44,7 +42,7 @@ const OurMissionPage = () => {
             </Box>
 
             {/* Add spacing between main content and footer */}
-            <Box height={100} /> {/* Adjust height as needed for spacing */}
+            <Box height={100} />
 
         </div>
     );

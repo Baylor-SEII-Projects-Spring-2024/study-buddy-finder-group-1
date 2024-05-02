@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
-
 import java.util.Date;
 
 @Data
@@ -33,7 +31,6 @@ public class ReviewTutor {
     @Getter
     @Column(name = "STUDENT_ID")
     private Long studentId;
-
 
     public ReviewTutor(User tutor, Double rating, Long meetingId, Long studentId) {
         this.tutor = tutor;

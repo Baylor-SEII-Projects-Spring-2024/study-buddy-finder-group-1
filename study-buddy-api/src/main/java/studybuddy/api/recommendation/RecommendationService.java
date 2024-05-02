@@ -8,15 +8,12 @@ import studybuddy.api.meeting.Meeting;
 import studybuddy.api.meeting.MeetingService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserService;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class RecommendationService {
+
     @Autowired
     private UserService userService;
 
@@ -44,7 +41,6 @@ public class RecommendationService {
         return weightedMeetings.values().stream().limit(10).collect(Collectors.toSet());
     }
 
-
     private double calculateMeetingWeight(User user, String course, Meeting meeting) {
         double weight = 0.0;
 
@@ -66,15 +62,6 @@ public class RecommendationService {
         if (course.equals(meeting.getCourseName())) {
             weight += SUBJECT_WEIGHT;
         }
-
-        /*String[] parts = meeting.getTimeSlot().split(" - ");
-        String startDateTimeString = meeting.getDate() + " " + parts[0];
-        LocalDateTime meetingStartTime = LocalDateTime.parse(startDateTimeString, dateTimeFormatter);
-
-        long hoursDifference = ChronoUnit.HOURS.between(desiredTime, meetingStartTime);
-        double distanceFromTarget = Math.max(0.0, 1.0 - (double) Math.abs(hoursDifference) / (24.0 * 365));
-        weight += distanceFromTarget;*/
-
         return weight;
     }
 

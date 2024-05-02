@@ -3,9 +3,6 @@ package studybuddy.api.course;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
-import studybuddy.api.user.User;
-
-import java.util.Date;
 import java.util.Objects;
 
 @Data
@@ -45,7 +42,6 @@ public class Course {
         this.credits = credits;
         this.areaOfStudy = areaOfStudy;
     }
-
 
     public Course() {
 

@@ -30,14 +30,11 @@ const mockClasses = [
     "Biology",
     "History",
     "Literature",
-    // Can add more mock classes as needed
 ];
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
-    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    timeout: 5000, //Set a timeout for requests (in milliseconds)
 });
 
 const MeetupCreationPage = () => {
@@ -58,7 +55,6 @@ const MeetupCreationPage = () => {
     const [tutorCourses, setTutorCourses] = useState([]);
     const router = useRouter();
     const { tutorid } = router.query;
-
 
     const timeSlots = [
         "10:00 AM - 12:00 PM",
@@ -82,10 +78,6 @@ const MeetupCreationPage = () => {
         setAvailableRooms(rooms);
     };
 
-    /*const handleMeetingTypeChange = (event) => {
-        setMeetingType(event.target.value);
-    };*/
-
     const handleDateChange = (event) => {
         setDate(event.target.value);
     };
@@ -97,7 +89,6 @@ const MeetupCreationPage = () => {
     const handleRoomChange = (event) => {
         setRoom(event.target.value);
     };
-
 
     /*to automatically parse tutor information*/
     useEffect(() => {
@@ -158,8 +149,6 @@ const MeetupCreationPage = () => {
         fetchLocations();
     }, []);
 
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -169,7 +158,7 @@ const MeetupCreationPage = () => {
 
         console.log(userId);
 
-        // Ensure you are sending 'userIds' and 'userId' in your payload
+        // Ensure we are sending 'userIds' and 'userId' in payload
         const payload = {
             locationId: location,
             room: room,
@@ -195,7 +184,6 @@ const MeetupCreationPage = () => {
             console.error("Error creating meeting:", error);
         }
     };
-
 
     useEffect(() => {
         if (location) {
@@ -344,7 +332,7 @@ const MeetupCreationPage = () => {
                             message={snackbarMessage}
                             ContentProps={{
                                 style: {
-                                    backgroundColor: 'green', // You can customize this as needed
+                                    backgroundColor: 'green',
                                 },
                             }}
                         />

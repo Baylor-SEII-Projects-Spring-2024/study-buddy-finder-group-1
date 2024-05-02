@@ -44,7 +44,6 @@ public class UserService {
         }
     }
 
-
     public Optional<User> findUserByEmail(String email) { return userRepository.findByEmail_Address(email); }
 
     public List<User> findUsersByName(String name) {
@@ -111,10 +110,8 @@ public class UserService {
     public User addCourseToUser(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found"));
-
         user.getCourses().add(course);
         userRepository.save(user);
-
         return user;
     }
 
@@ -122,13 +119,10 @@ public class UserService {
     public User deleteCourseFromUser(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("Course not found"));
-
         user.getCourses().remove(course);
         userRepository.save(user);
-
         return user;
     }
-
 
     public Set<Course> getAllUserCourses (Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);

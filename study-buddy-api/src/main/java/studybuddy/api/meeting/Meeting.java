@@ -7,13 +7,11 @@ import lombok.Getter;
 import studybuddy.api.location.Location;
 import studybuddy.api.user.User;
 import java.time.format.DateTimeFormatter;
-
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -38,17 +36,6 @@ public class Meeting {
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
-
-
-/*
-    @Getter
-    @Column(name = "START_TIME")
-    Date startTime;
-
-    @Getter
-    @Column(name = "END_TIME")
-    Date endTime;
-*/
 
     @Getter
     @Column(name = "ROOM")
@@ -98,22 +85,10 @@ public class Meeting {
         this.date = date;
     }
 
-
-    /*
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-    */
-
     //changing to timeslot for now because it's easier to get demo ready to match what the frontend has
     public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
     }
-
 
     public void setLocation(Location location) {
         this.location = location;
@@ -152,6 +127,4 @@ public class Meeting {
         Meeting other = (Meeting) obj;
         return id != null && id.equals(other.id);
     }
-
-
 }

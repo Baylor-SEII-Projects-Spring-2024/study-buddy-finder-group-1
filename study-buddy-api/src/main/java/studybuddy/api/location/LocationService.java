@@ -2,12 +2,12 @@ package studybuddy.api.location;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 //fixme: Potential future iterations: Return a list based on specified capacity or time
 @Service
 public class LocationService {
+
     //location has : id, name , address, capacity,  available_start, available_end
     @Autowired
     private LocationRepository locationRepository;
@@ -48,6 +48,4 @@ public class LocationService {
         locationRepository.deleteById(id);
         return null;
     }
-
 }
-

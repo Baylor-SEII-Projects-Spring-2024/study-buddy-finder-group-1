@@ -39,11 +39,10 @@ export default function App({ Component, pageProps }) {
           </Head>
 
           <StudyBuddyThemeProvider>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
               <Layout>
                   <AuthProvider>
-                      <NotificationProvider> {/* Wrap the component with NotificationProvider */}
+                      <NotificationProvider>
                           <Component {...pageProps} />
                       </NotificationProvider>
                   </AuthProvider>

@@ -37,5 +37,4 @@ public class IndexEndpoint {
  *         return userService.saveUser(user);
  *     }
  * }
-
  */

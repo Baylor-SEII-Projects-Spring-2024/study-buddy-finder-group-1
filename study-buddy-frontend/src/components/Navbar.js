@@ -8,11 +8,9 @@ import axios from "axios";
 import { useNotification } from '../contexts/NotificationContext'; // Correctly placed at the top
 
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
-    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    timeout: 5000, // Set a timeout for requests (in milliseconds)
 });
 
 export default function Navbar({ showLinks = true }) { //showLinks for the links in the navbar
@@ -28,7 +26,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const dashboardOpen = Boolean(dashboardAnchorEl);
 
     console.log("isLoggedIn:", isLoggedIn);
-
 
     useEffect(() => {
         const storedUserId = localStorage.getItem('userId');
@@ -101,7 +98,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     };
 
     const handleProfileClick = () => {
-        {/* router.push(`/user/${userId}`); */}
         router.push(`/ProfilePage`);
     }
 
@@ -151,7 +147,6 @@ export default function Navbar({ showLinks = true }) { //showLinks for the links
     const handleRecommendationClick = () => {
         router.push(`/recommendation`);
     }
-
 
     const buttonStyle = {
         fontSize: '1.2rem',

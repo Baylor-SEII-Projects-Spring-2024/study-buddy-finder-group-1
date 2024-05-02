@@ -1,29 +1,23 @@
 package studybuddy.api.meeting;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
-import studybuddy.api.meeting.UserMeetingRepository;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
-
 public class MeetingService {
+
     @Autowired
     public MeetingRepository meetingRepository;
 
     @Autowired
     public UserRepository userRepository;
+
     @Autowired
     public UserMeetingRepository userMeetingRepository;
 
@@ -43,12 +37,6 @@ public class MeetingService {
     public void deleteMeeting(Long meetingId){
         meetingRepository.deleteById(meetingId);
     }
-
-    // -------------- Added for Review Tutor --------------
-    //public List<Meeting> getMeetingsByUserId(Long userId) {
-        //return meetingRepository.findByUserId(userId);
-    //}
-    // -------------- Added for Review Tutor --------------
 
     public List<Meeting> getMeetingsByUserId(Long userId) {
         return meetingRepository.findMeetingsByUserId(userId);

@@ -5,9 +5,8 @@ import { Container, Box, TextField, Button, Card, CardContent, Typography, Circu
 import { debounce } from 'lodash';
 
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
     // Other default configuration options can be added here
 });
@@ -19,7 +18,6 @@ const AddFriends = () => {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [acceptedRequests, setAcceptedRequests] = useState([]);
     const [currentId, setCurrentId] = useState('');
-
 
     const fetchSearchResults = async (searchTerm) => {
         setLoading(true);
@@ -72,7 +70,6 @@ const AddFriends = () => {
             return isUserInvolved && isCurrentUserInvolved && request.status === 'accepted';
         });
     };
-
 
     // Use useCallback to memoize the debounced version
     const debouncedSearch = useCallback(debounce(fetchSearchResults, 500), []);
