@@ -1,14 +1,11 @@
 package studybuddy.api.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import studybuddy.api.course.Course;
-import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipService;
 import studybuddy.api.meeting.*;
-
 import java.util.*;
 
 @Data
@@ -138,7 +135,6 @@ public class User {
                 }
             }
         }
-
         return friendSet;
     }
 
@@ -154,6 +150,4 @@ public class User {
         User other = (User) obj;
         return id != null && id.equals(other.id);
     }
-
-
 }

@@ -3,22 +3,18 @@ import { Box, Container, Typography } from '@mui/material';
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
-
 
 const StudyLocationsPage = () => {
 
     // Custom styles for the text to match the StudyBuddies title font and to fill up more of the page
     const textStyle = {
         fontFamily: "'Roboto', sans-serif",
-        padding: '40px 0', // Increase padding to give more space. Adjust as needed.
+        padding: '40px 0', // Increase padding to give more space.
         fontSize: '1.4rem'
     };
 

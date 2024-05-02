@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import {
     AppBar,
     Toolbar,
@@ -16,24 +15,19 @@ import {
     Menu,
     MenuItem
 } from '@mui/material';
-import styles from '@/styles/Home.module.css';
 import Navbar from "@/components/Navbar";
 import HomePageVideo from "@/components/HomePageVideo";
 import HomePageText from "@/components/HomePageText";
-import Footer from "@/components/Footer";
 import axios from "axios";
 
 // Constants
 const MAIN_FONT = 'Roboto, sans-serif';
 const WHITE_TEXT = 'white';
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
 
 const HomePage = () => {

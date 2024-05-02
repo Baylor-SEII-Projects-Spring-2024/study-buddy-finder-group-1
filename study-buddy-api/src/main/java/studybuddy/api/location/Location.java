@@ -1,21 +1,17 @@
 package studybuddy.api.location;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.annotation.Resource;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.Getter;
-
 import studybuddy.api.room.Room;
-
-
 import java.util.*;
 
 @Data
 @Entity
 @Table(name = studybuddy.api.location.Location.TABLE_NAME)
 public class Location {
+
     public static final String TABLE_NAME = "LOCATIONS";
 
     @Id
@@ -92,7 +88,6 @@ public class Location {
         room.setLocation(null);
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(id);
@@ -105,6 +100,4 @@ public class Location {
         Location other = (Location) obj;
         return id != null && id.equals(other.id);
     }
-
-
 }

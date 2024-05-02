@@ -3,15 +3,11 @@ import { Box, Container, Typography, List, ListItem, ListItemText, TextField, Bu
 import Navbar from "@/components/Navbar";
 import axios from "axios";
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
-
 
 const MessagingPage = () => {
     const [selectedConversation, setSelectedConversation] = useState(null);
@@ -20,7 +16,6 @@ const MessagingPage = () => {
     const conversations = [
         { id: 1, title: 'John Doe', messages: ['Hi', 'Hello', 'How are you?'] },
         { id: 2, title: 'Jane Smith', messages: ['Hey there', 'I am good, thanks!', 'What about you?'] },
-        // Add more conversations as needed
     ];
 
     const handleConversationClick = (conversation) => {

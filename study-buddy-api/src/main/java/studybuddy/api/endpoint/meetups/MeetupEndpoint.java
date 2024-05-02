@@ -6,25 +6,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import studybuddy.api.course.Course;
 import studybuddy.api.course.CourseService;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationRepository;
-import studybuddy.api.location.LocationService;
 import studybuddy.api.meeting.*;
 import studybuddy.api.recommendation.RecommendationService;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
 import studybuddy.api.user.UserService;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
 //@RequestMapping("/meetings") // Added a base path for meeting-related endpoints
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class MeetupEndpoint {
 
     @Autowired
@@ -50,9 +47,9 @@ public class MeetupEndpoint {
 
     @Autowired
     private CourseService courseService;
+
     @Autowired
     private UserService userService;
-
 
     @PostMapping("/meetings/create")
     public ResponseEntity<?> createMeetup(@RequestBody Map<String, Object> payload) {
@@ -196,7 +193,6 @@ public class MeetupEndpoint {
         List<Meeting> matchingMeetings = new ArrayList<>();
         Set<Meeting> meetingSet = new HashSet<>(meetingService.getAllUpcomingMeetings());
 
-
         for (Meeting m : meetingSet) {
             if (m.getCourseName().toLowerCase().contains((courseName.toLowerCase()))) {
                 matchingMeetings.add(m);
@@ -259,16 +255,4 @@ public class MeetupEndpoint {
 
         return ResponseEntity.ok().body("Meeting joined successfully!");
     }
-
-
-    // -------------- Added for Review Tutor --------------
-//    @GetMapping("/user/{userId}") //Dont change
-//    public ResponseEntity<List<Meeting>> getMeetingsByUser(@PathVariable Long userId) {
-//        List<Meeting> userMeetings = meetingService.getMeetingsByUserId(userId);
-//        if (userMeetings.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(userMeetings);
-//    }
-    // -------------- Added for Review Tutor --------------
 }

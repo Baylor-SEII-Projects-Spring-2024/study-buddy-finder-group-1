@@ -3,15 +3,15 @@ package studybuddy.api.endpoint.meetups;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import studybuddy.api.endpoint.meetups.*;
 import studybuddy.api.room.*;
 import java.util.List;
 
 @Log4j2
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class RoomEndpoint {
+
     @Autowired
     private RoomService roomService;
 
@@ -34,5 +34,4 @@ public class RoomEndpoint {
     public List<Room> findRoomsByCapacity(@PathVariable int capacity) {
         return roomService.findRoomsByCapacity(capacity);
     }
-
 }

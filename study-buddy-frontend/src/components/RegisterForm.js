@@ -8,18 +8,13 @@ import { useRouter } from "next/router";
 
 export const dynamic = 'force-dynamic' // defaults to auto
 
-
 // Create an Axios instance with a base URL
 const axiosInstance = axios.create({
 
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
-
-    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with backend server URL
+    timeout: 5000, //Set a timeout for requests (in milliseconds)
 });
-
 
 export default function RegisterForm() {
     const [emailError, setEmailError] = useState(false);
@@ -28,7 +23,7 @@ export default function RegisterForm() {
     const [classesList, setClassesList] = useState([]);
     const [userSelection, setUserSelection] = useState(false);
 
-    const router = useRouter(); // Corrected usage of useRouter()
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -151,18 +146,8 @@ export default function RegisterForm() {
                 console.log("this is a tutor")
 
                 // Fetch the tutor user by email
-
                 const tutorUser = await axiosInstance.get(`/register/${formData.email}`);
                 console.log("tutuorUser: " + tutorUser);
-                // Get the ID of the current user
-                // const requester = JSON.parse(localStorage.getItem('user'));
-                // console.log("requester: " + requester);
-                // console.log('id: ' + requester.id);
-                // const requesterId = requester.id;
-
-                // console.log("the id is ", requesterId);
-
-
                 console.log("the class id is ", selectedSubjects);
 
                 // Add selected subjects to the tutor user
@@ -170,8 +155,6 @@ export default function RegisterForm() {
                     try {
                         console.log(subjectId);
                         // Construct the payload
-
-
                         // Add subject to the tutor user
                         const addSubjectResponse = await axiosInstance.put
                         (`/users/${tutorUser.data.id}/courses/${subjectId}`);
@@ -294,7 +277,7 @@ export default function RegisterForm() {
                     <MenuItem value="Student">Student</MenuItem>
                     <MenuItem value="Tutor">Tutor</MenuItem>
                 </TextField>
-                {/* Add subject selection for tutor */}
+                {/* Adding subject selection for tutor */}
                 {formData.userType === 'Tutor' && (
                     <TextField
                         select
@@ -317,7 +300,7 @@ export default function RegisterForm() {
                         }}
                         sx={{ mb: 2 }}
                     >
-                        {/* Populate options with courses */}
+                        {/* Populating options with courses */}
                         {classesList.map((course) => (
                             <MenuItem key={course.id} value={course.id}>
                                 {course.name}

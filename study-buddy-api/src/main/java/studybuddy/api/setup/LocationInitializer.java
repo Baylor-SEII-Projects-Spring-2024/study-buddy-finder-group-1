@@ -10,7 +10,6 @@ import studybuddy.api.room.Room;
 import studybuddy.api.room.RoomRepository;
 import studybuddy.api.user.User;
 import studybuddy.api.user.UserRepository;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -82,10 +81,6 @@ public class LocationInitializer implements CommandLineRunner {
 
             userRepository.save(u);
 
-
-
-
-
             u = new User("Albert","Einstein","albert_einstein1@baylor.edu","password","Tutor");
             u.setRating(2.4);
             userRepository.save(u);
@@ -117,7 +112,6 @@ public class LocationInitializer implements CommandLineRunner {
             u = new User("Marvin","Harrison","marvin_harrison1@baylor.edu","password","Tutor");
             u.setRating(0.4);
             userRepository.save(u);
-
         }
     }
 
@@ -167,6 +161,4 @@ public class LocationInitializer implements CommandLineRunner {
         location.addRoom(new Room("Group Study Room", 12, location));
         location.addRoom(new Room("Video Study Area", 8, location));
     }
-
-
 }

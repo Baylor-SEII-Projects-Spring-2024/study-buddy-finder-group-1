@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Container, Typography } from "@mui/material";
-import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
 
@@ -19,7 +18,7 @@ export default function HomePageText({ mainFont, whiteText }) {
         }}>
             <Typography variant="h2" align="center" color="textPrimary" gutterBottom sx={{
                 fontFamily: mainFont,
-                color: 'primary', //color: whiteText,
+                color: whiteText,
                 width: '100%',
                 textAlign: 'center',
                 marginY: 2, // Reducing the margin around the title to tighten spacing
@@ -28,7 +27,7 @@ export default function HomePageText({ mainFont, whiteText }) {
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" component="p" sx={{
                 fontFamily: mainFont,
-                color: 'primary',
+                color: whiteText,
                 width: '100%',
                 textAlign: 'center',
                 marginBottom: 3, // Only bottom margin to space text from button

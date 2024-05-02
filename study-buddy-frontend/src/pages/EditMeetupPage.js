@@ -20,11 +20,9 @@ const mockClasses = [
 ];
 
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
 
 const EditMeetupPage = () => {
@@ -46,8 +44,6 @@ const EditMeetupPage = () => {
 
     const handleMeetupSelectChange = (event) => {
         setSelectedMeetupId(event.target.value);
-        // Fetch and set meetup details based on the selected meetup ID
-        // Here you might want to fetch meetup details from your backend API
     };
 
     const handleClassAndAreaInputChange = (event) => {
@@ -118,7 +114,6 @@ const EditMeetupPage = () => {
 
         }
     };
-
 
     useEffect(() => {
 

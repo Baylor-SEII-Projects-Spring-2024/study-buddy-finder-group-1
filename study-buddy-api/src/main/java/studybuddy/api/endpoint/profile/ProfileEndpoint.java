@@ -9,14 +9,13 @@ import studybuddy.api.user.UserService;
 import java.util.Optional;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class ProfileEndpoint {
 
     @Autowired
     private UserService userService;
 
-    // ------------- New way of identifying logged in user by id -------------
     @GetMapping("/ProfilePage/{userId}")
     public ResponseEntity<User> getUserProfile(@PathVariable Long userId) {
         try {

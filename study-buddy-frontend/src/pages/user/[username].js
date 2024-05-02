@@ -3,19 +3,15 @@ import axios from 'axios';
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.125.65.178:8080', // Replace this with your backend server URL
-
-    timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
+    baseURL: 'http://localhost:8080', // Replace this with backend server URL
+    //baseURL: 'http://34.125.65.178:8080', // Replace this with backend server URL
+    timeout: 5000, //Set a timeout for requests (in milliseconds)
 });
 
 function UserProfile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -44,8 +40,6 @@ function UserProfile() {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingTop: '84px' }}>
-
-
         <Head>
                 <title>ProfilePage - Study Buddies</title>
                 {/* Links to import fonts */}

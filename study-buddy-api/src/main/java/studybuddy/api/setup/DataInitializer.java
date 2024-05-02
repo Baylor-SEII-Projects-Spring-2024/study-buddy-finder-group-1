@@ -5,14 +5,11 @@ import studybuddy.api.course.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import studybuddy.api.user.User;
-import studybuddy.api.user.UserRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
     private final CourseRepository courseRepository;
-
 
     @Autowired
     public DataInitializer(CourseRepository courseRepository) {
@@ -41,7 +38,5 @@ public class DataInitializer implements CommandLineRunner {
             courseRepository.save(new Course("Organizational Behavior", "Analysis of human behavior in organizational settings", 3, "Psychology"));
             courseRepository.save(new Course("Introduction to Art History", "Survey of major developments in art history", 3, "Art & Design"));
         }
-
-
     }
 }

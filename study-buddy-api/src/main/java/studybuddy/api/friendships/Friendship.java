@@ -2,13 +2,13 @@ package studybuddy.api.friendships;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import studybuddy.api.user.User;
 
 @Data
 @Entity
 @Table(name = "FRIENDSHIPS")
 public class Friendship {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -3,9 +3,7 @@ package studybuddy.api.meeting;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import studybuddy.api.meeting.Meeting;
 import studybuddy.api.user.User;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

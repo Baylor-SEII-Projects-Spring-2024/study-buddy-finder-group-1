@@ -17,8 +17,8 @@ import java.util.*;
 
 @Log4j2
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class UserEndpoint {
 
     @Autowired
@@ -51,7 +51,6 @@ public class UserEndpoint {
         if (user == null) {
             log.warn("User not found");
         }
-
         return user;
     }
 
@@ -101,7 +100,6 @@ public class UserEndpoint {
         return ResponseEntity.ok(updatedUser);
     }
 
-    // --------- Saving courses to the user account [Temporarily-MS2] ---------
     @PostMapping("/users/{userId}/addCourse")
     public ResponseEntity<?> addCourseToUserMS2(@PathVariable Long userId, @RequestBody String courseName) {
         String parsedName;
@@ -161,7 +159,6 @@ public class UserEndpoint {
         return ResponseEntity.ok(users);
     }
 
-
     @GetMapping("/users/searchedTutors")
     public ResponseEntity<List<User>> findSearchedTutors(@RequestParam(required = true) String subjectName) {
         List<User> users = userService.findAllTutors();
@@ -192,34 +189,26 @@ public class UserEndpoint {
         return ResponseEntity.ok(searched);
     }
 
-
     @GetMapping("/tutors/{id}")
     public ResponseEntity<User> findTutorById(@PathVariable Long id) {
         System.out.println("GRABBING TUTOR WITH ID OF : "+ id);
         User user = userService.findTutor(id);
-
         return ResponseEntity.ok(user);
     }
+
     @GetMapping("/tutors/email/{email}")
     public ResponseEntity<Optional<User>> findTutorByEmail(@PathVariable String email) {
-
         System.out.println("GRABBING TUTOR WITH email OF : "+ email);
         Optional<User> user = userService.findUserByEmail(email);
         System.out.println("User: "+ user.get().getId() + " " + user.get().getEmail()
-        + user.get().getFirstName())
-        ;
-
-
+        + user.get().getFirstName());
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/tutors/{id}/courses")
     public ResponseEntity<Set<Course>> getAllCoursesTutor(@PathVariable Long id) {
         User user = userService.findTutor(id);
-
         Set<Course> courses = user.getCourses();
-
         return ResponseEntity.ok(courses);
     }
-
 }

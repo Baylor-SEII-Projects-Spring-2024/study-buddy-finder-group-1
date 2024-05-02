@@ -9,13 +9,10 @@ import Alert from '@mui/material/Alert';
 import moment from "moment";
 import {useNotification} from "@/contexts/NotificationContext"; // Corrected import
 
-
 const axiosInstance = axios.create({
-    //baseURL: 'http://localhost:8080', // Replace this with your backend server URL
-    baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
-
+    baseURL: 'http://localhost:8080', // Replace this with your backend server URL
+    //baseURL: 'http://34.16.179.242:8080', // Replace this with your backend server URL
     timeout: 5000, // Optional: Set a timeout for requests (in milliseconds)
-    // Other default configuration options can be added here
 });
 
 // Custom hook defined outside the Notifications component
@@ -170,7 +167,6 @@ const Notifications = () => {
             showNotification("Failed to decline meeting invitation.", "error");
         }
     };
-
 
     return (
         <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

@@ -1,9 +1,8 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 
-// This file lets you modify the global theme of your project. Any changes here will affect all
-// Material UI components throughout your website. Correspondingly, this is where you would set
-// up your color palette, standard spacings, etc.
+// This file lets you modify the global theme of the project. Any changes here will affect all
+// Material UI components throughout the website.
 const themeOptions = {
     typography: {
         fontFamily: 'Roboto, Noto Sans, sans-serif',

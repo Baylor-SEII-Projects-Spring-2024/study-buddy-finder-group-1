@@ -6,14 +6,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.location.Location;
 import studybuddy.api.location.LocationService;
-
 import java.util.Date;
 import java.util.List;
 
 @Log4j2
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 public class LocationEndpoint {
     @Autowired
     private LocationService locationService;

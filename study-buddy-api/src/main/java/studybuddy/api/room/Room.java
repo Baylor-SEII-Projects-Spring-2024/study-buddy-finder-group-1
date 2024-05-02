@@ -10,6 +10,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "ROOMS")
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ROOM_ID")

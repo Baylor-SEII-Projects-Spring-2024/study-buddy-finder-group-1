@@ -1,20 +1,16 @@
 package studybuddy.api.endpoint.friendships;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studybuddy.api.friendships.Friendship;
 import studybuddy.api.friendships.FriendshipService;
 import studybuddy.api.user.User;
-import org.springframework.http.HttpStatus;
-
-
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
-@CrossOrigin(origins = "http://34.16.179.242:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://34.16.179.242:3000")
 @RequestMapping("/friendships")
 public class FriendshipEndpoint {
 
