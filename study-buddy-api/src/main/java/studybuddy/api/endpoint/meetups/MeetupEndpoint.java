@@ -123,7 +123,7 @@ public class MeetupEndpoint {
         }
         return ResponseEntity.ok(meetings);
     }
-    @GetMapping("/user/{meetingId}")
+    @GetMapping("/meeting/{meetingId}")
     public ResponseEntity<List<Optional<User>>> getUsersByMeetingId(@PathVariable Long meetingId) {
         List<Long> userIds = meetingService.getUserIdByMeetingId(meetingId);
 
